@@ -513,6 +513,10 @@ function Surface() {
 
       <div className="contact">
         <div className="contact__inner">
+          <div className="contact__head" data-reveal>
+            <span className="contact__index">05</span>
+            <h2 className="contact__title">CONTACT ME</h2>
+          </div>
           <a
             className="contact__email"
             href={`mailto:${IDENTITY.email}`}
