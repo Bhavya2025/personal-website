@@ -1,12 +1,11 @@
 import { IDENTITY } from '../lib/missions'
 import { EDUCATION } from '../lib/resume'
 import BrandIcon from '../components/BrandIcon'
-import { lenisStore } from '../hooks/useSmoothScroll'
+import { useTransitionNav } from '../components/transitionNav'
 import pfp from '../assets/pfp.jpg'
 
 function Hero() {
-  const toContact = () =>
-    lenisStore.current?.scrollTo('#contact', { offset: -70, duration: 1.2 })
+  const { navigateTo } = useTransitionNav()
 
   return (
     <section className="hero" id="top">
@@ -44,8 +43,12 @@ function Hero() {
           <a className="btn" href={IDENTITY.linkedin} target="_blank" rel="noreferrer">
             <BrandIcon name="linkedin" /> LINKEDIN <span aria-hidden="true">↗</span>
           </a>
-          <button type="button" className="btn btn--solid" onClick={toContact}>
-            CONTACT ↓
+          <button
+            type="button"
+            className="btn btn--solid"
+            onClick={() => navigateTo('/contact', 'swipe')}
+          >
+            CONTACT <span aria-hidden="true">↗</span>
           </button>
         </nav>
       </div>

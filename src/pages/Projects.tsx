@@ -1,6 +1,7 @@
 import TransitSky from '../components/TransitSky'
 import Manifest from '../sections/Manifest'
 import Rover from '../components/Rover'
+import Footer from '../components/Footer'
 import { usePageReveals } from '../hooks/usePageReveals'
 import { useTransitionNav } from '../components/transitionNav'
 
@@ -28,6 +29,8 @@ function Projects() {
       <section className="manifest-end">
         <Rover />
       </section>
+
+      <Footer />
     </main>
   )
 }

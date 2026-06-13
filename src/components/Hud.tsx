@@ -25,6 +25,14 @@ function Hud() {
         >
           PROJECTS
         </button>
+        <span className="hud__sep" aria-hidden="true">·</span>
+        <button
+          type="button"
+          className={`hud__link ${pathname === '/contact' ? 'is-current' : ''}`}
+          onClick={() => pathname !== '/contact' && navigateTo('/contact', 'swipe')}
+        >
+          CONTACT
+        </button>
       </nav>
     </header>
   )

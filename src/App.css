@@ -120,9 +120,9 @@ main {
   width: clamp(160px, 27vw, 310px);
   height: clamp(160px, 27vw, 310px);
   object-fit: cover;
-  border: 1px solid var(--line);
-  outline: 2px solid var(--amber);
-  outline-offset: 4px;
+  border-radius: 50%;
+  border: 3px solid rgba(232, 228, 216, 0.85);
+  box-shadow: 0 0 0 1px rgba(232, 228, 216, 0.2);
   flex-shrink: 0;
 }
 
@@ -1231,6 +1231,26 @@ main {
   position: relative;
 }
 
+/* Home's daylight landing — shorter band of sky with drifting birds */
+.surface--landing {
+  min-height: 38svh;
+}
+
+/* Contact is its own page with no scroll-driven SkyCanvas behind it,
+   so it paints its own daylight sky (matches the bottom of the descent).
+   Dark contact text + dark birds read against it; the green ground caps it. */
+.surface--contact {
+  min-height: 100svh;
+  /* lighter daylight so the dark title/email/buttons read with strong
+     contrast — content sits on the upper (lighter) band */
+  background: linear-gradient(
+    180deg,
+    rgb(122, 167, 214) 0%,
+    rgb(141, 184, 226) 48%,
+    rgb(164, 202, 238) 100%
+  );
+}
+
 /* birds drift through the daylight sky above the ground.
    Explicit height is LOAD-BEARING: without it the canvas's intrinsic
    (DPR-scaled) buffer height wins over bottom:0 and the element hangs
@@ -1369,7 +1389,8 @@ main {
 
 .contact__index {
   font-size: 13px;
-  color: var(--amber-deep);
+  /* dark — reads on the bright daylight sky */
+  color: rgba(12, 16, 24, 0.5);
 }
 
 .contact__title {
@@ -1398,14 +1419,6 @@ main {
   z-index: 2;
   opacity: 0;
   pointer-events: none;
-}
-
-.contact__body {
-  position: relative;
-  display: grid;
-  justify-items: start;
-  gap: 26px;
-  padding-bottom: 80px;
 }
 
 .contact__email {
