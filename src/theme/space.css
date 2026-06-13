@@ -1,0 +1,27 @@
+/* ============================================================
+   THEME: space — all themeable tokens live behind [data-theme].
+   A future theme = another file like this + a different attr.
+   ============================================================ */
+
+[data-theme='space'] {
+  --ink: #0c0b09;
+  --ink-raised: #12110d;
+  --line: rgba(232, 228, 216, 0.14);
+  --line-faint: rgba(232, 228, 216, 0.07);
+  --bone: #e8e4d8;
+  --bone-dim: #9b968a;
+  --amber: #ffb000;
+  --amber-deep: #c77f00;
+  --ok-green: #6fdc8c;
+  --alert-red: #ff4d36;
+
+  /* sky anchors (UI-side; canvas uses lib/palette.ts) */
+  --sky-space: #020208;
+  --sky-dusk: #101521;
+  --floodlight: rgba(255, 244, 214, 0.1);
+
+  --display: 'Archivo Black', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --frame: clamp(10px, 1.6vw, 22px);
+}
