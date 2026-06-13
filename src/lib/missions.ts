@@ -44,15 +44,15 @@ export const MISSIONS: Mission[] = [
   {
     id: 'BK-002',
     year: '2023',
-    name: 'SELF-DRIVING CAR',
-    designation: 'Obstacle-avoiding model vehicle',
+    name: 'EMBEDDED SYSTEMS',
+    designation: 'Arduino obstacle-avoiding car · bare-metal C/C++',
     status: 'HARDWARE',
     group: 'HARDWARE',
     stack: ['Arduino', 'Embedded C/C++', 'Ultrasonic sensors'],
     brief: [
-      'Detection and motor-control logic written in C/C++; sensor thresholds tuned through real-world testing for reliable navigation.',
+      'Hands-on embedded development: wrote the detection and motor-control logic in C/C++ on an Arduino, reading ultrasonic sensors and tuning thresholds through real-world testing for reliable obstacle avoidance.',
     ],
-    image: { src: arduinoImg, alt: 'The Arduino self-driving car prototype' },
+    image: { src: arduinoImg, alt: 'Arduino obstacle-avoiding car prototype' },
     pending: 'driving footage',
   },
   {
@@ -78,7 +78,7 @@ export const MISSIONS: Mission[] = [
     group: 'PLANNED',
     stack: ['C++', 'Emscripten', 'WebAssembly'],
     brief: [
-      'Real gravitational n-body simulation written in C++, compiled to WebAssembly, embedded on this site — the rocket on the home page already points here.',
+      'Real gravitational n-body simulation written in C++, compiled to WebAssembly and embedded right here on the site.',
     ],
   },
   {
@@ -113,6 +113,7 @@ export const IDENTITY = {
   line: 'Software developer in training — building across web, embedded systems, and games.',
   github: 'https://github.com/Bhavya2025',
   linkedin: 'https://www.linkedin.com/in/bhavya-kumar-1652a8336/',
+  medium: 'https://medium.com/@bhavyakumar.bkb',
   email: 'b2kumar@uwaterloo.ca',
   resume: '/resume.pdf',
 } as const

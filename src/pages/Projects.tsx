@@ -19,7 +19,7 @@ function Projects() {
           onClick={() => navigateTo('/', 'swipe')}
           data-reveal
         >
-          ← ABOUT ME
+          ← HOME
         </button>
       </section>
 

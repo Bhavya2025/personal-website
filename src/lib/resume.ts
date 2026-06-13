@@ -2,8 +2,11 @@
 
 export const EDUCATION = {
   school: 'University of Waterloo',
+  schoolUrl: 'https://uwaterloo.ca',
   degree: 'Honours Bachelor of Mathematics (Co-op)',
   major: 'Applied Mathematics with Scientific Computing and Scientific Machine Learning',
+  majorUrl:
+    'https://uwaterloo.ca/future-students/programs/applied-mathematics-scientific-computing',
   period: 'SEPT 2025 — PRESENT',
   location: 'Waterloo, ON',
   award: "President's Scholarship",
@@ -62,7 +65,13 @@ export const SKILLS: SkillGroup[] = [
   },
 ]
 
-export const ACHIEVEMENTS = [
+export interface Achievement {
+  tag: string
+  text: string
+  href?: string
+}
+
+export const ACHIEVEMENTS: Achievement[] = [
   {
     tag: 'SCHOLARSHIP',
     text: "President's Scholarship — University of Waterloo",
@@ -78,5 +87,6 @@ export const ACHIEVEMENTS = [
   {
     tag: 'AUTHOR',
     text: '"School of Machine Learning" — a blog simplifying ML concepts for beginners',
+    href: 'https://medium.com/@bhavyakumar.bkb',
   },
-] as const
+]

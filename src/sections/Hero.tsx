@@ -1,12 +1,23 @@
 import { IDENTITY } from '../lib/missions'
+import { EDUCATION } from '../lib/resume'
 import BrandIcon from '../components/BrandIcon'
+import { lenisStore } from '../hooks/useSmoothScroll'
 import pfp from '../assets/pfp.jpg'
 
 function Hero() {
+  const toContact = () =>
+    lenisStore.current?.scrollTo('#contact', { offset: -70, duration: 1.2 })
+
   return (
     <section className="hero" id="top">
       <p className="hero__eyebrow" data-reveal>
-        {IDENTITY.school}
+        <a href={EDUCATION.majorUrl} target="_blank" rel="noreferrer">
+          Applied Mathematics
+        </a>
+        <span aria-hidden="true"> · </span>
+        <a href={EDUCATION.schoolUrl} target="_blank" rel="noreferrer">
+          University of Waterloo
+        </a>
       </p>
       <div className="hero__idrow" data-reveal>
         <h1 className="hero__name">
@@ -33,9 +44,9 @@ function Hero() {
           <a className="btn" href={IDENTITY.linkedin} target="_blank" rel="noreferrer">
             <BrandIcon name="linkedin" /> LINKEDIN <span aria-hidden="true">↗</span>
           </a>
-          <a className="btn btn--solid" href={`mailto:${IDENTITY.email}`}>
-            CONTACT
-          </a>
+          <button type="button" className="btn btn--solid" onClick={toContact}>
+            CONTACT ↓
+          </button>
         </nav>
       </div>
     </section>

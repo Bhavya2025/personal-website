@@ -2,120 +2,69 @@
    bhavyakumar.ca — layout & components
    ============================================================ */
 
-/* Fixed bezel frame around the viewport, like an instrument panel */
-.bezel {
-  position: fixed;
-  inset: var(--frame);
-  z-index: 90;
-  pointer-events: none;
-  border: 1px solid var(--line);
-}
-
-.bezel::before,
-.bezel::after {
-  content: '';
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-color: var(--amber);
-  border-style: solid;
-}
-
-.bezel::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-
-.bezel::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
-}
-
-/* --- HUD telemetry bar --- */
-
-.hud {
-  position: fixed;
-  top: var(--frame);
-  left: var(--frame);
-  right: var(--frame);
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 8px 14px;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--bone-dim);
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(2px);
-}
-
-.hud__id {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--amber);
-  font-weight: 500;
-  white-space: nowrap;
-  letter-spacing: inherit;
-  font-size: inherit;
-}
-
-.hud__nav {
-  display: flex;
-  gap: 4px;
-  margin-left: auto;
-}
-
-.hud__link {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--bone-dim);
-  padding: 2px 10px;
-  border: 1px solid transparent;
-}
-
-.hud__link:hover,
-.hud__link:focus-visible {
-  color: var(--ink);
-  background: var(--amber);
-  outline: none;
-}
-
-.hud__link.is-current {
-  color: var(--amber);
-  border-color: var(--line);
-}
-
-.hud__dot {
-  width: 6px;
-  height: 6px;
-  background: var(--amber);
-  animation: blink 1.6s steps(2) infinite;
-}
-
 @keyframes blink {
   50% {
     opacity: 0.25;
   }
 }
 
+/* --- Top nav: minimal, centered --- */
+
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 95;
+  display: flex;
+  justify-content: center;
+  padding: 18px 0;
+  pointer-events: none;
+}
+
+.hud__nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  pointer-events: auto;
+  background: color-mix(in srgb, var(--ink) 70%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+}
+
+.hud__sep {
+  color: var(--bone-dim);
+  opacity: 0.6;
+}
+
+.hud__link {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--bone-dim);
+  padding: 4px 14px;
+  border: 1px solid transparent;
+  transition: color 0.18s ease;
+}
+
+.hud__link:hover,
+.hud__link:focus-visible {
+  color: var(--bone);
+  outline: none;
+}
+
+.hud__link.is-current {
+  color: var(--amber);
+}
+
 @media (max-width: 480px) {
   .hud {
-    gap: 10px;
-    padding: 7px 10px;
+    padding: 12px 0;
   }
-  /* collapse the wordmark to its status dot — nav takes priority */
-  .hud__id {
-    font-size: 0;
-    gap: 0;
-  }
-  .hud__nav {
-    margin-left: 0;
+  .hud__link {
+    font-size: 13px;
+    padding: 4px 10px;
   }
 }
 
@@ -798,6 +747,52 @@ main {
   color: var(--bone);
 }
 
+/* the Author row is a link to Medium */
+.records__row--link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.records__row--link:hover,
+.records__row--link:focus-visible {
+  border-color: var(--amber);
+  outline: none;
+}
+
+.records__row--link:hover .records__text,
+.records__row--link:focus-visible .records__text {
+  color: var(--amber);
+}
+
+/* --- Inline text links (hero eyebrow, education) --- */
+
+.hero__eyebrow a,
+.edu__school a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.18s ease;
+}
+
+.hero__eyebrow a:hover,
+.hero__eyebrow a:focus-visible,
+.edu__school a:hover,
+.edu__school a:focus-visible {
+  border-bottom-color: currentColor;
+  outline: none;
+}
+
+.edu__major a {
+  color: var(--amber);
+  text-decoration: none;
+}
+
+.edu__major a:hover,
+.edu__major a:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
 /* --- The Deep --- */
 
 .deep {
@@ -1323,11 +1318,30 @@ main {
 
 /* --- Contact page: carrier-pigeon mail service --- */
 
+/* Contact zone — the daylight sky at the bottom of home, with the
+   pigeon. No overflow:hidden (it traps Lenis wheel scroll). */
 .contact {
   position: relative;
-  min-height: 100svh;
-  padding-top: 60px;
-  overflow: hidden;
+  min-height: 62svh;
+  display: flex;
+  align-items: flex-end;
+  /* main already pads horizontally — only vertical padding here */
+  padding: 140px 0 50px;
+}
+
+.contact__inner {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 22px;
+  width: 100%;
+}
+
+.contact__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: rgba(12, 16, 24, 0.7);
+  align-self: start;
 }
 
 .contact__pigeon {
@@ -1358,17 +1372,18 @@ main {
 
 .contact__email {
   font-family: var(--display);
-  font-size: clamp(22px, 4.6vw, 58px);
+  font-size: clamp(20px, 4.4vw, 54px);
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: -0.01em;
-  color: var(--bone);
+  /* dark — sits on the bright daylight sky */
+  color: var(--ink);
   word-break: break-all;
 }
 
 .contact__email:hover,
 .contact__email:focus-visible {
-  color: var(--amber);
+  color: var(--amber-deep);
   outline: none;
 }
 
@@ -1378,6 +1393,23 @@ main {
   gap: 10px;
   /* headroom for the pigeon perching on the buttons */
   margin-top: 56px;
+}
+
+/* buttons in the contact zone read dark-on-bright */
+.contact .btn {
+  color: var(--ink);
+  border-color: rgba(12, 16, 24, 0.35);
+}
+
+.contact .btn:hover,
+.contact .btn:focus-visible {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bone);
+}
+
+.contact .btn svg {
+  color: var(--amber-deep);
 }
 
 .letterburst {

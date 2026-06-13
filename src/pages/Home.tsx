@@ -4,11 +4,10 @@ import Background from '../sections/Background'
 import Skills from '../sections/Skills'
 import Manifest from '../sections/Manifest'
 import Achievements from '../sections/Achievements'
-import Comms from '../sections/Comms'
 import Surface from '../sections/Surface'
 import { usePageReveals } from '../hooks/usePageReveals'
 
-/** The descent: space (top) → atmosphere → daylight surface (bottom). */
+/** The descent: space (top) → atmosphere → daylight surface + contact (bottom). */
 function Home() {
   usePageReveals()
   return (
@@ -19,7 +18,6 @@ function Home() {
       <Skills />
       <Manifest brief />
       <Achievements />
-      <Comms />
       <Surface />
     </main>
   )

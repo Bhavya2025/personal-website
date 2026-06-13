@@ -9,9 +9,17 @@ function Background() {
         <article className="edu" data-reveal>
           <header className="edu__head">
             <div>
-              <h3 className="edu__school">{EDUCATION.school}</h3>
+              <h3 className="edu__school">
+                <a href={EDUCATION.schoolUrl} target="_blank" rel="noreferrer">
+                  {EDUCATION.school}
+                </a>
+              </h3>
               <p className="edu__degree">{EDUCATION.degree}</p>
-              <p className="edu__major">{EDUCATION.major}</p>
+              <p className="edu__major">
+                <a href={EDUCATION.majorUrl} target="_blank" rel="noreferrer">
+                  {EDUCATION.major} <span aria-hidden="true">↗</span>
+                </a>
+              </p>
             </div>
             <div className="edu__when">
               <span>{EDUCATION.period}</span>
