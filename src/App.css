@@ -117,8 +117,8 @@ main {
 }
 
 .hero__pfp {
-  width: clamp(140px, 24vw, 270px);
-  height: clamp(140px, 24vw, 270px);
+  width: clamp(160px, 27vw, 310px);
+  height: clamp(160px, 27vw, 310px);
   object-fit: cover;
   border: 1px solid var(--line);
   outline: 2px solid var(--amber);
@@ -967,8 +967,28 @@ main {
 
 .ground__tag {
   font-size: 11px;
+  line-height: 1.7;
   letter-spacing: 0.08em;
   color: rgba(242, 247, 240, 0.7);
+  max-width: 38ch;
+}
+
+/* higher specificity than `.ground__col a` (the brand col has that class too) */
+.ground__col--brand .ground__tag a {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-decoration: none;
+  /* visible at rest so it reads as a link without hovering */
+  border-bottom: 1px solid rgba(242, 247, 240, 0.45);
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.ground__col--brand .ground__tag a:hover,
+.ground__col--brand .ground__tag a:focus-visible {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+  outline: none;
 }
 
 .ground__heading {
@@ -1320,13 +1340,15 @@ main {
 
 /* Contact zone — the daylight sky at the bottom of home, with the
    pigeon. No overflow:hidden (it traps Lenis wheel scroll). */
+/* Contact content sits high in the sky zone; the open sky below is
+   where the pigeon flies down to its nest on the grass. */
 .contact {
   position: relative;
-  min-height: 62svh;
+  min-height: 74svh;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   /* main already pads horizontally — only vertical padding here */
-  padding: 140px 0 50px;
+  padding: 150px 0 40px;
 }
 
 .contact__inner {
@@ -1337,18 +1359,13 @@ main {
   width: 100%;
 }
 
-.contact__eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.3em;
-  color: rgba(12, 16, 24, 0.7);
-  align-self: start;
-}
-
+/* pigeon & nest live in .surface so the nest can rest on the green
+   ground; both must paint above the ground (z-index 1) */
 .contact__pigeon {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   opacity: 0;
   pointer-events: none;
 }
@@ -1357,7 +1374,7 @@ main {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
   opacity: 0;
   pointer-events: none;
 }

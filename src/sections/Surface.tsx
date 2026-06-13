@@ -5,6 +5,7 @@ import BrandIcon from '../components/BrandIcon'
 import { useTransitionNav } from '../components/transitionNav'
 import { lenisStore } from '../hooks/useSmoothScroll'
 import { IDENTITY } from '../lib/missions'
+import { EDUCATION } from '../lib/resume'
 
 /** Burst of tiny letters flying out from a point. */
 function burstLetters(container: HTMLElement, originX: number, originY: number) {
@@ -35,7 +36,8 @@ function burstLetters(container: HTMLElement, originX: number, originY: number) 
 /* Pigeon geometry: feet sit ~52 units down in the 90×70 viewBox. */
 const PIGEON_W = 90
 const PIGEON_FEET_Y = 52
-const NEST_W = 76
+const NEST_W = 56
+const NEST_H = 25
 
 const PAPER_SVG =
   '<svg viewBox="0 0 24 24" width="15" height="15"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 2v5h5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>'
@@ -50,7 +52,7 @@ type PigeonMode = 'flying' | 'nest' | 'perch' | 'cursor'
  */
 function Surface() {
   const { navigateTo } = useTransitionNav()
-  const stageRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLElement>(null)
   const pigeonRef = useRef<SVGSVGElement>(null)
   const torsoRef = useRef<SVGGElement>(null)
   const wingRef = useRef<SVGPathElement>(null)
@@ -77,14 +79,15 @@ function Surface() {
     const nest = nestRef.current
     if (!stage || !pigeon || !torso || !wing || !head || !legA || !legB || !nest) return
 
+    /* Nest rests on the grass — at the top edge of the green ground strip. */
     const nestPos = () => {
-      const anchor = stage.querySelector('.contact__eyebrow')
+      const ground = stage.querySelector('.ground')
       const s = stage.getBoundingClientRect()
-      if (!anchor) return { x: s.width * 0.5 - NEST_W / 2, y: 30 }
-      const t = anchor.getBoundingClientRect()
+      if (!ground) return { x: s.width * 0.5 - NEST_W / 2, y: s.height - 70 }
+      const g = ground.getBoundingClientRect()
       return {
-        x: t.left - s.left + t.width / 2 - NEST_W / 2,
-        y: t.top - s.top - 22,
+        x: s.width * 0.5 - NEST_W / 2,
+        y: g.top - s.top - NEST_H + 9,
       }
     }
 
@@ -96,18 +99,29 @@ function Surface() {
 
     const nestPerch = () => {
       const n = placeNest()
-      return { x: n.x + NEST_W / 2 - PIGEON_W / 2, y: n.y + 12 - PIGEON_FEET_Y }
+      return { x: n.x + NEST_W / 2 - PIGEON_W / 2, y: n.y + 6 - PIGEON_FEET_Y }
     }
 
     if (reduced) {
-      const raf = requestAnimationFrame(() => {
+      const rmController = new AbortController()
+      const placeStatic = () => {
         const p = nestPerch()
         gsap.set(pigeon, { x: p.x, y: p.y, opacity: 1 })
         gsap.set(wing, { rotation: 8, transformOrigin: '30% 20%' })
         gsap.set(torso, { y: 5 })
         gsap.set([legA, legB], { scaleY: 0.2, transformOrigin: '50% 0%' })
+      }
+      const raf = requestAnimationFrame(placeStatic)
+      // .ground is layout-shift sensitive (fonts swap in late) — re-place
+      document.fonts.ready.then(placeStatic).catch(() => {})
+      window.addEventListener('resize', placeStatic, {
+        passive: true,
+        signal: rmController.signal,
       })
-      return () => cancelAnimationFrame(raf)
+      return () => {
+        cancelAnimationFrame(raf)
+        rmController.abort()
+      }
     }
 
     const controller = new AbortController()
@@ -462,44 +476,43 @@ function Surface() {
   }
 
   return (
-    <section className="surface" id="contact">
+    <section className="surface" id="contact" ref={stageRef}>
       <Birds />
 
-      <div className="contact" ref={stageRef}>
-        <svg className="contact__nest" ref={nestRef} viewBox="0 0 76 34" width="76" height="34" aria-hidden="true">
-          <ellipse cx="38" cy="16" rx="34" ry="11" fill="#4a3520" />
-          <ellipse cx="38" cy="13" rx="26" ry="7" fill="#241a0e" />
-          <g stroke="#6b4d2c" strokeWidth="1.6" fill="none" strokeLinecap="round">
-            <path d="M6 18 C16 26 30 29 44 27" />
-            <path d="M70 16 C62 25 46 29 32 26" />
-            <path d="M10 12 C22 8 38 7 52 9" />
-            <path d="M66 11 C56 7 42 6 28 8" />
-          </g>
-          <g stroke="#8a6a3e" strokeWidth="1.2" fill="none" strokeLinecap="round">
-            <path d="M14 21 C26 26 48 26 62 20" />
-            <path d="M20 10 C32 6 50 7 60 12" />
-          </g>
-        </svg>
+      <svg className="contact__nest" ref={nestRef} viewBox="0 0 76 34" width="56" height="25" aria-hidden="true">
+        <ellipse cx="38" cy="16" rx="34" ry="11" fill="#4a3520" />
+        <ellipse cx="38" cy="13" rx="26" ry="7" fill="#241a0e" />
+        <g stroke="#6b4d2c" strokeWidth="1.6" fill="none" strokeLinecap="round">
+          <path d="M6 18 C16 26 30 29 44 27" />
+          <path d="M70 16 C62 25 46 29 32 26" />
+          <path d="M10 12 C22 8 38 7 52 9" />
+          <path d="M66 11 C56 7 42 6 28 8" />
+        </g>
+        <g stroke="#8a6a3e" strokeWidth="1.2" fill="none" strokeLinecap="round">
+          <path d="M14 21 C26 26 48 26 62 20" />
+          <path d="M20 10 C32 6 50 7 60 12" />
+        </g>
+      </svg>
 
-        <svg className="contact__pigeon" ref={pigeonRef} viewBox="0 0 90 70" width="90" height="70" aria-hidden="true">
-          <line ref={legARef} x1="40" y1="41" x2="40" y2="51" stroke="var(--amber-deep)" strokeWidth="1.6" />
-          <line ref={legBRef} x1="46" y1="41" x2="45" y2="51" stroke="var(--amber-deep)" strokeWidth="1.6" />
-          <g ref={torsoRef}>
-            <path d="M10 30 L24 26 L24 36 Z" fill="var(--bone-dim)" />
-            <ellipse cx="38" cy="32" rx="16" ry="10" fill="var(--bone)" />
-            <g ref={headRef}>
-              <circle cx="55" cy="24" r="7" fill="var(--bone)" />
-              <circle cx="57.2" cy="21.8" r="2.2" fill="var(--ink)" />
-              <circle cx="58" cy="21" r="0.7" fill="var(--bone)" />
-              <path d="M61.5 23 L69.5 25.5 L61.5 28 Z" fill="var(--amber)" />
-            </g>
-            <path d="M34 30 C26 22 18 20 12 22 C20 28 26 32 34 34 Z" fill="var(--bone-dim)" opacity="0.7" />
-            <path ref={wingRef} d="M36 28 C30 14 20 8 10 8 C18 20 26 28 36 34 Z" fill="#c9c4b6" stroke="var(--ink)" strokeWidth="0.6" />
+      <svg className="contact__pigeon" ref={pigeonRef} viewBox="0 0 90 70" width="90" height="70" aria-hidden="true">
+        <line ref={legARef} x1="40" y1="41" x2="40" y2="51" stroke="var(--amber-deep)" strokeWidth="1.6" />
+        <line ref={legBRef} x1="46" y1="41" x2="45" y2="51" stroke="var(--amber-deep)" strokeWidth="1.6" />
+        <g ref={torsoRef}>
+          <path d="M10 30 L24 26 L24 36 Z" fill="var(--bone-dim)" />
+          <ellipse cx="38" cy="32" rx="16" ry="10" fill="var(--bone)" />
+          <g ref={headRef}>
+            <circle cx="55" cy="24" r="7" fill="var(--bone)" />
+            <circle cx="57.2" cy="21.8" r="2.2" fill="var(--ink)" />
+            <circle cx="58" cy="21" r="0.7" fill="var(--bone)" />
+            <path d="M61.5 23 L69.5 25.5 L61.5 28 Z" fill="var(--amber)" />
           </g>
-        </svg>
+          <path d="M34 30 C26 22 18 20 12 22 C20 28 26 32 34 34 Z" fill="var(--bone-dim)" opacity="0.7" />
+          <path ref={wingRef} d="M36 28 C30 14 20 8 10 8 C18 20 26 28 36 34 Z" fill="#c9c4b6" stroke="var(--ink)" strokeWidth="0.6" />
+        </g>
+      </svg>
 
+      <div className="contact">
         <div className="contact__inner">
-          <p className="contact__eyebrow">GET IN TOUCH</p>
           <a
             className="contact__email"
             href={`mailto:${IDENTITY.email}`}
@@ -532,7 +545,15 @@ function Surface() {
         <div className="ground__cols">
           <div className="ground__col ground__col--brand">
             <p className="ground__brand">BHAVYA KUMAR</p>
-            <p className="ground__tag">{IDENTITY.school}</p>
+            <p className="ground__tag">
+              <a href={EDUCATION.majorUrl} target="_blank" rel="noreferrer">
+                {EDUCATION.major}
+              </a>
+              <br />
+              <a href={EDUCATION.schoolUrl} target="_blank" rel="noreferrer">
+                {EDUCATION.school}
+              </a>
+            </p>
           </div>
           <nav className="ground__col" aria-label="Navigate">
             <h4 className="ground__heading">EXPLORE</h4>

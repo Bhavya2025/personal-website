@@ -110,7 +110,7 @@ export const MISSIONS: Mission[] = [
 export const IDENTITY = {
   name: 'BHAVYA KUMAR',
   school: 'Applied Mathematics · University of Waterloo',
-  line: 'Software developer in training — building across web, embedded systems, and games.',
+  line: 'I build across web, embedded systems, and games — and I care as much about how it feels as whether it works.',
   github: 'https://github.com/Bhavya2025',
   linkedin: 'https://www.linkedin.com/in/bhavya-kumar-1652a8336/',
   medium: 'https://medium.com/@bhavyakumar.bkb',

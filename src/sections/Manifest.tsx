@@ -79,7 +79,7 @@ function Manifest({ brief }: ManifestProps) {
           className="btn btn--solid"
           onClick={() => navigateTo('/projects', 'swipe')}
         >
-          FULL MISSION FILES <span aria-hidden="true">→</span>
+          PROJECTS <span aria-hidden="true">→</span>
         </button>
       </div>
     </Section>
