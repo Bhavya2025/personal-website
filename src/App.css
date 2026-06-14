@@ -1318,7 +1318,7 @@ main {
 /* Contact is its own page: a dark instrument panel on the space theme.
    Full-bleed so there are no side "curtains"; light text reads on the dark. */
 .surface--contact {
-  min-height: unset;
+  min-height: 100svh;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   display: flex;
@@ -1393,33 +1393,12 @@ main {
 
 /* the framed dossier panel — 1px edges + amber corner ticks */
 .contact__panel {
-  position: relative;
   width: 100%;
   display: grid;
   justify-items: start;
   gap: 22px;
   padding: clamp(28px, 5vw, 60px);
   padding-bottom: clamp(70px, 9vw, 110px);
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(18, 17, 13, 0.55), rgba(8, 8, 11, 0.55));
-}
-
-/* four amber L-shaped corner ticks */
-.contact__panel::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  pointer-events: none;
-  background:
-    linear-gradient(var(--amber), var(--amber)) 0 0 / 16px 2px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 0 0 / 2px 16px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 100% 0 / 16px 2px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 100% 0 / 2px 16px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 0 100% / 16px 2px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 0 100% / 2px 16px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 100% 100% / 16px 2px no-repeat,
-    linear-gradient(var(--amber), var(--amber)) 100% 100% / 2px 16px no-repeat;
 }
 
 .contact__head {
