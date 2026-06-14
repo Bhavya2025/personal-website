@@ -2,10 +2,12 @@ import { IDENTITY } from '../lib/missions'
 import { EDUCATION } from '../lib/resume'
 import BrandIcon from '../components/BrandIcon'
 import { useTransitionNav } from '../components/transitionNav'
+import { useDevOSNav } from '../devos/devosNav'
 import pfp from '../assets/pfp.jpg'
 
 function Hero() {
   const { navigateTo } = useTransitionNav()
+  const { summon } = useDevOSNav()
 
   return (
     <section className="hero" id="top">
@@ -23,13 +25,23 @@ function Hero() {
           <span className="hero__name-row">BHAVYA</span>
           <span className="hero__name-row hero__name-row--accent">KUMAR</span>
         </h1>
-        <img
-          className="hero__pfp"
-          src={pfp}
-          alt="Bhavya Kumar, in front of two radial aircraft engines"
-          width="200"
-          height="200"
-        />
+        <button
+          type="button"
+          className="hero__pfp-btn"
+          aria-label="Boot the developer terminal"
+          onClick={(e) => summon(e.currentTarget.querySelector('img'))}
+        >
+          <img
+            className="hero__pfp"
+            src={pfp}
+            alt="Bhavya Kumar, in front of two radial aircraft engines"
+            width="200"
+            height="200"
+          />
+          <span className="hero__pfp-hint" aria-hidden="true">
+            ⌖ ENTER OS
+          </span>
+        </button>
       </div>
       <div className="hero__sub" data-reveal>
         <p className="hero__line">{IDENTITY.line}</p>

@@ -1,8 +1,10 @@
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useMagnetic } from './hooks/useMagnetic'
 import { TransitionProvider } from './components/TransitionLayer'
+import { DevOSNavCtx } from './devos/devosNav'
+import { summonDevOS } from './devos/summonTransition'
 import Hud from './components/Hud'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
@@ -33,6 +35,13 @@ function App() {
     if (window.history.state?.devos) window.history.back()
     else setDevMode(false)
   }, [])
+
+  // The hero pfp summons the OS via the cinematic scan→CRT transition; the
+  // overlay lives outside React (it survives this component unmounting).
+  const devosNav = useMemo(
+    () => ({ summon: (img: HTMLImageElement | null) => summonDevOS(img, openDevOS) }),
+    [openDevOS],
+  )
 
   // Back button → pop the pushed entry → close the terminal, stay on site.
   useEffect(() => {
@@ -86,16 +95,18 @@ function App() {
   }
 
   return (
-    <TransitionProvider>
-      <div className="grain" aria-hidden="true" />
-      <Hud />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </TransitionProvider>
+    <DevOSNavCtx.Provider value={devosNav}>
+      <TransitionProvider>
+        <div className="grain" aria-hidden="true" />
+        <Hud />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </TransitionProvider>
+    </DevOSNavCtx.Provider>
   )
 }
 
