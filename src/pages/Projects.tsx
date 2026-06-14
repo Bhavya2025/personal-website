@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import TransitSky from '../components/TransitSky'
 import Manifest from '../sections/Manifest'
-import Rover from '../components/Rover'
 import Footer from '../components/Footer'
 import { usePageReveals } from '../hooks/usePageReveals'
 import { useTransitionNav } from '../components/transitionNav'
@@ -13,10 +12,15 @@ function Projects() {
   usePageReveals()
   const { navigateTo } = useTransitionNav()
   const location = useLocation()
+  const [searchParams] = useSearchParams()
 
-  // Arriving via the terminal `run <project>` command: scroll to that card.
+  // Arriving via the terminal `run <project>` command (new tab → ?focus=ID,
+  // or in-app → location.state): scroll to that card and pulse it.
   useEffect(() => {
-    const focus = (location.state as { focus?: string } | null)?.focus
+    const focus =
+      (location.state as { focus?: string } | null)?.focus ??
+      searchParams.get('focus') ??
+      undefined
     if (!focus) return
     const t = window.setTimeout(() => {
       const el = document.getElementById(`mission-${focus}`)
@@ -28,7 +32,7 @@ function Projects() {
       window.setTimeout(() => el.classList.remove('mission--focus'), 2600)
     }, 400)
     return () => window.clearTimeout(t)
-  }, [location.state])
+  }, [location.state, searchParams])
 
   return (
     <main>
@@ -45,10 +49,6 @@ function Projects() {
       </section>
 
       <Manifest />
-
-      <section className="manifest-end">
-        <Rover />
-      </section>
 
       <Footer />
     </main>

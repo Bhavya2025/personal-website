@@ -59,20 +59,22 @@ Arduino · bare-metal C/C++ · ultrasonic sensors
     testing for reliable obstacle avoidance.
 `.trim()
 
-const GRAVITY_SIM = `
-        *        .            .
-            .         O
-     .            .-'   '-.        *
-              .  /  ( o )  \\   .
-        *        '-.____.-'
-     .       *            .       .
+const UNITY_GAME = `
+    ____________________________
+   |  ________________________  |
+   | |  MULTIPLAYER PLATFORMER | |
+   | |  ______    ______       | |
+   | | |      |  |      | P2   | |
+   | | | P1   |  |      |      | |
+   | |_|______|__|______|______| |
+   |____________________________|
 
-GRAVITY-SIM  ·  2D n-body orbital sandbox   [PLANNED]
-C++ · Emscripten · WebAssembly
+MULTIPLAYER-PLATFORMER  ·  WebGL game   [DEPLOYED]
+Unity · C# · WebGL
 
-  > Real gravitational n-body integration written in C++,
-    compiled to WebAssembly and embedded on the site.
-  > status: compiling... (not yet shipped)
+  > A multiplayer platformer exported to WebGL —
+    playable in-browser via itch.io.
+  > https://bulbgaming.itch.io/multiplayer-platformer
 `.trim()
 
 /* --- The tree --- */
@@ -130,13 +132,13 @@ interfaces         motor control, real-time loops`,
           type: 'file',
           content: `Executables in this directory — run them with ./<name>:
 
-  ./taskly         Kanban app + DeepSeek-R1 AI assistant
-  ./embedded-car   Arduino obstacle-avoiding vehicle
-  ./gravity-sim    C++ -> WASM n-body simulator  [planned]`,
+  ./taskly            Kanban app + DeepSeek-R1 AI assistant
+  ./embedded-car      Arduino obstacle-avoiding vehicle
+  ./unity-platformer  Multiplayer platformer (WebGL)`,
         },
         taskly: { type: 'file', executable: true, content: TASKLY },
         'embedded-car': { type: 'file', executable: true, content: EMBEDDED_CAR },
-        'gravity-sim': { type: 'file', executable: true, content: GRAVITY_SIM },
+        'unity-platformer': { type: 'file', executable: true, content: UNITY_GAME },
       },
     },
   },

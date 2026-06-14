@@ -1,5 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useMagnetic } from './hooks/useMagnetic'
 import { TransitionProvider } from './components/TransitionLayer'
@@ -18,7 +18,6 @@ const DevOS = lazy(() => import('./devos/DevOS'))
 function App() {
   useSmoothScroll()
   useMagnetic()
-  const navigate = useNavigate()
 
   const [isDevMode, setDevMode] = useState(false)
   const devModeRef = useRef(false)
@@ -45,18 +44,14 @@ function App() {
     [openDevOS],
   )
 
-  // `run <project>` in the terminal: leave the OS and open that project's
-  // card on the GUI projects page (Projects reads location.state.focus).
-  const goToProject = useCallback(
-    (alias: string) => {
-      const id = RUN_PROJECTS[alias]
-      setDevMode(false)
-      // neutralize the pushed devos history entry so Back behaves
-      if (window.history.state?.devos) window.history.replaceState(null, '')
-      navigate('/projects', { state: id ? { focus: id } : undefined })
-    },
-    [navigate],
-  )
+  // `run <project>` in the terminal: open that project's card on the GUI
+  // projects page in a NEW TAB — the OS stays open in this tab. Projects
+  // reads the ?focus=ID query param to scroll to + pulse the card.
+  const goToProject = useCallback((alias: string) => {
+    const id = RUN_PROJECTS[alias]
+    const url = id ? `/projects?focus=${id}` : '/projects'
+    window.open(url, '_blank', 'noopener')
+  }, [])
 
   // Back button → pop the pushed entry → close the terminal, stay on site.
   useEffect(() => {

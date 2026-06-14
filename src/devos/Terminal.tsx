@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTerminal } from './terminalStore'
 import { commandNames } from './commands'
 import { getNode } from './fileSystem'
+import { RUN_PROJECTS } from '../lib/missions'
 
 /** A single rendered output line; input echoes get a green prompt prefix. */
 function Line({ kind, text, href }: { kind: string; text: string; href?: string }) {
@@ -81,27 +82,53 @@ function Terminal() {
     setCaret(v.length)
   }
 
+  /** Context-aware tab completion: commands, paths, and `run` projects. */
   const complete = () => {
-    const token = value.split(/\s+/).pop() ?? ''
-    if (!token) return
-    const bare = token.startsWith('./') ? token.slice(2) : token
-    const isFirstToken = value.trimStart() === token
-    const dir = getNode(cwd)
-    const entries = dir && dir.type === 'dir' ? Object.keys(dir.children) : []
-    const pool = isFirstToken ? [...commandNames, ...entries] : entries
-    const matches = [...new Set(pool)].filter((n) => n.startsWith(bare))
+    const trimmed = value.replace(/^\s+/, '')
+    const parts = value.split(/\s+/)
+    const token = parts[parts.length - 1] ?? ''
+    const lead = token.startsWith('./') ? './' : ''
+    const bare = lead ? token.slice(2) : token
+    const isFirstToken = parts.length === 1 || trimmed === token
+    const firstCmd = trimmed.split(/\s+/)[0] ?? ''
 
+    const dir = getNode(cwd)
+    const entries = dir && dir.type === 'dir' ? Object.entries(dir.children) : []
+    const names = entries.map(([n]) => n)
+    const dirsOnly = entries.filter(([, c]) => c.type === 'dir').map(([n]) => n)
+    const filesOnly = entries.filter(([, c]) => c.type === 'file').map(([n]) => n)
+
+    let pool: string[]
+    if (isFirstToken) pool = [...commandNames, ...names]
+    else if (firstCmd === 'run') pool = Object.keys(RUN_PROJECTS)
+    else if (firstCmd === 'cd') pool = dirsOnly
+    else if (firstCmd === 'cat') pool = filesOnly
+    else pool = names
+
+    const matches = [...new Set(pool)].filter((n) => n.startsWith(bare))
+    if (!matches.length) return
+
+    const prefix = value.slice(0, value.length - token.length)
     if (matches.length === 1) {
-      const completed = matches[0] ?? bare
-      const prefix = value.slice(0, value.length - token.length)
-      const lead = token.startsWith('./') ? './' : ''
-      const next = `${prefix}${lead}${completed}`
+      const next = `${prefix}${lead}${matches[0]}`
       setValue(next)
       setCaret(next.length)
-    } else if (matches.length > 1) {
-      print(`${promptText}${value}`, 'input')
-      print(matches.join('   '))
+      return
     }
+
+    // multiple matches: fill to the longest common prefix, then list them
+    const lcp = matches.reduce((acc, m) => {
+      let i = 0
+      while (i < acc.length && i < m.length && acc[i] === m[i]) i++
+      return acc.slice(0, i)
+    })
+    if (lcp.length > bare.length) {
+      const next = `${prefix}${lead}${lcp}`
+      setValue(next)
+      setCaret(next.length)
+    }
+    print(`${promptText}${value}`, 'input')
+    print(matches.join('   '))
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

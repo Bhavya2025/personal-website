@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import Birds from '../components/Birds'
 import BrandIcon from '../components/BrandIcon'
-import Footer from '../components/Footer'
 import { usePageReveals } from '../hooks/usePageReveals'
 import { IDENTITY } from '../lib/missions'
 
@@ -74,14 +72,14 @@ function Contact() {
     const nest = nestRef.current
     if (!stage || !pigeon || !torso || !wing || !head || !legA || !legB || !nest) return
 
-    /* Nest rests on the grass — at the top edge of the green ground strip. */
+    /* Nest rests on the ledge — a thin shelf at the bottom of the panel. */
     const nestPos = () => {
-      const ground = stage.querySelector('.ground')
+      const ledge = stage.querySelector('.contact__ledge')
       const s = stage.getBoundingClientRect()
-      if (!ground) return { x: s.width * 0.5 - NEST_W / 2, y: s.height - 70 }
-      const g = ground.getBoundingClientRect()
+      if (!ledge) return { x: s.width * 0.5 - NEST_W / 2, y: s.height - 90 }
+      const g = ledge.getBoundingClientRect()
       return {
-        x: s.width * 0.5 - NEST_W / 2,
+        x: g.left - s.left + g.width / 2 - NEST_W / 2,
         y: g.top - s.top - NEST_H + 9,
       }
     }
@@ -430,10 +428,33 @@ function Contact() {
       )
     }
 
-    gsap.set(pigeon, { x: -140, y: 120, opacity: 0 })
-    document.fonts.ready.then(() => placeNest()).catch(() => {})
-    window.addEventListener('resize', () => placeNest(), { passive: true, signal })
-    delayed.push(gsap.delayedCall(0.9, () => goNest()))
+    // Start hidden so the pigeon never flashes at the SVG's default (0,0)
+    // before layout/fonts settle — it materializes already in the nest.
+    gsap.set(pigeon, { opacity: 0 })
+    gsap.set(wing, { rotation: 8, transformOrigin: '30% 20%' })
+
+    let started = false
+    const settleInNest = () => {
+      if (started) return
+      started = true
+      placeNest()
+      const p = nestPerch()
+      gsap.set(pigeon, { x: p.x, y: p.y, opacity: 1 })
+      mode.current = 'nest'
+      loafPose()
+      // ease in with a little preen, then hand off to the idle loop
+      groom(scheduleIdle)
+    }
+    document.fonts.ready.then(settleInNest).catch(() => {})
+    // fallback in case fonts.ready never resolves
+    delayed.push(gsap.delayedCall(0.4, settleInNest))
+    window.addEventListener('resize', () => {
+      placeNest()
+      if (mode.current === 'nest') {
+        const p = nestPerch()
+        gsap.set(pigeon, { x: p.x, y: p.y })
+      }
+    }, { passive: true, signal })
     wander()
 
     return () => {
@@ -473,8 +494,6 @@ function Contact() {
   return (
     <main>
     <section className="surface surface--contact" id="contact" ref={stageRef}>
-      <Birds />
-
       <svg className="contact__nest" ref={nestRef} viewBox="0 0 76 34" width="56" height="25" aria-hidden="true">
         <ellipse cx="38" cy="16" rx="34" ry="11" fill="#4a3520" />
         <ellipse cx="38" cy="13" rx="26" ry="7" fill="#241a0e" />
@@ -508,11 +527,15 @@ function Contact() {
       </svg>
 
       <div className="contact">
-        <div className="contact__inner">
+        <div className="contact__panel">
           <div className="contact__head" data-reveal>
-            <span className="contact__index">05</span>
-            <h1 className="contact__title">CONTACT ME</h1>
+            <span className="contact__eyebrow">05 · CONTACT</span>
+            <h1 className="contact__title">GET IN TOUCH</h1>
           </div>
+          <p className="contact__lead" data-reveal>
+            Questions, opportunities, or just to say hi — my inbox is always open.
+          </p>
+
           <a
             className="contact__email"
             href={`mailto:${IDENTITY.email}`}
@@ -524,6 +547,7 @@ function Contact() {
           >
             {IDENTITY.email}
           </a>
+
           <div className="contact__actions" data-reveal>
             <button type="button" className="btn contact__copy" onClick={handleCopy} data-perch data-steal="✉︎">
               {copied ? 'COPIED ✓' : 'COPY ADDRESS'}
@@ -538,10 +562,10 @@ function Contact() {
               RESUME <span aria-hidden="true">↗</span>
             </a>
           </div>
+
+          <div className="contact__ledge" aria-hidden="true" />
         </div>
       </div>
-
-      <Footer />
     </section>
     </main>
   )

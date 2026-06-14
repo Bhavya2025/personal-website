@@ -2,7 +2,6 @@ import { useLocation } from 'react-router-dom'
 import { useTransitionNav } from './transitionNav'
 import { lenisStore } from '../hooks/useSmoothScroll'
 import { IDENTITY } from '../lib/missions'
-import { EDUCATION } from '../lib/resume'
 
 /** Shared site footer — the green earth strip with nav + copyright. */
 function Footer() {
@@ -20,18 +19,6 @@ function Footer() {
   return (
     <footer className="ground">
       <div className="ground__cols">
-        <div className="ground__col ground__col--brand">
-          <p className="ground__brand">BHAVYA KUMAR</p>
-          <p className="ground__tag">
-            <a href={EDUCATION.majorUrl} target="_blank" rel="noreferrer">
-              {EDUCATION.major}
-            </a>
-            <br />
-            <a href={EDUCATION.schoolUrl} target="_blank" rel="noreferrer">
-              {EDUCATION.school}
-            </a>
-          </p>
-        </div>
         <nav className="ground__col" aria-label="Pages">
           <h4 className="ground__heading">EXPLORE</h4>
           <button type="button" onClick={() => go('/')}>HOME</button>

@@ -4,7 +4,6 @@
  */
 import tasklyImg from '../assets/taskly.jpg'
 import arduinoImg from '../assets/arduino.jpg'
-import unityImg from '../assets/unity1.jpg'
 
 export type MissionGroup = 'SOFTWARE' | 'HARDWARE' | 'GAMES' | 'PLANNED'
 
@@ -19,7 +18,7 @@ export interface Mission {
   brief: string[]
   image?: { src: string; alt: string }
   /** Renders a live in-card demo instead of a static image. */
-  demo?: 'boids'
+  demo?: 'boids' | 'itch'
   link?: { label: string; href: string }
   pending?: string
 }
@@ -44,6 +43,45 @@ export const MISSIONS: Mission[] = [
     pending: 'repo link',
   },
   {
+    id: 'BK-004',
+    year: '2026',
+    name: 'BOIDS',
+    designation: 'Flocking simulation — emergent swarm behavior',
+    status: 'DEPLOYED',
+    group: 'SOFTWARE',
+    stack: ['JavaScript', 'Canvas', 'Flocking'],
+    brief: [
+      "Reynolds' three rules — alignment, cohesion, separation — produce lifelike flocking from nothing but local interactions; no leader, no global plan.",
+      'Each boid steers from neighbors inside a perception radius and flees the cursor. Prototyped in p5.js, then ported to a dependency-free canvas renderer for the site.',
+      'Live below — move your cursor through the flock.',
+    ],
+    demo: 'boids',
+  },
+  {
+    id: 'BK-102',
+    year: '2026',
+    name: 'SLACK AI CHATBOT',
+    designation: 'LLM-powered workspace assistant',
+    status: 'PLANNED',
+    group: 'PLANNED',
+    stack: ['Python', 'Slack API', 'LLM API'],
+    brief: [
+      'A Slack bot that answers questions and runs small workflows through an LLM backend.',
+    ],
+  },
+  {
+    id: 'BK-103',
+    year: '2026',
+    name: 'GIT, FROM SCRATCH',
+    designation: 'Reimplementation of git internals',
+    status: 'PLANNED',
+    group: 'PLANNED',
+    stack: ['Python'],
+    brief: [
+      'Building git from first principles in Python (objects, refs, index, commits) to understand the internals — in the spirit of "Write Yourself a Git".',
+    ],
+  },
+  {
     id: 'BK-002',
     year: '2023',
     name: 'EMBEDDED SYSTEMS',
@@ -58,81 +96,29 @@ export const MISSIONS: Mission[] = [
     pending: 'driving footage',
   },
   {
-    id: 'BK-004',
-    year: '——',
-    name: 'BOIDS',
-    designation: 'Flocking simulation — emergent swarm behavior',
-    status: 'DEPLOYED',
-    group: 'SOFTWARE',
-    stack: ['JavaScript', 'Canvas', 'Flocking'],
-    brief: [
-      "Reynolds' three rules — alignment, cohesion, separation — produce lifelike flocking from nothing but local interactions; no leader, no global plan.",
-      'Each boid steers from neighbors inside a perception radius and flees the cursor. Prototyped in p5.js, then ported to a dependency-free canvas renderer for the site.',
-      'Live below — move your cursor through the flock.',
-    ],
-    demo: 'boids',
-  },
-  {
     id: 'BK-003',
-    year: '——',
-    name: 'UNITY GAMES',
-    designation: 'Playable WebGL builds',
-    status: 'AWAITING DATA',
+    year: '2021',
+    name: 'MULTIPLAYER PLATFORMER',
+    designation: 'WebGL game — playable in-browser',
+    status: 'DEPLOYED',
     group: 'GAMES',
-    stack: ['Unity', 'C#'],
+    stack: ['Unity', 'C#', 'WebGL'],
     brief: [
-      'Playable in-browser via itch.io embeds. Slots reserved — names and links incoming.',
+      'A multiplayer platformer built in Unity and exported to WebGL — playable directly below via itch.io.',
     ],
-    image: { src: unityImg, alt: 'Unity platformer screenshot' },
-    pending: 'itch.io links per game',
-  },
-  {
-    id: 'BK-101',
-    year: 'NEXT',
-    name: 'PLANET GRAVITY SIMULATOR',
-    designation: 'N-body orbital physics sandbox',
-    status: 'PLANNED',
-    group: 'PLANNED',
-    stack: ['C++', 'Emscripten', 'WebAssembly'],
-    brief: [
-      'Real gravitational n-body simulation written in C++, compiled to WebAssembly and embedded right here on the site.',
-    ],
-  },
-  {
-    id: 'BK-102',
-    year: 'NEXT',
-    name: 'SLACK AI CHATBOT',
-    designation: 'LLM-powered workspace assistant',
-    status: 'PLANNED',
-    group: 'PLANNED',
-    stack: ['Python', 'Slack API', 'LLM API'],
-    brief: [
-      'A Slack bot that answers questions and runs small workflows through an LLM backend.',
-    ],
-  },
-  {
-    id: 'BK-103',
-    year: 'NEXT',
-    name: 'GIT, FROM SCRATCH',
-    designation: 'Reimplementation of git internals',
-    status: 'PLANNED',
-    group: 'PLANNED',
-    stack: ['Python'],
-    brief: [
-      'Building git from first principles in Python (objects, refs, index, commits) to understand the internals — in the spirit of "Write Yourself a Git".',
-    ],
+    demo: 'itch',
+    link: { label: 'PLAY ON ITCH.IO', href: 'https://bulbgaming.itch.io/multiplayer-platformer' },
   },
 ]
 
 /** Terminal `run <alias>` → mission id to focus on the GUI projects page. */
 export const RUN_PROJECTS: Record<string, string> = {
   taskly: 'BK-001',
-  embedded: 'BK-002',
   boids: 'BK-004',
-  unity: 'BK-003',
-  gravity: 'BK-101',
   slack: 'BK-102',
   git_py: 'BK-103',
+  embedded: 'BK-002',
+  unity: 'BK-003',
 }
 
 export const IDENTITY = {

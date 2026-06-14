@@ -22,6 +22,16 @@ function MissionCard({ mission: m }: { mission: Mission }) {
       <p className="mission__designation">{m.designation}</p>
       {m.demo === 'boids' ? (
         <BoidsSim />
+      ) : m.demo === 'itch' && m.link ? (
+        <div className="mission__itch">
+          <iframe
+            src="https://itch.io/embed-upload/4062803?color=0a0a0a"
+            className="mission__itch-frame"
+            title={m.name}
+            allow="autoplay; fullscreen; gamepad"
+            allowFullScreen
+          />
+        </div>
       ) : m.image ? (
         <img
           className="mission__img"

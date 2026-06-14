@@ -335,6 +335,7 @@ main {
 
 .mission__meta {
   display: flex;
+  align-items: baseline;
   gap: 18px;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -344,6 +345,13 @@ main {
 
 .mission__id {
   color: var(--amber);
+}
+
+.mission__year {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--bone);
 }
 
 .mission__status {
@@ -415,6 +423,27 @@ main {
   background: rgba(3, 3, 3, 0.6);
   padding: 3px 7px;
   pointer-events: none;
+}
+
+/* itch.io WebGL embed — same slot as a project image */
+.mission__itch {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 16 / 9;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  background: #050505;
+  overflow: hidden;
+}
+
+.mission__itch-frame {
+  display: block;
+  width: 100%;
+  /* taller than the container + shifted up to clip the itch.io "By …" header */
+  height: calc(100% + 42px);
+  margin-top: -42px;
+  border: none;
 }
 
 /* `run <project>` from the terminal lands here — brief amber pulse */
@@ -1013,36 +1042,15 @@ main {
   z-index: 1;
 }
 
-/* grass tufts along the top edge */
-.ground::before {
-  content: '';
-  position: absolute;
-  top: -7px;
-  left: 0;
-  right: 0;
-  height: 7px;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0 5px,
-    #466a4f 5px 6.5px,
-    transparent 6.5px 12px
-  );
-}
-
 .ground__cols {
   width: 100%;
-  max-width: 1080px;
+  max-width: 520px;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 28px;
-  padding: 16px 0 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 8px 0;
   text-align: left;
-}
-
-@media (max-width: 880px) {
-  .ground__cols {
-    grid-template-columns: 1fr 1fr;
-  }
+  justify-content: center;
 }
 
 @media (max-width: 480px) {
@@ -1060,39 +1068,6 @@ main {
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-}
-
-.ground__brand {
-  font-family: var(--display);
-  font-size: 18px;
-  letter-spacing: 0.02em;
-  color: #f2f7f0;
-}
-
-.ground__tag {
-  font-size: 11px;
-  line-height: 1.7;
-  letter-spacing: 0.08em;
-  color: rgba(242, 247, 240, 0.7);
-  max-width: 38ch;
-}
-
-/* higher specificity than `.ground__col a` (the brand col has that class too) */
-.ground__col--brand .ground__tag a {
-  color: inherit;
-  font-size: inherit;
-  letter-spacing: inherit;
-  text-decoration: none;
-  /* visible at rest so it reads as a link without hovering */
-  border-bottom: 1px solid rgba(242, 247, 240, 0.45);
-  transition: border-color 0.18s ease, color 0.18s ease;
-}
-
-.ground__col--brand .ground__tag a:hover,
-.ground__col--brand .ground__tag a:focus-visible {
-  color: var(--amber);
-  border-bottom-color: var(--amber);
-  outline: none;
 }
 
 .ground__heading {
@@ -1337,22 +1312,21 @@ main {
 
 /* Home's daylight landing — shorter band of sky with drifting birds */
 .surface--landing {
-  min-height: 38svh;
+  min-height: 16svh;
 }
 
-/* Contact is its own page with no scroll-driven SkyCanvas behind it,
-   so it paints its own daylight sky (matches the bottom of the descent).
-   Dark contact text + dark birds read against it; the green ground caps it. */
+/* Contact is its own page: a dark instrument panel on the space theme.
+   Full-bleed so there are no side "curtains"; light text reads on the dark. */
 .surface--contact {
-  min-height: 100svh;
-  /* lighter daylight so the dark title/email/buttons read with strong
-     contrast — content sits on the upper (lighter) band */
-  background: linear-gradient(
-    180deg,
-    rgb(122, 167, 214) 0%,
-    rgb(141, 184, 226) 48%,
-    rgb(164, 202, 238) 100%
-  );
+  min-height: unset;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px calc(var(--frame) + 16px) 48px;
+  background:
+    radial-gradient(135% 95% at 50% -10%, #141a29 0%, #0a0b11 52%, #050507 100%);
 }
 
 /* birds drift through the daylight sky above the ground.
@@ -1366,63 +1340,6 @@ main {
   width: 100vw;
   height: 100%;
   pointer-events: none;
-}
-
-/* --- Projects: end of manifest + rover --- */
-
-.manifest-end {
-  min-height: 26svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 26px;
-  padding-bottom: calc(var(--frame) + 40px);
-  text-align: center;
-}
-
-.manifest-end__text {
-  font-size: 12px;
-  letter-spacing: 0.3em;
-  color: var(--bone-dim);
-}
-
-.rover {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-}
-
-.rover__bubble {
-  position: absolute;
-  top: -34px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--bone);
-  background: color-mix(in srgb, var(--ink-raised) 92%, transparent);
-  border: 1px solid var(--line);
-  padding: 5px 10px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.rover__body {
-  transition: transform 0.2s ease;
-}
-
-.rover__body:hover,
-.rover__body:focus-visible {
-  transform: translateY(-2px);
-  outline: none;
-}
-
-.rover__caption {
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  color: var(--bone-dim);
 }
 
 /* --- Scanline sweep on dossier hover --- */
@@ -1468,41 +1385,86 @@ main {
    under it — with just enough sky for the pigeon to drop to its nest. */
 .contact {
   position: relative;
-  min-height: 48svh;
+  width: 100%;
+  max-width: 760px;
   display: flex;
-  align-items: flex-start;
-  /* main already pads horizontally — only vertical padding here */
-  padding: 80px 0 24px;
+  justify-content: center;
 }
 
-.contact__inner {
+/* the framed dossier panel — 1px edges + amber corner ticks */
+.contact__panel {
   position: relative;
+  width: 100%;
   display: grid;
   justify-items: start;
-  gap: 20px;
-  width: 100%;
+  gap: 22px;
+  padding: clamp(28px, 5vw, 60px);
+  padding-bottom: clamp(70px, 9vw, 110px);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(18, 17, 13, 0.55), rgba(8, 8, 11, 0.55));
 }
 
-/* contact section header — dark on the bright daylight sky */
+/* four amber L-shaped corner ticks */
+.contact__panel::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--amber), var(--amber)) 0 0 / 16px 2px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 0 0 / 2px 16px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 100% 0 / 16px 2px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 100% 0 / 2px 16px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 0 100% / 16px 2px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 0 100% / 2px 16px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 100% 100% / 16px 2px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) 100% 100% / 2px 16px no-repeat;
+}
+
 .contact__head {
   display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 4px;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.contact__index {
-  font-size: 13px;
-  /* dark — reads on the bright daylight sky */
-  color: rgba(12, 16, 24, 0.5);
+.contact__eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.34em;
+  color: var(--amber);
 }
 
 .contact__title {
   font-family: var(--display);
-  font-size: clamp(26px, 4.5vw, 52px);
+  font-size: clamp(34px, 6vw, 68px);
+  line-height: 0.95;
   letter-spacing: -0.01em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--bone);
+}
+
+.contact__lead {
+  font-family: var(--mono);
+  font-size: clamp(13px, 1.5vw, 15px);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--bone-dim);
+  max-width: 46ch;
+}
+
+/* a thin shelf the nest rests on, near the panel's lower edge */
+.contact__ledge {
+  position: absolute;
+  left: clamp(28px, 5vw, 60px);
+  right: clamp(28px, 5vw, 60px);
+  bottom: clamp(40px, 5vw, 60px);
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--line) 0 8px,
+    transparent 8px 14px
+  );
 }
 
 /* pigeon & nest live in .surface so the nest can rest on the green
@@ -1527,18 +1489,18 @@ main {
 
 .contact__email {
   font-family: var(--display);
-  font-size: clamp(20px, 4.4vw, 54px);
+  font-size: clamp(17px, 2.8vw, 34px);
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: -0.01em;
-  /* dark — sits on the bright daylight sky */
-  color: var(--ink);
-  word-break: break-all;
+  color: var(--bone);
+  overflow-wrap: anywhere;
+  transition: color 0.18s ease;
 }
 
 .contact__email:hover,
 .contact__email:focus-visible {
-  color: var(--amber-deep);
+  color: var(--amber);
   outline: none;
 }
 
@@ -1546,25 +1508,22 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  /* headroom for the pigeon perching on the buttons */
-  margin-top: 56px;
 }
 
-/* buttons in the contact zone read dark-on-bright */
-.contact .btn {
-  color: var(--ink);
-  border-color: rgba(12, 16, 24, 0.35);
-}
-
+/* buttons read light on the dark panel; amber fill on hover */
 .contact .btn:hover,
 .contact .btn:focus-visible {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bone);
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--ink);
+}
+
+.contact .btn:hover svg {
+  color: var(--ink);
 }
 
 .contact .btn svg {
-  color: var(--amber-deep);
+  color: var(--amber);
 }
 
 .letterburst {

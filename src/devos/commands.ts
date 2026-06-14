@@ -202,7 +202,7 @@ export const commands: Record<string, Command> = {
         api.print(`Try:  ${names}`, 'system')
         return
       }
-      api.print(`> launching ${name} — opening it on the site ...`, 'system')
+      api.print(`> launching ${name} — opening it in a new tab ...`, 'system')
       api.openProject(name)
     },
   },

@@ -189,8 +189,8 @@ function fullSummon(img: HTMLImageElement, openDevOS: () => void) {
 
     // ring: bone border bleeding to amber as it digitizes
     ctx.beginPath()
-    ctx.arc(cx, cy, r - ins / 2, 0, Math.PI * 2)
-    ctx.lineWidth = ins
+    ctx.arc(cx, cy, r - 0.5, 0, Math.PI * 2)
+    ctx.lineWidth = 1
     ctx.strokeStyle = blend('#e8e4d8', '#ffb000', p.scanT)
     ctx.stroke()
   }
@@ -322,9 +322,8 @@ function buildBuffers(img: HTMLImageElement, s: number) {
   const bctx = B.getContext('2d')!
   bctx.fillStyle = '#030303'
   bctx.fillRect(0, 0, s, s)
-  bctx.shadowColor = 'rgba(255,204,0,0.85)'
-  bctx.shadowBlur = 3
-  bctx.drawImage(edges, 0, 0)
+  bctx.shadowColor = 'rgba(255,204,0,0.6)'
+  bctx.shadowBlur = 1
   bctx.drawImage(edges, 0, 0)
   bctx.shadowBlur = 0
 
