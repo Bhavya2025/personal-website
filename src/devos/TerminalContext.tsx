@@ -24,9 +24,11 @@ const WELCOME: OutputLine[] = [
 
 export function TerminalProvider({
   onExit,
+  onProject,
   children,
 }: {
   onExit: () => void
+  onProject: (alias: string) => void
   children: ReactNode
 }) {
   const [lines, setLines] = useState<OutputLine[]>(WELCOME)
@@ -36,6 +38,9 @@ export function TerminalProvider({
 
   const print = (text: string, kind: LineKind = 'output') =>
     setLines((prev) => [...prev, { id: idRef.current++, kind, text }])
+
+  const link = (text: string, href: string) =>
+    setLines((prev) => [...prev, { id: idRef.current++, kind: 'output', text, href }])
 
   const clear = () => setLines([])
 
@@ -60,8 +65,10 @@ export function TerminalProvider({
       cwd,
       setCwd,
       print,
+      link,
       clear,
       exit: onExit,
+      openProject: onProject,
       history,
     }
 

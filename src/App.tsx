@@ -1,10 +1,11 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useMagnetic } from './hooks/useMagnetic'
 import { TransitionProvider } from './components/TransitionLayer'
 import { DevOSNavCtx } from './devos/devosNav'
 import { summonDevOS } from './devos/summonTransition'
+import { RUN_PROJECTS } from './lib/missions'
 import Hud from './components/Hud'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
@@ -17,6 +18,7 @@ const DevOS = lazy(() => import('./devos/DevOS'))
 function App() {
   useSmoothScroll()
   useMagnetic()
+  const navigate = useNavigate()
 
   const [isDevMode, setDevMode] = useState(false)
   const devModeRef = useRef(false)
@@ -41,6 +43,19 @@ function App() {
   const devosNav = useMemo(
     () => ({ summon: (img: HTMLImageElement | null) => summonDevOS(img, openDevOS) }),
     [openDevOS],
+  )
+
+  // `run <project>` in the terminal: leave the OS and open that project's
+  // card on the GUI projects page (Projects reads location.state.focus).
+  const goToProject = useCallback(
+    (alias: string) => {
+      const id = RUN_PROJECTS[alias]
+      setDevMode(false)
+      // neutralize the pushed devos history entry so Back behaves
+      if (window.history.state?.devos) window.history.replaceState(null, '')
+      navigate('/projects', { state: id ? { focus: id } : undefined })
+    },
+    [navigate],
   )
 
   // Back button → pop the pushed entry → close the terminal, stay on site.
@@ -89,7 +104,7 @@ function App() {
           />
         }
       >
-        <DevOS onExit={closeDevOS} />
+        <DevOS onExit={closeDevOS} onProject={goToProject} />
       </Suspense>
     )
   }

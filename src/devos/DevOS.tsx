@@ -38,7 +38,13 @@ function BootLine({ text }: { text: string }) {
 const prefersReduced = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function DevOS({ onExit }: { onExit: () => void }) {
+function DevOS({
+  onExit,
+  onProject,
+}: {
+  onExit: () => void
+  onProject: (alias: string) => void
+}) {
   // Reduced-motion users skip straight to the shell (no setState-in-effect).
   const [phase, setPhase] = useState<'boot' | 'shell'>(() =>
     prefersReduced() ? 'shell' : 'boot',
@@ -87,7 +93,7 @@ function DevOS({ onExit }: { onExit: () => void }) {
           ))}
         </div>
       ) : (
-        <TerminalProvider onExit={onExit}>
+        <TerminalProvider onExit={onExit} onProject={onProject}>
           <Terminal />
         </TerminalProvider>
       )}

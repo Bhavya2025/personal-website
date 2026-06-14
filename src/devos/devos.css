@@ -56,6 +56,22 @@
   text-shadow: 0 0 5px rgba(70, 210, 122, 0.45);
 }
 
+/* clickable links in command output (contact, resume, social) */
+.devos__link {
+  color: var(--term-fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.devos__link:hover,
+.devos__link:focus-visible {
+  background: var(--term-fg);
+  color: var(--term-bg);
+  text-shadow: none;
+  outline: none;
+}
+
 /* --- input line: invisible field + mirrored text + block cursor --- */
 
 .devos__inputline {

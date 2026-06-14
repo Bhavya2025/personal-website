@@ -4,7 +4,21 @@ import { commandNames } from './commands'
 import { getNode } from './fileSystem'
 
 /** A single rendered output line; input echoes get a green prompt prefix. */
-function Line({ kind, text }: { kind: string; text: string }) {
+function Line({ kind, text, href }: { kind: string; text: string; href?: string }) {
+  if (href) {
+    const mail = href.startsWith('mailto:')
+    return (
+      <div className="devos__line">
+        <a
+          className="devos__link"
+          href={href}
+          {...(mail ? {} : { target: '_blank', rel: 'noreferrer' })}
+        >
+          {text}
+        </a>
+      </div>
+    )
+  }
   if (kind === 'input') {
     const split = text.indexOf('$ ')
     if (split !== -1) {
@@ -120,7 +134,7 @@ function Terminal() {
   return (
     <div className="devos__screen" ref={screenRef} onClick={focusInput}>
       {lines.map((line) => (
-        <Line key={line.id} kind={line.kind} text={line.text} />
+        <Line key={line.id} kind={line.kind} text={line.text} href={line.href} />
       ))}
 
       <div className="devos__inputline">

@@ -1,4 +1,5 @@
 import type { Mission } from '../lib/missions'
+import BoidsSim from './BoidsSim'
 
 const STATUS_CLASS: Record<Mission['status'], string> = {
   DEPLOYED: 'is-ok',
@@ -9,7 +10,7 @@ const STATUS_CLASS: Record<Mission['status'], string> = {
 
 function MissionCard({ mission: m }: { mission: Mission }) {
   return (
-    <li className="mission" data-reveal>
+    <li className="mission" id={`mission-${m.id}`} data-reveal>
       <div className="mission__meta">
         <span className="mission__id">{m.id}</span>
         <span className="mission__year">{m.year}</span>
@@ -19,7 +20,9 @@ function MissionCard({ mission: m }: { mission: Mission }) {
       </div>
       <h3 className="mission__name">{m.name}</h3>
       <p className="mission__designation">{m.designation}</p>
-      {m.image ? (
+      {m.demo === 'boids' ? (
+        <BoidsSim />
+      ) : m.image ? (
         <img
           className="mission__img"
           src={m.image.src}

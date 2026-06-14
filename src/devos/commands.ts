@@ -5,6 +5,8 @@
  * needs to change.
  */
 import { getNode, resolvePath, pathToString } from './fileSystem'
+import { IDENTITY, RUN_PROJECTS } from '../lib/missions'
+import { EDUCATION, EXPERIENCE, SKILLS, ACHIEVEMENTS } from '../lib/resume'
 
 export type LineKind = 'input' | 'output' | 'error' | 'system'
 
@@ -12,14 +14,20 @@ export interface OutputLine {
   id: number
   kind: LineKind
   text: string
+  /** When set, the line renders as a clickable link (new tab / mailto). */
+  href?: string
 }
 
 export interface CommandAPI {
   cwd: string[]
   setCwd: (segments: string[]) => void
   print: (text: string, kind?: LineKind) => void
+  /** Print a clickable link line. */
+  link: (text: string, href: string) => void
   clear: () => void
   exit: () => void
+  /** Leave the OS and open a project on the GUI projects page. */
+  openProject: (alias: string) => void
   history: string[]
 }
 
@@ -34,9 +42,9 @@ export const commands: Record<string, Command> = {
     run: (_args, api) => {
       api.print('Available commands:', 'system')
       for (const [name, cmd] of Object.entries(commands)) {
-        api.print(`  ${name.padEnd(8)} ${cmd.description}`)
+        api.print(`  ${name.padEnd(16)} ${cmd.description}`)
       }
-      api.print(`  ${'./<bin>'.padEnd(8)} run an executable in ~/projects`)
+      api.print(`  ${'./<bin>'.padEnd(16)} run an executable in ~/projects`)
     },
   },
 
@@ -126,6 +134,79 @@ export const commands: Record<string, Command> = {
     },
   },
 
+  linkedin: {
+    description: 'open my LinkedIn',
+    run: (_args, api) => {
+      api.print('LinkedIn:')
+      api.link('  → linkedin.com/in/bhavya-kumar', IDENTITY.linkedin)
+    },
+  },
+
+  github: {
+    description: 'open my GitHub',
+    run: (_args, api) => {
+      api.print('GitHub:')
+      api.link('  → github.com/Bhavya2025', IDENTITY.github)
+    },
+  },
+
+  medium: {
+    description: 'open my blog (Medium)',
+    run: (_args, api) => {
+      api.print('Medium — "School of Machine Learning":')
+      api.link('  → medium.com/@bhavyakumar.bkb', IDENTITY.medium)
+    },
+  },
+
+  contact: {
+    description: 'every way to reach me',
+    run: (_args, api) => {
+      api.print('Reach me — click any line:', 'system')
+      api.link('  email      b2kumar@uwaterloo.ca', `mailto:${IDENTITY.email}`)
+      api.link('  github     github.com/Bhavya2025', IDENTITY.github)
+      api.link('  linkedin   linkedin.com/in/bhavya-kumar', IDENTITY.linkedin)
+      api.link('  medium     medium.com/@bhavyakumar.bkb', IDENTITY.medium)
+    },
+  },
+
+  resume: {
+    description: 'print my resume in the terminal',
+    run: (_args, api) => printResume(api),
+  },
+
+  resume_download: {
+    description: 'download my resume as a PDF',
+    run: (_args, api) => {
+      const a = document.createElement('a')
+      a.href = IDENTITY.resume
+      a.download = 'Bhavya-Kumar-Resume.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      api.print('↓ downloading resume.pdf ...', 'system')
+    },
+  },
+
+  run: {
+    description: 'open a project on the site — run <name>',
+    run: (args, api) => {
+      const name = args[0]
+      const names = Object.keys(RUN_PROJECTS).join('   ')
+      if (!name) {
+        api.print('Usage: run <project>', 'system')
+        api.print(`Projects:  ${names}`)
+        return
+      }
+      if (!(name in RUN_PROJECTS)) {
+        api.print(`run: ${name}: unknown project`, 'error')
+        api.print(`Try:  ${names}`, 'system')
+        return
+      }
+      api.print(`> launching ${name} — opening it on the site ...`, 'system')
+      api.openProject(name)
+    },
+  },
+
   exit: {
     description: 'leave the Dev OS, return to the GUI',
     run: (_args, api) => api.exit(),
@@ -135,6 +216,42 @@ export const commands: Record<string, Command> = {
     description: 'leave the Dev OS, return to the GUI',
     run: (_args, api) => api.exit(),
   },
+}
+
+/** Print the resume as formatted terminal text (sourced from resume.ts). */
+function printResume(api: CommandAPI): void {
+  const head = (t: string) => api.print(t, 'system')
+
+  head('BHAVYA KUMAR')
+  api.print(IDENTITY.line)
+  api.print('')
+
+  head('EDUCATION')
+  api.print(`  ${EDUCATION.school} — ${EDUCATION.degree}`)
+  api.print(`  ${EDUCATION.major}`)
+  api.print(`  ${EDUCATION.period} · ${EDUCATION.location} · ${EDUCATION.award}`)
+  api.print('')
+
+  head('EXPERIENCE')
+  for (const e of EXPERIENCE) {
+    api.print(`  ${e.role} — ${e.org}  (${e.period})`)
+    api.print(`    ${e.summary}`)
+  }
+  api.print('')
+
+  head('SKILLS')
+  for (const s of SKILLS) api.print(`  ${s.label.padEnd(22)} ${s.items.join(', ')}`)
+  api.print('')
+
+  head('ACHIEVEMENTS')
+  for (const a of ACHIEVEMENTS) api.print(`  [${a.tag}] ${a.text}`)
+  api.print('')
+
+  head('LINKS')
+  api.link('  github     github.com/Bhavya2025', IDENTITY.github)
+  api.link('  linkedin   linkedin.com/in/bhavya-kumar', IDENTITY.linkedin)
+  api.print('')
+  api.print("type 'resume_download' to grab the PDF.", 'system')
 }
 
 /** Run an executable (`./name`): print its content, or a UNIX-style error. */

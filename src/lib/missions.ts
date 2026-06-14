@@ -18,6 +18,8 @@ export interface Mission {
   stack: string[]
   brief: string[]
   image?: { src: string; alt: string }
+  /** Renders a live in-card demo instead of a static image. */
+  demo?: 'boids'
   link?: { label: string; href: string }
   pending?: string
 }
@@ -54,6 +56,21 @@ export const MISSIONS: Mission[] = [
     ],
     image: { src: arduinoImg, alt: 'Arduino obstacle-avoiding car prototype' },
     pending: 'driving footage',
+  },
+  {
+    id: 'BK-004',
+    year: '——',
+    name: 'BOIDS',
+    designation: 'Flocking simulation — emergent swarm behavior',
+    status: 'DEPLOYED',
+    group: 'SOFTWARE',
+    stack: ['JavaScript', 'Canvas', 'Flocking'],
+    brief: [
+      "Reynolds' three rules — alignment, cohesion, separation — produce lifelike flocking from nothing but local interactions; no leader, no global plan.",
+      'Each boid steers from neighbors inside a perception radius and flees the cursor. Prototyped in p5.js, then ported to a dependency-free canvas renderer for the site.',
+      'Live below — move your cursor through the flock.',
+    ],
+    demo: 'boids',
   },
   {
     id: 'BK-003',
@@ -106,6 +123,17 @@ export const MISSIONS: Mission[] = [
     ],
   },
 ]
+
+/** Terminal `run <alias>` → mission id to focus on the GUI projects page. */
+export const RUN_PROJECTS: Record<string, string> = {
+  taskly: 'BK-001',
+  embedded: 'BK-002',
+  boids: 'BK-004',
+  unity: 'BK-003',
+  gravity: 'BK-101',
+  slack: 'BK-102',
+  git_py: 'BK-103',
+}
 
 export const IDENTITY = {
   name: 'BHAVYA KUMAR',
