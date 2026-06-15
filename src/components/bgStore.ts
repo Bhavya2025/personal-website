@@ -42,10 +42,16 @@ export type BgVariant =
   // real-WebGL shader scenes (rendered by GlSky, not the 2D painter path)
   | 'complexgrid'
   | 'complexgrid2'
+  | 'complexgrid3'
   | 'synthwave'
 
 /** Variants rendered by the WebGL path (GlSky) instead of the 2D canvas. */
-export const GL_VARIANTS = new Set<BgVariant>(['complexgrid', 'complexgrid2', 'synthwave'])
+export const GL_VARIANTS = new Set<BgVariant>([
+  'complexgrid',
+  'complexgrid2',
+  'complexgrid3',
+  'synthwave',
+])
 export const isGlVariant = (v: BgVariant): boolean => GL_VARIANTS.has(v)
 
 export interface BgVariantInfo {
@@ -89,6 +95,7 @@ export const BG_VARIANTS: BgVariantInfo[] = [
   // — real WebGL shaders (GlSky render path) —
   { id: 'complexgrid', label: 'COMPLEX GRID', blurb: 'Live GLSL: a complex-plane grid warped by a Bézier map', author: 'WebGL · shader' },
   { id: 'complexgrid2', label: 'COMPLEX GRID 2', blurb: 'Calmer complex grid: slower, faded, single-colour', author: 'WebGL · shader' },
+  { id: 'complexgrid3', label: 'COMPLEX GRID 3', blurb: 'The complex grid, much, much slower (full colour)', author: 'WebGL · shader' },
   { id: 'synthwave', label: 'SYNTHWAVE', blurb: 'Live GLSL: a retro sunset over an endless amber grid', author: 'WebGL · shader' },
 ]
 

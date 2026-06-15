@@ -53,12 +53,6 @@ function Hero() {
             </button>
           </nav>
 
-          <button type="button" className="hero__terminal" onClick={launch} data-reveal>
-            <span className="hero__terminal-tag" aria-hidden="true">&gt;</span>
-            launch terminal
-            <span className="hero__terminal-cursor" aria-hidden="true">▮</span>
-          </button>
-
           <p className="hero__status" data-reveal>
             <span className="hero__status-dot" aria-hidden="true" />
             <span>

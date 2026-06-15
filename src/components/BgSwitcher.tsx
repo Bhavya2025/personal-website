@@ -42,32 +42,19 @@ const GROUPS: { author: string; items: BgVariantInfo[] }[] = (() => {
   return order.map((author) => ({ author, items: map.get(author)! }))
 })()
 
-const HIDE_KEY = 'bk-bg-devhidden'
-
 function BgSwitcher() {
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<BgVariant>(bgStore.current)
   const [holeOn, setHoleOn] = useState<boolean>(domHoleStore.current)
-  const [hidden, setHidden] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem(HIDE_KEY) === '1'
-    } catch {
-      return false
-    }
-  })
+  // The dev menu always starts CLOSED on page load; press "d" to open it.
+  // (Session-only state — not persisted, so reopening the site is always clean.)
+  const [hidden, setHidden] = useState<boolean>(true)
 
   useEffect(() => subscribeBgVariant(setActive), [])
   useEffect(() => subscribeDomHole(setHoleOn), [])
 
-  const setHide = (v: boolean) => {
-    setHidden(v)
-    try {
-      localStorage.setItem(HIDE_KEY, v ? '1' : '0')
-    } catch {
-      /* ignore */
-    }
-  }
+  const setHide = (v: boolean) => setHidden(v)
 
   // "d" toggles the dev menu — but not while typing in a field.
   useEffect(() => {
@@ -79,15 +66,7 @@ function BgSwitcher() {
         !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
       if (typing) return
       e.preventDefault()
-      setHidden((h) => {
-        const nv = !h
-        try {
-          localStorage.setItem(HIDE_KEY, nv ? '1' : '0')
-        } catch {
-          /* ignore */
-        }
-        return nv
-      })
+      setHidden((h) => !h)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

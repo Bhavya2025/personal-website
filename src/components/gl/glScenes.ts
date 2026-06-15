@@ -367,9 +367,9 @@ export function makeGlScene(
 ): GlScene {
   const isSynth = variant === 'synthwave'
   const body = isSynth ? SYNTH_BODY : COMPLEX_BODY
-  // complexgrid2 = a calmer cut of the complex grid: slower motion, faded lines,
-  // collapsed to a single monotone hue.
-  const timeScale = variant === 'complexgrid2' ? 0.5 : 1
+  // complexgrid2 = a calmer cut: slower motion, faded lines, single monotone hue.
+  // complexgrid3 = the complex grid, MUCH, MUCH slower (full colour, full alpha).
+  const timeScale = variant === 'complexgrid2' ? 0.5 : variant === 'complexgrid3' ? 0.1 : 1
   const fade = variant === 'complexgrid2' ? 0.55 : 1
   const mono = variant === 'complexgrid2' ? 1 : 0
 
