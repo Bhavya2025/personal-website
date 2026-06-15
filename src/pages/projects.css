@@ -1,0 +1,601 @@
+/* ============================================================
+   /projects — full project dossiers.
+   Self-contained: does NOT depend on the old App.css mission/
+   page-head rules. Reuses only global tokens (space.css) and the
+   global .btn helper; everything project-specific is defined here.
+   ============================================================ */
+
+/* --- Page header ------------------------------------------------ */
+
+.projects-head {
+  padding: clamp(96px, 13vh, 140px) 0 clamp(28px, 4vh, 44px);
+}
+
+.projects-head__back {
+  /* a small instrument-panel "return" control */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 11px 16px 11px 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  background: color-mix(in srgb, var(--ink-raised) 70%, transparent);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.projects-head__back-arrow {
+  color: var(--amber);
+  font-size: 13px;
+  transition: transform 0.18s ease;
+}
+
+.projects-head__back:hover,
+.projects-head__back:focus-visible {
+  color: var(--bone);
+  border-color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 8%, var(--ink-raised));
+  outline: none;
+}
+
+.projects-head__back:hover .projects-head__back-arrow,
+.projects-head__back:focus-visible .projects-head__back-arrow {
+  transform: translateX(-3px);
+}
+
+.projects-head__back:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+/* title block: huge display title + count chip + dashed rule */
+.projects-head__bar {
+  margin-top: clamp(26px, 4vh, 42px);
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(16px, 2.4vw, 30px);
+}
+
+.projects-head__titlewrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.projects-head__eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.projects-head__title {
+  font-family: var(--display);
+  font-size: clamp(40px, 8vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin: 0;
+}
+
+.projects-head__rule {
+  flex: 1;
+  height: 1px;
+  min-width: 24px;
+  margin-bottom: clamp(10px, 1.6vw, 18px);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--line) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+.projects-head__count {
+  flex-shrink: 0;
+  margin-bottom: clamp(8px, 1.4vw, 16px);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--bone-dim);
+  white-space: nowrap;
+}
+
+.projects-head__count b {
+  color: var(--bone);
+  font-weight: 700;
+}
+
+.projects-head__lead {
+  margin: clamp(18px, 2.6vh, 26px) 0 0;
+  max-width: 60ch;
+  font-family: var(--sans);
+  font-size: clamp(14.5px, 1.5vw, 16px);
+  line-height: 1.6;
+  color: var(--bone-dim);
+}
+
+/* --- Project list ----------------------------------------------- */
+
+.dossiers {
+  list-style: none;
+  margin: clamp(40px, 6vh, 64px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(28px, 4vh, 48px);
+}
+
+/* one dossier: 1px-edged panel, faint raised fill, amber corner tick */
+.dossier {
+  position: relative;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink-raised) 86%, transparent);
+  overflow: hidden;
+  /* two columns: a meta rail + the content body */
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.dossier::before {
+  /* top-left corner tick — house style */
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid var(--amber);
+  border-left: 2px solid var(--amber);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dossier::after {
+  /* bottom-right corner tick */
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+  z-index: 2;
+  pointer-events: none;
+  transition: border-color 0.2s ease;
+}
+
+.dossier:hover::after {
+  border-color: var(--amber);
+}
+
+/* `run <project>` from the terminal lands here — brief amber pulse */
+.dossier--focus {
+  animation: dossier-focus 2.4s ease-out;
+}
+
+@keyframes dossier-focus {
+  0%,
+  35% {
+    box-shadow: 0 0 0 1px var(--amber), 0 0 34px rgba(255, 176, 0, 0.4);
+    border-color: var(--amber);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    border-color: var(--line);
+  }
+}
+
+/* --- Meta rail (left column) ------------------------------------ */
+
+.dossier__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 20px;
+  border-right: 1px solid var(--line-faint);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.dossier__index {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--amber);
+}
+
+.dossier__index::before {
+  content: '';
+  color: var(--bone-dim);
+}
+
+.dossier__year {
+  font-family: var(--display);
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--bone);
+}
+
+.dossier__yearlabel {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-top: -8px;
+}
+
+.dossier__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 6px 10px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  width: fit-content;
+}
+
+.dossier__status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.dossier__status.is-ok {
+  color: var(--ok-green);
+  border-color: color-mix(in srgb, var(--ok-green) 40%, transparent);
+}
+
+.dossier__status.is-dim {
+  color: var(--bone-dim);
+  border-color: var(--line);
+}
+
+.dossier__status.is-dim::before {
+  box-shadow: none;
+}
+
+.dossier__group {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+/* --- Content body (right column) -------------------------------- */
+
+.dossier__body {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.6vw, 34px);
+  min-width: 0; /* let children wrap inside the grid track */
+}
+
+.dossier__name {
+  font-family: var(--display);
+  font-size: clamp(26px, 3.6vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin: 0;
+}
+
+.dossier__designation {
+  font-family: var(--sans);
+  margin-top: 8px;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: 1.4;
+  color: var(--bone-dim);
+}
+
+/* media slot: image / itch embed / boids — shared frame */
+.dossier__media {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 16 / 9;
+  margin-top: clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--line);
+  background: #050505;
+  overflow: hidden;
+}
+
+.dossier__media::before {
+  /* faint amber edge glow on hover — instrument feel, subtle */
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dossier:hover .dossier__media::before {
+  box-shadow: inset 0 0 0 1px rgba(255, 176, 0, 0.35);
+}
+
+.dossier__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* tiny mono caption tab over the media corner */
+.dossier__media-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--amber);
+  padding: 4px 9px;
+  pointer-events: none;
+}
+
+/* itch.io WebGL embed — same media slot */
+.dossier__itch-frame {
+  display: block;
+  width: 100%;
+  /* taller than the box + shifted up to clip the itch.io "By …" header */
+  height: calc(100% + 42px);
+  margin-top: -42px;
+  border: none;
+}
+
+/* brief: dash-led prose bullets */
+.dossier__brief {
+  list-style: none;
+  margin: clamp(20px, 2.4vw, 28px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+  max-width: 72ch;
+}
+
+.dossier__brief li {
+  position: relative;
+  padding-left: 22px;
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.45vw, 15.5px);
+  line-height: 1.62;
+  color: var(--bone);
+}
+
+.dossier__brief li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 12px;
+  height: 1px;
+  background: var(--amber);
+}
+
+/* footer: stack chips + actions, divided by a dashed rule */
+.dossier__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: clamp(22px, 2.6vw, 30px);
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.dossier__stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.dossier__stack li {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  color: var(--bone-dim);
+  background: color-mix(in srgb, var(--ink) 50%, transparent);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.dossier:hover .dossier__stack li {
+  color: var(--bone);
+}
+
+.dossier__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* the primary link reuses .btn semantics but gets its own min target */
+.dossier__link {
+  min-height: 44px;
+}
+
+.dossier__pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--amber-deep);
+}
+
+.dossier__pending::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border: 1px solid currentColor;
+}
+
+/* --- NEXT UP (planned) line ------------------------------------- */
+
+.next-up {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vh, 44px);
+  padding: 16px 20px;
+  border: 1px dashed var(--line);
+  background: color-mix(in srgb, var(--ink-raised) 50%, transparent);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+}
+
+.next-up__label {
+  flex-shrink: 0;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  background: rgba(255, 176, 0, 0.06);
+  padding: 5px 10px;
+}
+
+.next-up__items {
+  color: var(--bone-dim);
+}
+
+/* --- BoidsSim demo (BoidsSim renders these class names; redefined
+   here so the live sim styles survive even if App.css drops them) --- */
+
+.boids {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 16 / 9;
+  margin-top: clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--line);
+  background: #050505;
+  overflow: hidden;
+}
+
+.boids__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.boids__tag {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: rgba(3, 3, 3, 0.6);
+  padding: 4px 8px;
+  pointer-events: none;
+}
+
+/* the boids box gets the same hover edge glow as other media */
+.dossier:hover .boids {
+  box-shadow: inset 0 0 0 1px rgba(255, 176, 0, 0.35);
+}
+
+/* --- Responsive ------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .dossier {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier__rail {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    padding: 16px 18px;
+    border-right: none;
+    border-bottom: 1px solid var(--line-faint);
+  }
+
+  .dossier__year {
+    font-size: 24px;
+  }
+
+  .dossier__yearlabel {
+    display: none;
+  }
+
+  .dossier__status {
+    margin-top: 0;
+    margin-left: auto;
+  }
+
+  .dossier__group {
+    width: 100%;
+    order: 3;
+  }
+
+  .projects-head__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .projects-head__rule {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .projects-head__count {
+    margin-bottom: 0;
+  }
+}
+
+/* --- Reduced motion --------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .dossier--focus {
+    animation: none;
+  }
+
+  .projects-head__back-arrow,
+  .projects-head__back,
+  .dossier__stack li,
+  .dossier__media::before,
+  .dossier::after {
+    transition: none;
+  }
+}

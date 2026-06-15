@@ -24,17 +24,18 @@ export interface SkyStop {
   bottom: [number, number, number]
 }
 
+// Calm, desaturated descent: deep space → muted slate-blue dusk. Stays dark
+// and professional (no bright noon-blue), which also keeps the bone-white
+// section titles high-contrast the whole way down.
 export const DESCENT_SKY: SkyStop[] = [
   // deep space — near black, hint of blue
   { at: 0.0, top: [2, 2, 8], mid: [4, 5, 14], bottom: [8, 10, 24] },
-  // thermosphere/mesosphere — indigo creeps in
-  { at: 0.3, top: [3, 4, 12], mid: [10, 14, 38], bottom: [22, 32, 68] },
-  // stratosphere — deep blue brightening below
-  { at: 0.6, top: [10, 16, 40], mid: [28, 52, 96], bottom: [70, 110, 160] },
-  // troposphere — real daylight blue building
-  { at: 0.85, top: [24, 48, 92], mid: [70, 120, 180], bottom: [125, 175, 220] },
-  // surface — clear blue day over green ground
-  { at: 1.0, top: [55, 100, 160], mid: [105, 155, 210], bottom: [150, 195, 235] },
+  // upper atmosphere — indigo creeps in
+  { at: 0.4, top: [4, 6, 16], mid: [10, 15, 32], bottom: [18, 27, 50] },
+  // mid descent — deep dusk blue
+  { at: 0.75, top: [12, 18, 34], mid: [22, 34, 56], bottom: [34, 50, 78] },
+  // surface — calm muted slate, never bright daylight
+  { at: 1.0, top: [20, 30, 48], mid: [34, 48, 70], bottom: [50, 66, 92] },
 ]
 
 /** Linear interpolation across the keyframed sky. */

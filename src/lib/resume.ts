@@ -10,15 +10,21 @@ export const EDUCATION = {
   period: 'SEPT 2025 — PRESENT',
   location: 'Waterloo, ON',
   award: "President's Scholarship",
+  // Each links to its UWFlow course page. The first three codes are
+  // user-confirmed; the last three are best-effort (verify on UWFlow).
   coursework: [
-    'Data Types & Structures',
-    'Algorithm Design in C',
-    'Probability',
-    'Linear Algebra II',
-    'Calculus III',
-    'Functional Programming (Racket)',
+    { label: 'Data Types & Structures', code: 'CS234' },
+    { label: 'Algorithm Design in C', code: 'CS136' },
+    { label: 'Probability', code: 'STAT230' },
+    { label: 'Linear Algebra II', code: 'MATH235' },
+    { label: 'Calculus III', code: 'MATH237' },
+    { label: 'Functional Programming (Racket)', code: 'CS135' },
   ],
 } as const
+
+/** UWFlow course page for a course code (e.g. 'CS234' → uwflow.com/course/cs234). */
+export const uwflowUrl = (code: string): string =>
+  `https://uwflow.com/course/${code.toLowerCase()}`
 
 export interface ExperienceEntry {
   org: string
@@ -57,11 +63,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     label: 'AI TOOLING',
-    items: ['Claude Code', 'Prompt Engineering'],
-  },
-  {
-    label: 'CURRENTLY PRACTICING',
-    items: ['LeetCode', 'NeetCode'],
+    items: ['Claude Code'],
   },
 ]
 

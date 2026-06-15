@@ -1,7 +1,6 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   commands,
-  execute,
   type CommandAPI,
   type LineKind,
   type OutputLine,
@@ -18,7 +17,7 @@ const WELCOME: OutputLine[] = [
   { id: 5, kind: 'system', text: '╚═════╝ ╚═╝  ╚═╝    ╚═════╝ ╚══════╝' },
   { id: 6, kind: 'output', text: '' },
   { id: 7, kind: 'output', text: 'bhavyaOS 1.0.0  ·  guest shell  ·  you are SSH-d into my brain.' },
-  { id: 8, kind: 'system', text: "type 'help' for commands, 'ls' to look around, 'exit' to leave." },
+  { id: 8, kind: 'system', text: "type 'help' for commands, 'whoami' to start, 'exit' to leave." },
   { id: 9, kind: 'output', text: '' },
 ]
 
@@ -72,17 +71,33 @@ export function TerminalProvider({
       history,
     }
 
-    if (cmd.startsWith('./')) {
-      execute(cmd.slice(2), api)
-      return
-    }
     const command = commands[cmd]
     if (!command) {
-      print(`bash: ${cmd}: command not found`, 'error')
+      print(`${cmd}: command not found — type 'help'`, 'error')
       return
     }
     command.run(args, api)
   }
+
+  // On open, print the full command list once (ref-guarded against the
+  // StrictMode double-effect) so visitors see what they can do right away.
+  const bootedRef = useRef(false)
+  useEffect(() => {
+    if (bootedRef.current) return
+    bootedRef.current = true
+    const api: CommandAPI = {
+      cwd,
+      setCwd,
+      print,
+      link,
+      clear,
+      exit: onExit,
+      openProject: onProject,
+      history,
+    }
+    commands.help!.run([], api)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const value: TerminalState = { lines, cwd, history, promptText, run, print }
   return <TerminalCtx.Provider value={value}>{children}</TerminalCtx.Provider>

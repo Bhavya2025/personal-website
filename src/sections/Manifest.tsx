@@ -1,5 +1,5 @@
 import Section from '../components/Section'
-import MissionCard from '../components/MissionCard'
+import BoidsSim from '../components/BoidsSim'
 import BrandIcon from '../components/BrandIcon'
 import { MISSIONS } from '../lib/missions'
 import { useTransitionNav } from '../components/transitionNav'
@@ -11,75 +11,82 @@ const STATUS_CLASS: Record<string, string> = {
   PLANNED: 'is-dim',
 }
 
-interface ManifestProps {
-  /** Timeline of compact cards (home page). Full dossiers otherwise. */
-  brief?: boolean
-}
-
-/** Projects — a flight-path timeline on home, full mission files on /projects. */
-function Manifest({ brief }: ManifestProps) {
+/** Home "selected work" — a compact timeline of the built projects. The full
+ * dossiers live on /projects (rendered there directly). */
+function Manifest() {
   const { navigateTo } = useTransitionNav()
+  const built = MISSIONS.filter((m) => m.status !== 'PLANNED')
+  const planned = MISSIONS.filter((m) => m.status === 'PLANNED')
 
-  if (!brief) {
-    return (
-      <Section index="01" code="" title="PROJECTS" id="projects">
-        <ul className="missions">
-          {MISSIONS.map((m) => (
-            <MissionCard mission={m} key={m.id} />
-          ))}
-        </ul>
-      </Section>
-    )
-  }
+  const nextUp = planned.length ? (
+    <p className="next-up" data-reveal>
+      <span className="next-up__label">NEXT UP</span>
+      <span className="next-up__items">{planned.map((m) => m.name).join('  ·  ')}</span>
+    </p>
+  ) : null
 
   return (
-    <Section index="03" code="" title="PROJECTS" id="projects">
+    <Section index="03" title="PROJECTS" caption="SELECTED WORK" id="projects">
       <ol className="tl">
-        {MISSIONS.map((m, i) => (
-          <li
-            className={`tl__item ${m.status === 'PLANNED' ? 'tl__item--planned' : ''}`}
-            key={m.id}
-          >
+        {built.map((m) => (
+          <li className="tl__row" key={m.id}>
             <span className="tl__node" aria-hidden="true" />
-            <article
+            <button
+              type="button"
               className="brief-card"
-              data-reveal={i % 2 === 0 ? 'left' : 'right'}
+              data-reveal
+              aria-label={`Open ${m.name} project details`}
+              onClick={() => navigateTo(`/projects?focus=${m.id}`, 'swipe')}
             >
-              {m.image ? (
-                <img
-                  className="brief-card__img"
-                  src={m.image.src}
-                  alt={m.image.alt}
-                  loading="lazy"
-                />
-              ) : null}
-              <div className="brief-card__meta">
-                <span className="brief-card__id">{m.id}</span>
-                <span className={`brief-card__status ${STATUS_CLASS[m.status] ?? ''}`}>
-                  ● {m.status}
+              {m.demo === 'boids' ? (
+                <span className="brief-card__thumb-wrap brief-card__thumb-wrap--sim" aria-hidden="true">
+                  <BoidsSim interactive={false} />
                 </span>
-              </div>
-              <h3 className="brief-card__name">{m.name}</h3>
-              <p className="brief-card__line">{m.designation}</p>
-              <ul className="brief-card__stack" aria-label="Tech stack">
-                {m.stack.map((s) => (
-                  <li key={s}>
-                    <BrandIcon name={s} size={12} />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </article>
+              ) : m.image ? (
+                <span className="brief-card__thumb-wrap" aria-hidden="true">
+                  <img
+                    className="brief-card__thumb"
+                    src={m.image.src}
+                    alt=""
+                    loading="lazy"
+                  />
+                </span>
+              ) : null}
+              <span className="brief-card__body">
+                <span className="brief-card__head">
+                  <span className="brief-card__name">{m.name}</span>
+                  <span className="brief-card__meta">
+                    <span className="brief-card__year">{m.year}</span>
+                    <span className={`brief-card__status ${STATUS_CLASS[m.status] ?? ''}`}>
+                      ● {m.status}
+                    </span>
+                  </span>
+                </span>
+                <span className="brief-card__line">{m.designation}</span>
+                <span className="brief-card__stack" aria-hidden="true">
+                  {m.stack.map((s) => (
+                    <span className="brief-card__tag" key={s}>
+                      <BrandIcon name={s} size={12} />
+                      {s}
+                    </span>
+                  ))}
+                </span>
+              </span>
+              <span className="brief-card__cue" aria-hidden="true">
+                OPEN <span className="brief-card__arrow">→</span>
+              </span>
+            </button>
           </li>
         ))}
       </ol>
+      {nextUp}
       <div className="missions__more" data-reveal>
         <button
           type="button"
           className="btn btn--solid"
           onClick={() => navigateTo('/projects', 'swipe')}
         >
-          PROJECTS <span aria-hidden="true">→</span>
+          ALL PROJECTS <span aria-hidden="true">→</span>
         </button>
       </div>
     </Section>

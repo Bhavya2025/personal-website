@@ -3,7 +3,7 @@ import { ACHIEVEMENTS } from '../lib/resume'
 
 function Achievements() {
   return (
-    <Section index="04" code="" title="ACHIEVEMENTS" id="achievements">
+    <Section index="04" title="ACHIEVEMENTS" caption="AWARDS · RECOGNITION" id="achievements">
       <ul className="records">
         {ACHIEVEMENTS.map((a) =>
           a.href ? (

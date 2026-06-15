@@ -1,7 +1,8 @@
 import { createContext, useContext } from 'react'
 
-/** Lets the hero pfp summon the Dev OS (which lives at the App root). */
+/** Lets the hero summon the Dev OS (which lives at the App root). */
 export interface DevOSNav {
+  /** Scan the pfp into a wireframe, morph the page into the terminal, then open it. */
   summon: (img: HTMLImageElement | null) => void
 }
 

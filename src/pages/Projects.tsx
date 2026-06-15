@@ -1,18 +1,21 @@
+import './projects.css'
 import { useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import TransitSky from '../components/TransitSky'
-import Manifest from '../sections/Manifest'
+import MissionCard from '../components/MissionCard'
 import Footer from '../components/Footer'
+import { MISSIONS } from '../lib/missions'
 import { usePageReveals } from '../hooks/usePageReveals'
-import { useTransitionNav } from '../components/transitionNav'
 import { lenisStore } from '../hooks/useSmoothScroll'
 
 /** All projects, as full dossiers. */
 function Projects() {
   usePageReveals()
-  const { navigateTo } = useTransitionNav()
   const location = useLocation()
   const [searchParams] = useSearchParams()
+
+  const built = MISSIONS.filter((m) => m.status !== 'PLANNED')
+  const planned = MISSIONS.filter((m) => m.status === 'PLANNED')
 
   // Arriving via the terminal `run <project>` command (new tab → ?focus=ID,
   // or in-app → location.state): scroll to that card and pulse it.
@@ -28,8 +31,8 @@ function Projects() {
       const lenis = lenisStore.current
       if (lenis) lenis.scrollTo(el, { offset: -90, duration: 1.2 })
       else el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      el.classList.add('mission--focus')
-      window.setTimeout(() => el.classList.remove('mission--focus'), 2600)
+      el.classList.add('dossier--focus')
+      window.setTimeout(() => el.classList.remove('dossier--focus'), 2600)
     }, 400)
     return () => window.clearTimeout(t)
   }, [location.state, searchParams])
@@ -37,18 +40,31 @@ function Projects() {
   return (
     <main>
       <TransitSky />
-      <section className="page-head">
-        <button
-          type="button"
-          className="btn page-head__back"
-          onClick={() => navigateTo('/', 'swipe')}
-          data-reveal
-        >
-          ← HOME
-        </button>
+
+      <section className="projects-head">
+        <div className="projects-head__bar" data-reveal>
+          <div className="projects-head__titlewrap">
+            <span className="projects-head__eyebrow">Selected work</span>
+            <h1 className="projects-head__title">PROJECTS</h1>
+          </div>
+          <span className="projects-head__rule" aria-hidden="true" />
+        </div>
       </section>
 
-      <Manifest />
+      <ul className="dossiers">
+        {built.map((m, i) => (
+          <MissionCard mission={m} index={i + 1} key={m.id} />
+        ))}
+      </ul>
+
+      {planned.length ? (
+        <p className="next-up" data-reveal>
+          <span className="next-up__label">Next up</span>
+          <span className="next-up__items">
+            {planned.map((m) => m.name).join('  ·  ')}
+          </span>
+        </p>
+      ) : null}
 
       <Footer />
     </main>

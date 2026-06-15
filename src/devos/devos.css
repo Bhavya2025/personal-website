@@ -25,14 +25,32 @@
   text-shadow: 0 0 5px rgba(255, 204, 0, 0.45);
 }
 
-/* scrolling screen — holds boot logs and the shell */
+/* screen — flex column that fills the OS; holds boot logs or the shell.
+   Bounded height (inset + flex) so the inner scrollback can overflow. */
 .devos__screen {
   position: absolute;
   inset: 0;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   padding: clamp(14px, 3vw, 40px);
+  /* Boot logs render straight into the screen, so it scrolls too; the shell
+     uses the inner .devos__scroll region below. */
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+/* shell scrollback — the actual scroll container for output + input line.
+   flex:1 + min-height:0 gives it a bounded height inside the flex column,
+   so wheeling up reveals earlier output while new output auto-scrolls down. */
+.devos__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* room for the cursor's glow on the last line */
+  padding-bottom: 2px;
 }
 
 .devos__line {

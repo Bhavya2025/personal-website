@@ -22,6 +22,7 @@
 
   --display: 'Archivo Black', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
 
   --frame: clamp(10px, 1.6vw, 22px);
 }

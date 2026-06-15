@@ -5,7 +5,7 @@ import { SKILLS } from '../lib/resume'
 /** Technical skills as logo chips. */
 function Skills() {
   return (
-    <Section index="02" code="" title="SKILLS" id="skills">
+    <Section index="02" title="SKILLS" caption="LANGUAGES · TOOLS · STACK" id="skills">
       <div className="skills">
         {SKILLS.map((group) => (
           <div className="skills__group" data-reveal key={group.label}>

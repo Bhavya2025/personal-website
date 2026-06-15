@@ -1,10 +1,10 @@
 import Section from '../components/Section'
-import { EDUCATION, EXPERIENCE } from '../lib/resume'
+import { EDUCATION, EXPERIENCE, uwflowUrl } from '../lib/resume'
 
 /** Education + experience — the serious stuff, front and center. */
 function Background() {
   return (
-    <Section index="01" code="" title="BACKGROUND" id="background">
+    <Section index="01" title="BACKGROUND" caption="EDUCATION · EXPERIENCE" id="background">
       <div className="background">
         <article className="edu" data-reveal>
           <header className="edu__head">
@@ -29,7 +29,16 @@ function Background() {
           <p className="edu__award">★ {EDUCATION.award}</p>
           <ul className="edu__courses" aria-label="Relevant coursework">
             {EDUCATION.coursework.map((c) => (
-              <li key={c}>{c}</li>
+              <li key={c.code}>
+                <a
+                  href={uwflowUrl(c.code)}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={`${c.code} on UWFlow`}
+                >
+                  {c.label}
+                </a>
+              </li>
             ))}
           </ul>
         </article>

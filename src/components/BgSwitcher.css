@@ -1,0 +1,161 @@
+/* TEMPORARY — background dev menu. Delete with the rest of the bg-preview system
+   once a background is chosen. Self-contained (never touches App.css). */
+
+.bgsw {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 256px;
+  max-height: 76vh;
+  padding: 10px 10px 9px;
+  background: rgba(8, 8, 11, 0.9);
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  backdrop-filter: blur(8px);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: #e8e4d8;
+  user-select: none;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+}
+
+.bgsw__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #ffb000;
+  text-transform: uppercase;
+}
+
+.bgsw__hide {
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(232, 228, 216, 0.3);
+  color: #9b968a;
+  font: inherit;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+}
+.bgsw__hide:hover {
+  border-color: rgba(255, 176, 0, 0.6);
+  color: #e8e4d8;
+}
+
+.bgsw__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  overflow-y: auto;
+  overscroll-behavior: contain; /* don't chain scroll to the page at the limits */
+  padding-right: 2px;
+}
+.bgsw__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.bgsw__scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 176, 0, 0.3);
+}
+
+.bgsw__author {
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6f6a5e;
+  margin-bottom: 4px;
+}
+
+.bgsw__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bgsw__btn {
+  appearance: none;
+  cursor: pointer;
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 5px 7px;
+  background: transparent;
+  border: 1px solid rgba(232, 228, 216, 0.24);
+  color: #c9c5ba;
+  font-family: inherit;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.bgsw__btn:hover {
+  border-color: rgba(255, 176, 0, 0.6);
+  color: #e8e4d8;
+}
+.bgsw__btn[aria-pressed='true'] {
+  border-color: #ffb000;
+  color: #0c0b09;
+  background: #ffb000;
+  font-weight: 600;
+}
+
+.bgsw__toggle {
+  appearance: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 9px;
+  background: rgba(255, 176, 0, 0.06);
+  border: 1px solid rgba(255, 176, 0, 0.3);
+  color: #c9c5ba;
+  font-family: inherit;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.bgsw__toggle:hover {
+  border-color: rgba(255, 176, 0, 0.6);
+  color: #e8e4d8;
+}
+.bgsw__toggle[aria-pressed='true'] {
+  border-color: #ffb000;
+  background: rgba(255, 176, 0, 0.16);
+  color: #ffb000;
+}
+.bgsw__toggle-state {
+  font-weight: 600;
+  color: #6f6a5e;
+}
+.bgsw__toggle[aria-pressed='true'] .bgsw__toggle-state {
+  color: #ffb000;
+}
+
+.bgsw__blurb {
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  color: #9b968a;
+  line-height: 1.4;
+  border-top: 1px solid rgba(232, 228, 216, 0.12);
+  padding-top: 7px;
+}
+.bgsw__blurb b {
+  color: #ffb000;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgsw {
+    backdrop-filter: none;
+  }
+  .bgsw__btn {
+    transition: none;
+  }
+}

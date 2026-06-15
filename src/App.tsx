@@ -7,6 +7,10 @@ import { DevOSNavCtx } from './devos/devosNav'
 import { summonDevOS } from './devos/summonTransition'
 import { RUN_PROJECTS } from './lib/missions'
 import Hud from './components/Hud'
+// TEMPORARY — background-variant preview switcher (remove with bgStore/bgVariants).
+import BgSwitcher from './components/BgSwitcher'
+import DomBlackhole from './components/DomBlackhole'
+import { domHoleStore, setDomHole, subscribeDomHole } from './components/bgStore'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import Contact from './pages/Contact'
@@ -20,6 +24,9 @@ function App() {
   useMagnetic()
 
   const [isDevMode, setDevMode] = useState(false)
+  // TEMPORARY — DOM black-hole easter egg, toggled from the dev menu.
+  const [domHole, setDomHoleState] = useState(domHoleStore.current)
+  useEffect(() => subscribeDomHole(setDomHoleState), [])
   const devModeRef = useRef(false)
   useEffect(() => {
     devModeRef.current = isDevMode
@@ -60,6 +67,24 @@ function App() {
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  // "b" toggles the DOM black-hole easter egg (dev shortcut; alongside the dev
+  // menu button). Ignored in the terminal or while typing in a field.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'b' && e.key !== 'B') return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (devModeRef.current) return
+      const el = document.activeElement as HTMLElement | null
+      const typing =
+        !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
+      if (typing) return
+      e.preventDefault()
+      setDomHole(!domHoleStore.current)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   // Secret trigger: Ctrl/Cmd + ` (or \) toggles the Dev OS; a bare
@@ -109,6 +134,10 @@ function App() {
       <TransitionProvider>
         <div className="grain" aria-hidden="true" />
         <Hud />
+        {/* TEMPORARY — dev menu to preview/pick a background; remove when chosen. */}
+        <BgSwitcher />
+        {/* TEMPORARY — cursor black-hole easter egg, toggled from the dev menu. */}
+        <DomBlackhole active={domHole} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />

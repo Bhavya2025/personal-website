@@ -82,7 +82,7 @@ function DevOS({
   }, [])
 
   return (
-    <div className="devos" role="application" aria-label="Developer terminal">
+    <div className="devos" role="application" aria-label="Developer terminal" data-lenis-prevent>
       <div className="devos__glow" aria-hidden="true" />
       <div className="devos__scanlines" aria-hidden="true" />
 

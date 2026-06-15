@@ -5,7 +5,6 @@ import Background from '../sections/Background'
 import Skills from '../sections/Skills'
 import Manifest from '../sections/Manifest'
 import Achievements from '../sections/Achievements'
-import Surface from '../sections/Surface'
 import { usePageReveals } from '../hooks/usePageReveals'
 
 /** The descent: space (top) → atmosphere → daylight landing (bottom). */
@@ -17,9 +16,8 @@ function Home() {
       <Hero />
       <Background />
       <Skills />
-      <Manifest brief />
+      <Manifest />
       <Achievements />
-      <Surface />
       <Footer />
     </main>
   )

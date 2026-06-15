@@ -79,10 +79,19 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       const tl = gsap.timeline({ onComplete: done })
 
       if (effect === 'swipe') {
-        tl.set(overlay, { xPercent: 100, yPercent: 0, opacity: 1 })
+        // Directional by page order: going deeper (home → projects → contact)
+        // sweeps the panel left→right ("right swipe"); going back sweeps
+        // right→left ("left swipe").
+        const ORDER = ['/', '/projects', '/contact']
+        const ci = ORDER.indexOf(window.location.pathname)
+        const ti = ORDER.indexOf(path)
+        const forward = ci === -1 || ti === -1 ? true : ti > ci
+        const fromX = forward ? -100 : 100
+        const exitX = forward ? 100 : -100
+        tl.set(overlay, { xPercent: fromX, yPercent: 0, opacity: 1 })
           .to(overlay, { xPercent: 0, duration: 0.45, ease: 'power3.in' })
           .add(swapRoute)
-          .to(overlay, { xPercent: -100, duration: 0.55, ease: 'power3.out', delay: 0.15 })
+          .to(overlay, { xPercent: exitX, duration: 0.55, ease: 'power3.out', delay: 0.15 })
       } else if (effect === 'launch') {
         tl.set(overlay, { yPercent: 100, xPercent: 0, opacity: 1 })
           .to(overlay, { yPercent: 0, duration: 0.5, ease: 'power4.in' })

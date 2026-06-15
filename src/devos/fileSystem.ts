@@ -1,16 +1,15 @@
 /**
- * Virtual file system for the Hidden Dev OS.
+ * Tiny virtual file system for the Hidden Dev OS — just enough to give
+ * ls / cd / cat some charm. NO executables, no `./bin` model: the real
+ * site actions live in commands.ts (about / projects / run / etc.).
  *
- * `HOME` is the root of `~`. To expand the environment later, just add
- * nodes to the tree below — directories nest via `children`, files carry
- * `content`, and "binaries" set `executable: true` so they can be run
- * with `./name`. No other code needs to change.
+ * Content is intentionally light and points back at the real commands so
+ * the filesystem reads as a friendly map, not a second source of truth.
  */
 
 export interface VFile {
   type: 'file'
   content: string
-  executable?: boolean
 }
 
 export interface VDir {
@@ -20,125 +19,50 @@ export interface VDir {
 
 export type VNode = VFile | VDir
 
-/* --- Project "binaries": ASCII art + a short brief, printed on ./run --- */
-
-const TASKLY = `
- ┌──────────┬──────────┬──────────┐
- │ BACKLOG  │  DOING   │   DONE   │
- ├──────────┼──────────┼──────────┤
- │ ▢ boards │ ▣ ai-gen │ ✓ auth   │
- │ ▢ search │          │ ✓ sync   │
- └──────────┴──────────┴──────────┘
-
-TASKLY  ·  Kanban app with a built-in AI assistant
-React · Supabase · DeepSeek-R1 70B · Vercel
-
-  > DeepSeek-R1 70B is wired into two flows: full board
-    generation from a natural-language project description,
-    and command parsing with fuzzy task/column resolution
-    (regex-fallback JSON extraction when the model rambles).
-  > Centralized mutation pipeline: undo/redo history with
-    500ms-debounced sync, one source of truth across guest
-    (localStorage) and authenticated modes, realtime cross-tab.
-
-  live: https://taskly-virid.vercel.app
-`.trim()
-
-const EMBEDDED_CAR = `
-        ____________________
-   ____/  o   o   o   o   o  \\____
-  / o                          o \\
-  \\__()________________________()__/
-     [ ULTRASONIC ]   [ MOTOR-CTRL ]
-
-EMBEDDED-CAR  ·  Obstacle-avoiding model vehicle
-Arduino · bare-metal C/C++ · ultrasonic sensors
-
-  > Detection + motor-control logic written in C/C++ on the
-    microcontroller; sensor thresholds tuned through real-world
-    testing for reliable obstacle avoidance.
-`.trim()
-
-const UNITY_GAME = `
-    ____________________________
-   |  ________________________  |
-   | |  MULTIPLAYER PLATFORMER | |
-   | |  ______    ______       | |
-   | | |      |  |      | P2   | |
-   | | | P1   |  |      |      | |
-   | |_|______|__|______|______| |
-   |____________________________|
-
-MULTIPLAYER-PLATFORMER  ·  WebGL game   [DEPLOYED]
-Unity · C# · WebGL
-
-  > A multiplayer platformer exported to WebGL —
-    playable in-browser via itch.io.
-  > https://bulbgaming.itch.io/multiplayer-platformer
-`.trim()
-
-/* --- The tree --- */
+/* --- The tree (root = `~`) --- */
 
 export const HOME: VDir = {
   type: 'dir',
   children: {
-    'about.txt': {
+    'README.txt': {
+      type: 'file',
+      content: `You're in a guest shell on my portfolio.
+
+This filesystem is mostly for fun — the useful stuff is commands:
+
+  whoami       one-line bio
+  projects     what I've built  (then  run <name>  to open one)
+  skills       languages, frameworks, tools
+  experience   work / fellowships
+  education    University of Waterloo
+  achievements awards + writing
+  resume       my resume, printed here
+  contact      every way to reach me
+
+Type  help  for the full list, or  cat *  to read every file here.`,
+    },
+    'bio.txt': {
       type: 'file',
       content: `Bhavya Kumar — Honours Mathematics (Co-op), University of Waterloo.
 Major: Applied Mathematics with Scientific Computing & Scientific
 Machine Learning.
 
-Focus: computational mathematics and systems — the layer where math,
-performance, and real hardware meet. I build across the web, embedded
-systems, and games, and care as much about how something feels as
-whether it works.
+I build across the web, embedded systems, and games, and care as much
+about how something feels as whether it works.
 
-Try:  ls            list this directory
-      cat about.txt re-read this
-      cd projects   then  ./taskly   to run a project`,
-    },
-    'contact.txt': {
-      type: 'file',
-      content: `email     b2kumar@uwaterloo.ca
-github    https://github.com/Bhavya2025
-linkedin  https://www.linkedin.com/in/bhavya-kumar-1652a8336/
-medium    https://medium.com/@bhavyakumar.bkb`,
-    },
-    skills: {
-      type: 'dir',
-      children: {
-        'languages.json': {
-          type: 'file',
-          content: `{
-  "systems":     ["C", "C++"],
-  "scripting":   ["Python"],
-  "functional":  ["Racket"],
-  "web":         ["JavaScript", "TypeScript"],
-  "data":        ["SQL"]
-}`,
-        },
-        'hardware.txt': {
-          type: 'file',
-          content: `microcontrollers   Arduino (bare-metal C/C++)
-sensors            ultrasonic ranging, threshold tuning
-interfaces         motor control, real-time loops`,
-        },
-      },
+Run  whoami  for the formatted version.`,
     },
     projects: {
       type: 'dir',
       children: {
-        'README.md': {
+        'README.txt': {
           type: 'file',
-          content: `Executables in this directory — run them with ./<name>:
+          content: `These are listed live by the  projects  command.
 
-  ./taskly            Kanban app + DeepSeek-R1 AI assistant
-  ./embedded-car      Arduino obstacle-avoiding vehicle
-  ./unity-platformer  Multiplayer platformer (WebGL)`,
+To open one on the site:   run <name>
+To list the names:         run
+To open every live link:   run *`,
         },
-        taskly: { type: 'file', executable: true, content: TASKLY },
-        'embedded-car': { type: 'file', executable: true, content: EMBEDDED_CAR },
-        'unity-platformer': { type: 'file', executable: true, content: UNITY_GAME },
       },
     },
   },
@@ -163,7 +87,7 @@ export function getNode(segments: string[]): VNode | null {
 export function resolvePath(cwd: string[], target: string): string[] {
   const t = target.trim()
   let raw: string[]
-  if (t === '' ) raw = [...cwd]
+  if (t === '') raw = [...cwd]
   else if (t === '~' || t === '/') raw = []
   else if (t.startsWith('~/')) raw = t.slice(2).split('/')
   else if (t.startsWith('/')) raw = t.slice(1).split('/')
@@ -181,4 +105,17 @@ export function resolvePath(cwd: string[], target: string): string[] {
 /** Pretty path for the prompt / pwd. */
 export function pathToString(segments: string[]): string {
   return segments.length ? '~/' + segments.join('/') : '~'
+}
+
+/**
+ * Entries of a directory, sorted (dirs first, then files, A–Z) so that
+ * `ls` and `cat *` are deterministic and read top-to-bottom.
+ */
+export function listDir(dir: VDir): Array<[string, VNode]> {
+  return Object.entries(dir.children).sort((a, b) => {
+    const aDir = a[1].type === 'dir'
+    const bDir = b[1].type === 'dir'
+    if (aDir !== bDir) return aDir ? -1 : 1
+    return a[0].localeCompare(b[0])
+  })
 }

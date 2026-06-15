@@ -13,6 +13,7 @@ function Hud() {
         <button
           type="button"
           className={`hud__link ${isHome ? 'is-current' : ''}`}
+          aria-current={isHome ? 'page' : undefined}
           onClick={() => !isHome && navigateTo('/', 'swipe')}
         >
           HOME
@@ -21,6 +22,7 @@ function Hud() {
         <button
           type="button"
           className={`hud__link ${pathname === '/projects' ? 'is-current' : ''}`}
+          aria-current={pathname === '/projects' ? 'page' : undefined}
           onClick={() => pathname !== '/projects' && navigateTo('/projects', 'swipe')}
         >
           PROJECTS
@@ -29,6 +31,7 @@ function Hud() {
         <button
           type="button"
           className={`hud__link ${pathname === '/contact' ? 'is-current' : ''}`}
+          aria-current={pathname === '/contact' ? 'page' : undefined}
           onClick={() => pathname !== '/contact' && navigateTo('/contact', 'swipe')}
         >
           CONTACT

@@ -11,12 +11,12 @@
 }
 
 html {
-  /* deep ground green: any overscroll past the page end stays earthy,
-     never a floating blue rectangle.
+  /* deep near-black: any overscroll past the page end stays dark, matching
+     the footer — never a floating coloured rectangle.
      NOTE: do NOT set height:100% on html/body/#root — it caps Lenis's
      scroll calculation and causes the wheel to randomly stall. Let the
      content define the scroll height. */
-  background: #18271d;
+  background: #08070a;
   overscroll-behavior-y: none;
 }
 

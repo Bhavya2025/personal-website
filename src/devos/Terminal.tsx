@@ -46,7 +46,11 @@ function Terminal() {
   const [caret, setCaret] = useState(0)
   const histIdx = useRef<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const screenRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  // True when the view is parked at (or near) the bottom. Only then do we
+  // auto-scroll on new output — so wheeling UP to read history isn't yanked
+  // back down on the next print.
+  const atBottomRef = useRef(true)
 
   const focusInput = () => inputRef.current?.focus()
 
@@ -57,11 +61,36 @@ function Terminal() {
     return () => window.removeEventListener('focus', focusInput)
   }, [])
 
-  // keep the latest output in view
+  // Track whether the user is parked at the bottom of the scrollback.
+  const onScroll = () => {
+    const el = scrollRef.current
+    if (!el) return
+    const distance = el.scrollHeight - el.scrollTop - el.clientHeight
+    atBottomRef.current = distance < 24 // px tolerance
+  }
+
+  // Keep the latest output in view ONLY when already at the bottom; if the
+  // user has scrolled up to read, leave their position untouched.
   useEffect(() => {
-    const el = screenRef.current
-    if (el) el.scrollTop = el.scrollHeight
+    const el = scrollRef.current
+    if (el && atBottomRef.current) el.scrollTop = el.scrollHeight
   }, [lines])
+
+  // Lenis (mounted app-wide via useSmoothScroll) hijacks the window wheel even
+  // while the Dev OS is open, so the scrollback never moved. Handle the wheel
+  // ourselves and stop it reaching Lenis, so the mouse wheel scrolls history.
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? el.clientHeight : 1
+      el.scrollTop += e.deltaY * unit
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
 
   const syncCaret = () => setCaret(inputRef.current?.selectionStart ?? value.length)
 
@@ -82,35 +111,31 @@ function Terminal() {
     setCaret(v.length)
   }
 
-  /** Context-aware tab completion: commands, paths, and `run` projects. */
+  /** Context-aware tab completion: commands, `run` projects, and paths. */
   const complete = () => {
-    const trimmed = value.replace(/^\s+/, '')
     const parts = value.split(/\s+/)
     const token = parts[parts.length - 1] ?? ''
-    const lead = token.startsWith('./') ? './' : ''
-    const bare = lead ? token.slice(2) : token
-    const isFirstToken = parts.length === 1 || trimmed === token
-    const firstCmd = trimmed.split(/\s+/)[0] ?? ''
+    const isFirstToken = parts.length === 1
+    const firstCmd = parts[0] ?? ''
 
     const dir = getNode(cwd)
     const entries = dir && dir.type === 'dir' ? Object.entries(dir.children) : []
-    const names = entries.map(([n]) => n)
     const dirsOnly = entries.filter(([, c]) => c.type === 'dir').map(([n]) => n)
-    const filesOnly = entries.filter(([, c]) => c.type === 'file').map(([n]) => n)
+    const filesAndDirs = entries.map(([n]) => n)
 
     let pool: string[]
-    if (isFirstToken) pool = [...commandNames, ...names]
-    else if (firstCmd === 'run') pool = Object.keys(RUN_PROJECTS)
+    if (isFirstToken) pool = commandNames
+    else if (firstCmd === 'run') pool = [...Object.keys(RUN_PROJECTS), '*', 'all']
     else if (firstCmd === 'cd') pool = dirsOnly
-    else if (firstCmd === 'cat') pool = filesOnly
-    else pool = names
+    else if (firstCmd === 'cat' || firstCmd === 'ls') pool = filesAndDirs
+    else return
 
-    const matches = [...new Set(pool)].filter((n) => n.startsWith(bare))
+    const matches = [...new Set(pool)].filter((n) => n.startsWith(token))
     if (!matches.length) return
 
     const prefix = value.slice(0, value.length - token.length)
     if (matches.length === 1) {
-      const next = `${prefix}${lead}${matches[0]}`
+      const next = `${prefix}${matches[0]}`
       setValue(next)
       setCaret(next.length)
       return
@@ -122,8 +147,8 @@ function Terminal() {
       while (i < acc.length && i < m.length && acc[i] === m[i]) i++
       return acc.slice(0, i)
     })
-    if (lcp.length > bare.length) {
-      const next = `${prefix}${lead}${lcp}`
+    if (lcp.length > token.length) {
+      const next = `${prefix}${lcp}`
       setValue(next)
       setCaret(next.length)
     }
@@ -138,6 +163,9 @@ function Terminal() {
       setValue('')
       setCaret(0)
       histIdx.current = null
+      // Submitting a command always snaps the view back to the bottom,
+      // even if the user had scrolled up to read history.
+      atBottomRef.current = true
       run(v)
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
@@ -159,33 +187,35 @@ function Terminal() {
   const after = value.slice(caret + 1)
 
   return (
-    <div className="devos__screen" ref={screenRef} onClick={focusInput}>
-      {lines.map((line) => (
-        <Line key={line.id} kind={line.kind} text={line.text} href={line.href} />
-      ))}
+    <div className="devos__screen" onClick={focusInput}>
+      <div className="devos__scroll" ref={scrollRef} onScroll={onScroll}>
+        {lines.map((line) => (
+          <Line key={line.id} kind={line.kind} text={line.text} href={line.href} />
+        ))}
 
-      <div className="devos__inputline">
-        <span className="devos__prompt">{promptText}</span>
-        <span>{before}</span>
-        <span className="devos__cursor">{atCursor}</span>
-        <span>{after}</span>
-        <input
-          ref={inputRef}
-          className="devos__input"
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value)
-            setCaret(e.target.selectionStart ?? e.target.value.length)
-          }}
-          onKeyDown={onKeyDown}
-          onKeyUp={syncCaret}
-          onClick={syncCaret}
-          spellCheck={false}
-          autoComplete="off"
-          autoCapitalize="off"
-          autoCorrect="off"
-          aria-label="Terminal input"
-        />
+        <div className="devos__inputline">
+          <span className="devos__prompt">{promptText}</span>
+          <span>{before}</span>
+          <span className="devos__cursor">{atCursor}</span>
+          <span>{after}</span>
+          <input
+            ref={inputRef}
+            className="devos__input"
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value)
+              setCaret(e.target.selectionStart ?? e.target.value.length)
+            }}
+            onKeyDown={onKeyDown}
+            onKeyUp={syncCaret}
+            onClick={syncCaret}
+            spellCheck={false}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            aria-label="Terminal input"
+          />
+        </div>
       </div>
     </div>
   )
