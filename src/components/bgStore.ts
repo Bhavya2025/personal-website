@@ -73,9 +73,9 @@ export const BG_VARIANTS: BgVariantInfo[] = [
   { id: 'life', label: 'LIFE', blurb: "Conway's Game of Life, evolving", author: 'Claude · CS-math' },
   { id: 'harmonics', label: 'HARMONICS', blurb: 'Morphing Lissajous curves', author: 'Claude · CS-math' },
   // — Claude: interactive concepts —
-  { id: 'gradient', label: 'GRADIENT', blurb: 'Vector field — cursor repels the flow', author: 'Claude · concepts' },
-  { id: 'eigen', label: 'EIGEN', blurb: 'Linear transform; scroll shears, eigenvectors hold', author: 'Claude · concepts' },
-  { id: 'heapsort', label: 'HEAPSORT', blurb: 'Constellation that swaps nodes; hover repels', author: 'Claude · concepts' },
+  { id: 'gradient', label: 'GRADIENT', blurb: 'Vector field, cursor repels the flow', author: 'Claude · concepts' },
+  { id: 'eigen', label: 'EIGEN', blurb: 'Linear transform, scroll shears, eigenvectors hold', author: 'Claude · concepts' },
+  { id: 'heapsort', label: 'HEAPSORT', blurb: 'Constellation that swaps nodes, hover repels', author: 'Claude · concepts' },
   { id: 'attractor', label: 'ATTRACTOR', blurb: 'Lorenz attractor; cursor steers the view', author: 'Claude · concepts' },
   // — Lab A: discrete / geometric —
   { id: 'tessellate', label: 'TESSELLATE', blurb: 'Drifting Voronoi cells', author: 'Lab A · geometric' },

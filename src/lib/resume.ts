@@ -7,7 +7,7 @@ export const EDUCATION = {
   major: 'Applied Mathematics with Scientific Computing and Scientific Machine Learning',
   majorUrl:
     'https://uwaterloo.ca/future-students/programs/applied-mathematics-scientific-computing',
-  period: 'SEPT 2025 — PRESENT',
+  period: 'SEPT 2025 – PRESENT',
   location: 'Waterloo, ON',
   award: "President's Scholarship",
   // Each links to its UWFlow course page. The first three codes are
@@ -37,9 +37,9 @@ export const EXPERIENCE: ExperienceEntry[] = [
   {
     org: 'Clevered AI Fellowship',
     role: 'Student Fellow',
-    period: 'JAN 2024 — FEB 2024',
+    period: 'JAN 2024 – FEB 2024',
     summary:
-      'Selected for a mentored AI program led by Oxford-affiliated researcher Ken Kahn; built a voice-activated accessibility prototype in Python using NLP-style intent matching.',
+      'Selected for a mentored AI program led by Oxford-affiliated researcher Ken Kahn. Built a voice-activated accessibility prototype in Python using NLP-style intent matching.',
   },
 ]
 
@@ -76,7 +76,7 @@ export interface Achievement {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     tag: 'SCHOLARSHIP',
-    text: "President's Scholarship — University of Waterloo",
+    text: "President's Scholarship, University of Waterloo",
   },
   {
     tag: 'BRONZE MEDAL',
@@ -84,11 +84,11 @@ export const ACHIEVEMENTS: Achievement[] = [
   },
   {
     tag: 'FINALIST',
-    text: 'Northeastern University London Essay Competition — Tech & Society',
+    text: 'Northeastern University London Essay Competition (Tech & Society)',
   },
   {
     tag: 'AUTHOR',
-    text: '"School of Machine Learning" — a blog simplifying ML concepts for beginners',
+    text: 'Medium',
     href: 'https://medium.com/@bhavyakumar.bkb',
   },
 ]

@@ -100,7 +100,7 @@ export const commands: Record<string, Command> = {
       for (const m of MISSIONS) {
         const alias = aliasFor(m.id)
         const tag = m.status === 'PLANNED' ? ' [PLANNED]' : ''
-        api.print(`  ${alias.padEnd(10)} ${m.name} — ${m.designation}${tag}`)
+        api.print(`  ${alias.padEnd(10)} ${m.name} · ${m.designation}${tag}`)
       }
       api.print('')
       api.print('Open one on the site:  run <name>      (e.g.  run taskly)', 'system')
@@ -123,7 +123,7 @@ export const commands: Record<string, Command> = {
     run: (_args, api) => {
       api.print('EXPERIENCE', 'system')
       for (const e of EXPERIENCE) {
-        api.print(`  ${e.role} — ${e.org}  (${e.period})`)
+        api.print(`  ${e.role} · ${e.org}  (${e.period})`)
         api.print(`    ${e.summary}`)
       }
     },
@@ -133,7 +133,7 @@ export const commands: Record<string, Command> = {
     description: 'degree, major, and coursework',
     run: (_args, api) => {
       api.print('EDUCATION', 'system')
-      api.print(`  ${EDUCATION.school} — ${EDUCATION.degree}`)
+      api.print(`  ${EDUCATION.school} · ${EDUCATION.degree}`)
       api.print(`  ${EDUCATION.major}`)
       api.print(`  ${EDUCATION.period} · ${EDUCATION.location} · ${EDUCATION.award}`)
       api.print('')
@@ -174,7 +174,7 @@ export const commands: Record<string, Command> = {
   },
 
   run: {
-    description: 'open a project on the site — run <name> · run *',
+    description: 'open a project on the site: run <name> · run *',
     run: (args, api) => runProject(args, api),
   },
 
@@ -183,7 +183,7 @@ export const commands: Record<string, Command> = {
   contact: {
     description: 'every way to reach me, as clickable lines',
     run: (_args, api) => {
-      api.print('CONTACT — click any line', 'system')
+      api.print('CONTACT (click any line)', 'system')
       api.link(`  email      ${IDENTITY.email}`, `mailto:${IDENTITY.email}`)
       api.link(`  github     ${hostPath(IDENTITY.github)}`, IDENTITY.github)
       api.link(`  linkedin   ${hostPath(IDENTITY.linkedin)}`, IDENTITY.linkedin)
@@ -204,7 +204,7 @@ export const commands: Record<string, Command> = {
   medium: {
     description: 'open my Medium blog in a new tab',
     run: (_args, api) =>
-      openLink(api, 'Medium — "School of Machine Learning"', IDENTITY.medium),
+      openLink(api, 'Medium', IDENTITY.medium),
   },
 
   /* --- shell builtins --- */
@@ -248,7 +248,7 @@ export const commands: Record<string, Command> = {
   },
 
   cat: {
-    description: 'print file contents — supports globs (cat *  ·  cat *.txt)',
+    description: 'print file contents, with globs (cat *  ·  cat *.txt)',
     run: (args, api) => catFiles(args, api),
   },
 
@@ -434,7 +434,7 @@ function runProject(args: string[], api: CommandAPI): void {
     api.print(`Try:  ${aliases.join('   ')}`, 'system')
     return
   }
-  api.print(`> launching ${lower} — opening it on the site ...`, 'system')
+  api.print(`> launching ${lower}, opening it on the site ...`, 'system')
   api.openProject(lower)
 }
 
@@ -454,7 +454,7 @@ function openAllLinks(list: typeof MISSIONS, api: CommandAPI): void {
   }
   api.print('')
   api.print(
-    'If nothing opened, your browser blocked the pop-ups — allow them and retry,',
+    'If nothing opened, your browser blocked the pop-ups. Allow them and retry,',
     'system',
   )
   api.print('or click the links above individually.', 'system')
@@ -469,14 +469,14 @@ function printResume(api: CommandAPI): void {
   api.print('')
 
   head('EDUCATION')
-  api.print(`  ${EDUCATION.school} — ${EDUCATION.degree}`)
+  api.print(`  ${EDUCATION.school} · ${EDUCATION.degree}`)
   api.print(`  ${EDUCATION.major}`)
   api.print(`  ${EDUCATION.period} · ${EDUCATION.location} · ${EDUCATION.award}`)
   api.print('')
 
   head('EXPERIENCE')
   for (const e of EXPERIENCE) {
-    api.print(`  ${e.role} — ${e.org}  (${e.period})`)
+    api.print(`  ${e.role} · ${e.org}  (${e.period})`)
     api.print(`    ${e.summary}`)
   }
   api.print('')
@@ -484,7 +484,7 @@ function printResume(api: CommandAPI): void {
   head('PROJECTS')
   for (const m of MISSIONS) {
     const tag = m.status === 'PLANNED' ? ' [PLANNED]' : ''
-    api.print(`  ${m.name} — ${m.designation}${tag}`)
+    api.print(`  ${m.name} · ${m.designation}${tag}`)
   }
   api.print('')
 

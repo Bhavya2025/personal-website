@@ -367,6 +367,74 @@
   border: none;
 }
 
+/* click-to-play poster — the WebGL build + itch.io cookie load only on click */
+.dossier__play {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  border: none;
+  color: var(--bone);
+  background:
+    radial-gradient(120% 120% at 50% 44%, rgba(255, 176, 0, 0.08), transparent 62%),
+    #050505;
+  transition: background 0.25s ease;
+}
+.dossier__play:hover,
+.dossier__play:focus-visible {
+  outline: none;
+  background:
+    radial-gradient(120% 120% at 50% 44%, rgba(255, 176, 0, 0.16), transparent 62%),
+    #070707;
+}
+.dossier__play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(54px, 7vw, 68px);
+  height: clamp(54px, 7vw, 68px);
+  border-radius: 50%;
+  border: 2px solid var(--amber);
+  color: var(--amber);
+  font-size: clamp(18px, 2.2vw, 22px);
+  padding-left: 4px; /* optically centre the triangle */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.dossier__play:hover .dossier__play-icon,
+.dossier__play:focus-visible .dossier__play-icon {
+  transform: scale(1.06);
+  box-shadow: 0 0 26px rgba(255, 176, 0, 0.32);
+}
+.dossier__play-label {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  color: var(--amber);
+}
+.dossier__play-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--bone-dim);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dossier__play,
+  .dossier__play-icon {
+    transition: none;
+  }
+  .dossier__play:hover .dossier__play-icon,
+  .dossier__play:focus-visible .dossier__play-icon {
+    transform: none;
+  }
+}
+
 /* brief: dash-led prose bullets */
 .dossier__brief {
   list-style: none;

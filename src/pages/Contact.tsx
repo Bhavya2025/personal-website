@@ -46,10 +46,9 @@ function Contact() {
             </h1>
 
             <p className="ctc__blurb">
-              Still early in my journey and eager to learn — I&rsquo;d love to
-              explore a diverse set of roles across software, math, and AI, and
-              to work with people I can learn from. Email is the fastest way to
-              reach me; I read and reply to every message.
+              I&rsquo;m looking for co-op and internship roles across software,
+              math, and AI, and I like working with people I can learn from.
+              Email is the best way to reach me, and I write back quickly.
             </p>
           </header>
 

@@ -73,7 +73,7 @@ export function TerminalProvider({
 
     const command = commands[cmd]
     if (!command) {
-      print(`${cmd}: command not found — type 'help'`, 'error')
+      print(`${cmd}: command not found. try 'help'`, 'error')
       return
     }
     command.run(args, api)

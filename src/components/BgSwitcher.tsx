@@ -136,7 +136,7 @@ function BgSwitcher() {
         className="bgsw__toggle"
         aria-pressed={holeOn}
         onClick={() => setDomHole(!holeOn)}
-        title="Cursor black hole — warps & swallows page elements (non-destructive)"
+        title="Cursor black hole that warps and swallows page elements (non-destructive)"
       >
         <span>🕳 BLACK HOLE · b</span>
         <span className="bgsw__toggle-state">{holeOn ? 'ON' : 'OFF'}</span>
@@ -144,7 +144,7 @@ function BgSwitcher() {
 
       {current ? (
         <div className="bgsw__blurb">
-          <b>{current.label}</b> — {current.blurb}
+          <b>{current.label}</b>: {current.blurb}
         </div>
       ) : null}
     </div>

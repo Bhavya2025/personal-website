@@ -1,9 +1,42 @@
+import { useState } from 'react'
 import type { Mission } from '../lib/missions'
 import BoidsSim from './BoidsSim'
+
+/** itch.io WebGL embed behind a click-to-play poster, so the heavy Unity build
+ * (and itch.io's third-party cookie) only load when the visitor hits play. */
+function ItchEmbed({ src, title }: { src: string; title: string }) {
+  const [playing, setPlaying] = useState(false)
+  return (
+    <div className="dossier__media">
+      <span className="dossier__media-tag">Playable</span>
+      {playing ? (
+        <iframe
+          src={src}
+          className="dossier__itch-frame"
+          title={title}
+          allow="autoplay; fullscreen; gamepad"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          type="button"
+          className="dossier__play"
+          onClick={() => setPlaying(true)}
+          aria-label={`Play ${title}`}
+        >
+          <span className="dossier__play-icon" aria-hidden="true">▶</span>
+          <span className="dossier__play-label">PLAY</span>
+          <span className="dossier__play-sub">Unity · WebGL, loads on click</span>
+        </button>
+      )}
+    </div>
+  )
+}
 
 /** Status pill colour intent (serious labels, no mission cosplay). */
 const STATUS_CLASS: Record<Mission['status'], string> = {
   DEPLOYED: 'is-ok',
+  BUILT: 'is-ok',
   HARDWARE: 'is-ok',
   'AWAITING DATA': 'is-dim',
   PLANNED: 'is-dim',
@@ -12,6 +45,7 @@ const STATUS_CLASS: Record<Mission['status'], string> = {
 /** Human-readable status text shown to recruiters. */
 const STATUS_LABEL: Record<Mission['status'], string> = {
   DEPLOYED: 'LIVE',
+  BUILT: 'BUILT',
   HARDWARE: 'BUILT',
   'AWAITING DATA': 'ARCHIVED',
   PLANNED: 'PLANNED',
@@ -54,16 +88,7 @@ function MissionCard({ mission: m, index = 0 }: MissionCardProps) {
         {m.demo === 'boids' ? (
           <BoidsSim />
         ) : m.demo === 'itch' && m.link ? (
-          <div className="dossier__media">
-            <span className="dossier__media-tag">Playable</span>
-            <iframe
-              src="https://itch.io/embed-upload/4062803?color=0a0a0a"
-              className="dossier__itch-frame"
-              title={m.name}
-              allow="autoplay; fullscreen; gamepad"
-              allowFullScreen
-            />
-          </div>
+          <ItchEmbed src="https://itch.io/embed-upload/4062803?color=0a0a0a" title={m.name} />
         ) : m.image ? (
           <div className="dossier__media">
             <img
@@ -100,6 +125,16 @@ function MissionCard({ mission: m, index = 0 }: MissionCardProps) {
                 rel="noreferrer"
               >
                 {m.link.label} <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {m.repo ? (
+              <a
+                className="btn dossier__link"
+                href={m.repo.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {m.repo.label} <span aria-hidden="true">↗</span>
               </a>
             ) : null}
           </div>

@@ -1,7 +1,7 @@
 /**
  * Tiny virtual file system for the Hidden Dev OS — just enough to give
  * ls / cd / cat some charm. NO executables, no `./bin` model: the real
- * site actions live in commands.ts (about / projects / run / etc.).
+ * site actions live in commands.ts (whoami / projects / run / etc.).
  *
  * Content is intentionally light and points back at the real commands so
  * the filesystem reads as a friendly map, not a second source of truth.
@@ -26,31 +26,12 @@ export const HOME: VDir = {
   children: {
     'README.txt': {
       type: 'file',
-      content: `You're in a guest shell on my portfolio.
+      content: `You're in a guest shell on my portfolio. Have a look around.
 
-This filesystem is mostly for fun — the useful stuff is commands:
+It's mostly for fun. The real stuff lives in commands, not files.
+Start with  whoami,  poke around  projects,  and run  help  for the rest.
 
-  whoami       one-line bio
-  projects     what I've built  (then  run <name>  to open one)
-  skills       languages, frameworks, tools
-  experience   work / fellowships
-  education    University of Waterloo
-  achievements awards + writing
-  resume       my resume, printed here
-  contact      every way to reach me
-
-Type  help  for the full list, or  cat *  to read every file here.`,
-    },
-    'bio.txt': {
-      type: 'file',
-      content: `Bhavya Kumar — Honours Mathematics (Co-op), University of Waterloo.
-Major: Applied Mathematics with Scientific Computing & Scientific
-Machine Learning.
-
-I build across the web, embedded systems, and games, and care as much
-about how something feels as whether it works.
-
-Run  whoami  for the formatted version.`,
+cat *  reads every file in here.   exit  drops you back to the site.`,
     },
     projects: {
       type: 'dir',

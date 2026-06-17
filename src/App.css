@@ -112,7 +112,7 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: clamp(36px, 7vw, 96px);
+  gap: clamp(40px, 5.5vw, 84px);
 }
 
 .hero__col {
@@ -127,11 +127,11 @@ main {
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: clamp(12px, 1vw, 14px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--amber);
-  margin-bottom: clamp(18px, 3vh, 28px);
+  margin-bottom: clamp(18px, 3vh, 26px);
 }
 
 .hero__eyebrow-sep {
@@ -144,7 +144,7 @@ main {
 
 .hero__name {
   font-family: var(--display);
-  font-size: clamp(46px, 9vw, 118px);
+  font-size: clamp(48px, 9vw, 120px);
   line-height: 0.88;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -160,9 +160,9 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-top: clamp(22px, 3.5vh, 34px);
+  margin-top: clamp(20px, 3.2vh, 32px);
   font-family: var(--sans);
-  font-size: clamp(16px, 1.6vw, 19px);
+  font-size: clamp(15px, 1.55vw, 19px);
   line-height: 1.35;
   color: var(--bone-dim);
 }
@@ -195,9 +195,16 @@ main {
 .hero__links {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   margin-top: clamp(28px, 4vh, 44px);
+}
+
+/* hero action buttons — a hair larger than the base .btn */
+.hero__links .btn {
+  padding: 13px 18px;
+  font-size: 12.5px;
+  gap: 8px;
 }
 
 /* right column: portrait / OS trigger */
@@ -260,8 +267,8 @@ main {
 }
 
 .hero__pfp {
-  width: clamp(180px, 24vw, 300px);
-  height: clamp(180px, 24vw, 300px);
+  width: clamp(196px, 24vw, 308px);
+  height: clamp(196px, 24vw, 308px);
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid rgba(232, 228, 216, 0.85);
@@ -1591,6 +1598,42 @@ main {
   font-size: 11px;
   letter-spacing: 0.16em;
   color: var(--bone-dim);
+}
+
+/* tiny retro-desktop easter egg: boots the Dev OS (see Footer.tsx) */
+.ground__boot {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 4px;
+  line-height: 0;
+  cursor: pointer;
+  color: var(--bone-dim);
+  transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+.ground__boot-screen {
+  fill: rgba(255, 176, 0, 0.12);
+  transition: fill 0.25s ease;
+}
+.ground__boot:hover,
+.ground__boot:focus-visible {
+  outline: none;
+  color: var(--amber);
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 8px rgba(255, 176, 0, 0.35));
+}
+.ground__boot:hover .ground__boot-screen,
+.ground__boot:focus-visible .ground__boot-screen {
+  fill: rgba(255, 176, 0, 0.4);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ground__boot {
+    transition: none;
+  }
+  .ground__boot:hover,
+  .ground__boot:focus-visible {
+    transform: none;
+  }
 }
 
 .ground__status {

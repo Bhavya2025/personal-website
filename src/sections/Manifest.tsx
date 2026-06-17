@@ -6,9 +6,20 @@ import { useTransitionNav } from '../components/transitionNav'
 
 const STATUS_CLASS: Record<string, string> = {
   DEPLOYED: 'is-ok',
+  BUILT: 'is-ok',
   HARDWARE: 'is-ok',
   'AWAITING DATA': 'is-dim',
   PLANNED: 'is-dim',
+}
+
+/** Human-readable status text — must match MissionCard's labels so the same
+ * project reads identically on Home and /projects. */
+const STATUS_LABEL: Record<string, string> = {
+  DEPLOYED: 'LIVE',
+  BUILT: 'BUILT',
+  HARDWARE: 'BUILT',
+  'AWAITING DATA': 'ARCHIVED',
+  PLANNED: 'PLANNED',
 }
 
 /** Home "selected work" — a compact timeline of the built projects. The full
@@ -58,7 +69,7 @@ function Manifest() {
                   <span className="brief-card__meta">
                     <span className="brief-card__year">{m.year}</span>
                     <span className={`brief-card__status ${STATUS_CLASS[m.status] ?? ''}`}>
-                      ● {m.status}
+                      ● {STATUS_LABEL[m.status] ?? m.status}
                     </span>
                   </span>
                 </span>
