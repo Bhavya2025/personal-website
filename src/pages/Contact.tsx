@@ -50,6 +50,19 @@ function Contact() {
               math, and AI, and I like working with people I can learn from.
               Email is the best way to reach me, and I write back quickly.
             </p>
+
+            <div className="ctc__head-cta">
+              <a
+                className="ctc__resume"
+                href={IDENTITY.resume}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="ctc__resume-tag" aria-hidden="true">PDF</span>
+                VIEW RESUME
+                <span className="ctc__resume-go" aria-hidden="true">&#8599;</span>
+              </a>
+            </div>
           </header>
 
           {/* ---------- PRIMARY: email ---------- */}
@@ -117,25 +130,6 @@ function Contact() {
                     M
                   </span>
                   <span className="ctc__row-name">MEDIUM</span>
-                  <span className="ctc__row-go" aria-hidden="true">
-                    &#8599;
-                  </span>
-                </a>
-              </li>
-              <li data-reveal="up">
-                <a
-                  className="ctc__row"
-                  href={IDENTITY.resume}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span
-                    className="ctc__row-icon ctc__row-icon--text"
-                    aria-hidden="true"
-                  >
-                    PDF
-                  </span>
-                  <span className="ctc__row-name">RESUME</span>
                   <span className="ctc__row-go" aria-hidden="true">
                     &#8599;
                   </span>

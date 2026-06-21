@@ -160,6 +160,57 @@
   margin: 0;
 }
 
+/* prominent resume CTA, kept in the header so it's visible without scrolling */
+.ctc__head-cta {
+  display: flex;
+}
+.ctc__resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--amber);
+  border: 1px solid var(--amber);
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.ctc__resume-tag {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  color: var(--ink);
+}
+.ctc__resume-go {
+  font-size: 15px;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ctc__resume:hover,
+.ctc__resume:focus-visible {
+  background: transparent;
+  color: var(--amber);
+  outline: none;
+}
+.ctc__resume:hover .ctc__resume-tag,
+.ctc__resume:focus-visible .ctc__resume-tag {
+  border-color: color-mix(in srgb, var(--amber) 55%, var(--line));
+  color: var(--amber);
+}
+.ctc__resume:hover .ctc__resume-go,
+.ctc__resume:focus-visible .ctc__resume-go {
+  transform: translate(3px, -3px);
+}
+.ctc__resume:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
 /* ============== PRIMARY: email block ============== */
 .ctc__primary {
   position: relative;
