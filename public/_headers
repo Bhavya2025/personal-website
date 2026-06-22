@@ -1,0 +1,7 @@
+# Keep the unredacted resume out of search engines (it's recruiter-only).
+# X-Robots-Tag is used instead of robots.txt on purpose: robots.txt is public
+# and would advertise the path, defeating the point of an unlisted link.
+/resume_unredacted
+  X-Robots-Tag: noindex, nofollow
+/resume_unredacted.pdf
+  X-Robots-Tag: noindex, nofollow

@@ -1,3 +1,8 @@
+# Recruiter-only unredacted resume — unlisted, not linked anywhere on the site.
+# Clean URL /resume_unredacted rewrites (200, keeps the URL) to the actual PDF.
+# MUST stay above the SPA catch-all or /* would swallow it into index.html.
+/resume_unredacted    /resume_unredacted.pdf    200
+
 # SPA fallback: let React Router handle client-side routes.
 # Without this, a hard refresh on /projects or /contact 404s on Cloudflare.
 /*    /index.html   200
