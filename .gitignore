@@ -22,6 +22,7 @@ WebGLNonCompressBuild/
 
 # Local working notes & tooling — kept on disk, never committed
 CLAUDE.md
+RESUME_UPDATE.md
 .claude/
 FROM_BHAVYA/
 
