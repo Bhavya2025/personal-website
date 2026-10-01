@@ -53,7 +53,7 @@ function GlSky({ page }: { page: BgPage }) {
     const mouse = { x: -1, y: -1 }
     let lastMove = -10
 
-    let scene: GlScene = makeGlScene(gl, bgStore.current, page)
+    let scene: GlScene = makeGlScene(gl, bgStore.current)
 
     const qualityFor = (): number => (bgStore.current === 'synthwave' ? 0.66 : 1)
 
@@ -94,7 +94,7 @@ function GlSky({ page }: { page: BgPage }) {
     const unsub = subscribeBgVariant((v) => {
       if (!isGlVariant(v)) return // parent (SkyCanvas) will unmount us
       scene.dispose()
-      scene = makeGlScene(gl, v, page)
+      scene = makeGlScene(gl, v)
       resize() // re-apply per-scene quality
       dirty = true
     })

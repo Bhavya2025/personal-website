@@ -7,7 +7,7 @@ export const EDUCATION = {
   major: 'Applied Mathematics with Scientific Computing and Scientific Machine Learning',
   majorUrl:
     'https://uwaterloo.ca/future-students/programs/applied-mathematics-scientific-computing',
-  period: 'SEPT 2025 – PRESENT',
+  period: 'Sept 2025 – Apr 2030 (expected)',
   location: 'Waterloo, ON',
   award: "President's Scholarship",
   // Each links to its UWFlow course page. The first three codes are
@@ -31,13 +31,25 @@ export interface ExperienceEntry {
   role: string
   period: string
   summary: string
+  bullets?: string[]
 }
 
 export const EXPERIENCE: ExperienceEntry[] = [
   {
+    org: 'ToadEx Inc.',
+    role: 'Software Engineering Intern',
+    period: 'Sept 2026 – Present',
+    summary: 'Designing Python/FastAPI middleware for a restaurant kiosk platform with nine merchant configurations, separating payment and printing integrations from Django.',
+    bullets: [
+      'Traced Vue-to-Django checkout risks and specified idempotency keys and SQLite-backed recovery for interrupted transactions.',
+      'Removed a hardcoded SMTP credential, validated four configuration scenarios, and documented environment-based deployment.',
+      'Compared three architectural approaches and proposed REST API contracts and device adapters for payment terminals and printers.',
+    ],
+  },
+  {
     org: 'Clevered AI Fellowship',
     role: 'Student Fellow',
-    period: 'JAN 2024 – FEB 2024',
+    period: 'Jan 2024 – Feb 2024',
     summary:
       'Selected for a mentored AI program led by Oxford-affiliated researcher Ken Kahn. Built a voice-activated accessibility prototype in Python using NLP-style intent matching.',
   },
@@ -50,20 +62,16 @@ export interface SkillGroup {
 
 export const SKILLS: SkillGroup[] = [
   {
-    label: 'LANGUAGES',
-    items: ['Python', 'C', 'C++', 'JavaScript', 'TypeScript', 'Racket', 'SQL'],
+    label: 'Languages',
+    items: ['Python', 'C', 'C++', 'JavaScript', 'TypeScript', 'SQL', 'Racket'],
   },
   {
-    label: 'FRAMEWORKS & LIBRARIES',
-    items: ['React', 'Node.js', 'Supabase'],
+    label: 'Frameworks & databases',
+    items: ['FastAPI', 'Django', 'Vue.js', 'React', 'Node.js', 'Express', 'SQLite', 'Supabase'],
   },
   {
-    label: 'TOOLS',
-    items: ['Git', 'GitHub', 'Vercel', 'VS Code', 'Arduino'],
-  },
-  {
-    label: 'AI TOOLING',
-    items: ['Claude Code'],
+    label: 'Tools & technologies',
+    items: ['Git', 'GitHub', 'REST APIs', 'LLM APIs', 'Agent workflows', 'Render', 'Vercel'],
   },
 ]
 

@@ -1,6 +1,6 @@
 /**
- * Project data — sourced from the real resume (public/resume.pdf).
- * Items marked `pending` are awaiting assets/links via FROM_BHAVYA/.
+ * Portfolio projects, grounded in the current resume and previous portfolio.
+ * Only verified project URLs are included; missing links are not fabricated.
  */
 import tasklyImg from '../assets/taskly.jpg'
 import arduinoImg from '../assets/arduino.jpg'
@@ -12,6 +12,7 @@ export interface Mission {
   year: string
   name: string
   designation: string
+  summary?: string
   status: 'DEPLOYED' | 'BUILT' | 'HARDWARE' | 'AWAITING DATA' | 'PLANNED'
   group: MissionGroup
   stack: string[]
@@ -31,6 +32,7 @@ export const MISSIONS: Mission[] = [
     year: '2026',
     name: 'TASKLY',
     designation: 'Kanban app with built-in AI assistant',
+    summary: 'An AI-assisted kanban app with natural-language task commands, undo/redo, and consistent state across tabs.',
     status: 'DEPLOYED',
     group: 'SOFTWARE',
     stack: ['React', 'Supabase', 'DeepSeek-R1 70B', 'Vercel'],
@@ -45,10 +47,26 @@ export const MISSIONS: Mission[] = [
     repo: { label: 'GITHUB', href: 'https://github.com/Bhavya2025/taskly' },
   },
   {
+    id: 'BK-005',
+    year: '2026',
+    name: 'SOFTWARE FACTORY',
+    designation: 'An autonomous LLM agent pipeline',
+    summary: 'A multi-stage agent workflow that turns feature requests into software proofs of concept and live previews.',
+    status: 'BUILT',
+    group: 'SOFTWARE',
+    stack: ['SuperPlane', 'LLM agents', 'Render'],
+    brief: [
+      'Built at a New York LLM-agent hackathon in June 2026. The workflow takes a natural-language feature request through specification, implementation, and verification.',
+      'Added validation gates between stages to prevent failed model output from advancing through the pipeline.',
+      'Automated code generation, Git commits, and deployment to live Render previews. Tested the pipeline against real open issues from the SuperPlane repository.',
+    ],
+  },
+  {
     id: 'BK-004',
     year: '2026',
     name: 'BOIDS',
     designation: 'Flocking simulation with emergent swarm behavior',
+    summary: 'A browser-based exploration of how simple local rules create collective behavior.',
     status: 'BUILT',
     group: 'SOFTWARE',
     stack: ['JavaScript', 'Canvas', 'Flocking'],
@@ -64,12 +82,14 @@ export const MISSIONS: Mission[] = [
     year: '2026',
     name: 'WYAG · GIT FROM SCRATCH',
     designation: 'A from-scratch Git implementation in Python',
+    summary: "A Python implementation of 15 core Git commands, from the object store to the binary staging index.",
     status: 'BUILT',
     group: 'SOFTWARE',
     stack: ['Python', 'zlib', 'SHA-1'],
     brief: [
-      'Reimplemented Git\'s internals from scratch in Python, following the "Write Yourself a Git" approach: the content-addressed object store (blobs, trees, commits, tags), refs, branches and tags, the staging index, and commands from init and hash-object through log, checkout, add and commit.',
-      'Biggest takeaway: Git\'s apparent complexity hides a tiny core, really just a Merkle DAG of immutable objects named by the SHA-1 of their own contents. The fiddliest part was matching Git\'s exact tree-entry sort order and byte-level index format closely enough that real git accepts the objects wyag writes.',
+      'Implemented 15 core Git commands in Python, following the Write Yourself a Git approach. Built the object model, a Merkle DAG, and content-addressed storage using SHA-1 hashing and zlib compression.',
+      'Parsed the binary index format to support staging, file metadata tracking, and worktree modification detection without Git libraries.',
+      'Debugged serialization and object-identity mismatches, and implemented Git-compatible tree ordering to reproduce Git behavior.',
     ],
     repo: { label: 'GITHUB', href: 'https://github.com/Bhavya2025/wyag' },
   },
@@ -78,6 +98,7 @@ export const MISSIONS: Mission[] = [
     year: '2023',
     name: 'EMBEDDED SYSTEMS',
     designation: 'Inside the workings of an obstacle-avoiding car · bare-metal C/C++',
+    summary: 'An Arduino car with ultrasonic obstacle detection and motor-control logic written in C/C++.',
     status: 'HARDWARE',
     group: 'HARDWARE',
     stack: ['Arduino', 'Embedded C/C++', 'Ultrasonic sensors'],
@@ -91,6 +112,7 @@ export const MISSIONS: Mission[] = [
     year: '2021',
     name: 'MULTIPLAYER PLATFORMER',
     designation: 'Unity → WebGL · a Brackeys Game Jam entry',
+    summary: 'A Unity platformer made for the Brackeys Game Jam and published as a playable WebGL game.',
     status: 'DEPLOYED',
     group: 'GAMES',
     stack: ['Unity', 'C#', 'WebGL'],
@@ -104,6 +126,7 @@ export const MISSIONS: Mission[] = [
 
 /** Terminal `run <alias>` → mission id to focus on the GUI projects page. */
 export const RUN_PROJECTS: Record<string, string> = {
+  factory: 'BK-005',
   taskly: 'BK-001',
   boids: 'BK-004',
   git_py: 'BK-103',
@@ -111,12 +134,14 @@ export const RUN_PROJECTS: Record<string, string> = {
   unity: 'BK-003',
 }
 
+export const FEATURED_PROJECT_IDS = ['BK-103', 'BK-005', 'BK-001'] as const
+
 export const IDENTITY = {
   name: 'BHAVYA KUMAR',
   school: 'Applied Mathematics · University of Waterloo',
-  line: 'A math student who builds web apps, embedded systems, and games. Sweats the details.',
+  line: 'Software engineering intern and Applied Mathematics student at the University of Waterloo.',
   github: 'https://github.com/Bhavya2025',
-  linkedin: 'https://www.linkedin.com/in/bhavya-kumar-1652a8336/',
+  linkedin: 'https://www.linkedin.com/in/bhavya-bk/',
   medium: 'https://medium.com/@bhavyakumar.bkb',
   email: 'b2kumar@uwaterloo.ca',
   resume: '/resume.pdf',
