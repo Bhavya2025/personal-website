@@ -1,0 +1,51 @@
+[
+  {
+    "text": "body",
+    "foreground": "#262b2b",
+    "background": "#f6f7f5",
+    "ratio": 13.36,
+    "passesNormalText": true
+  },
+  {
+    "text": "secondary",
+    "foreground": "#646c6d",
+    "background": "#f6f7f5",
+    "ratio": 5.0,
+    "passesNormalText": true
+  },
+  {
+    "text": "link",
+    "foreground": "#2454bc",
+    "background": "#f6f7f5",
+    "ratio": 6.37,
+    "passesNormalText": true
+  },
+  {
+    "text": "rust",
+    "foreground": "#b44b32",
+    "background": "#f6f7f5",
+    "ratio": 4.89,
+    "passesNormalText": true
+  },
+  {
+    "text": "selected object",
+    "foreground": "#ffffff",
+    "background": "#2454bc",
+    "ratio": 6.84,
+    "passesNormalText": true
+  },
+  {
+    "text": "diagram secondary",
+    "foreground": "#576575",
+    "background": "#f6f8fb",
+    "ratio": 5.6,
+    "passesNormalText": true
+  },
+  {
+    "text": "diagram explanation",
+    "foreground": "#4d5b6b",
+    "background": "#ecf0f5",
+    "ratio": 6.07,
+    "passesNormalText": true
+  }
+]

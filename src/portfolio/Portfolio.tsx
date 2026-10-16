@@ -1,229 +1,220 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { FEATURED_PROJECT_IDS, IDENTITY, MISSIONS } from '../lib/missions'
-import type { Mission } from '../lib/missions'
-import { ACHIEVEMENTS, EDUCATION, EXPERIENCE, SKILLS } from '../lib/resume'
+import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
+import { IDENTITY } from '../lib/missions'
+import { EDUCATION, EXPERIENCE, SKILLS } from '../lib/resume'
+import { ORDERED_PROJECTS, PROJECTS, SELECTED_PROJECTS } from './data'
+import type { PortfolioProject } from './data'
+import GitObjects from './GitObjects'
 import portrait from '../assets/pfp.jpg'
 import './portfolio.css'
 
 const BoidsSim = lazy(() => import('../components/BoidsSim'))
-const featuredProjects = FEATURED_PROJECT_IDS.flatMap(id => MISSIONS.filter(project => project.id === id))
-const allProjects = [...featuredProjects, ...MISSIONS.filter(project => !featuredProjects.includes(project))]
 
-function Arrow({ diagonal = false }: { diagonal?: boolean }) {
-  return <span className="arrow" aria-hidden="true">{diagonal ? '↗' : '→'}</span>
+function Arrow() {
+  return <span aria-hidden="true" className="link-arrow">{'↗'}</span>
 }
 
-function ExternalLink({ href, children, className = '' }: { href: string; children: ReactNode; className?: string }) {
-  return <a className={className} href={href} target="_blank" rel="noreferrer">{children}<Arrow diagonal /></a>
+function OutsideLink({ href, children, className = '' }: { href: string; children: ReactNode; className?: string }) {
+  return <a href={href} target="_blank" rel="noreferrer" className={className}>{children}<Arrow /></a>
+}
+
+function Rail() {
+  return (
+    <aside className="identity-rail" aria-label="Site identity and navigation">
+      <div className="rail-top">
+        <Link to="/" className="rail-mark" aria-label="Bhavya Kumar, home"><svg width="45" height="45" viewBox="0 0 45 45" aria-hidden="true"><path d="M8 8v29h11c12 0 12-15 0-15H8M28 8v29m12-21L28 28l12 9" fill="none" stroke="currentColor" strokeWidth="2.3" /></svg></Link>
+        <span className="rail-caption">Personal index<br />Bhavya Kumar</span>
+      </div>
+      <nav className="rail-nav" aria-label="Main navigation">
+        <NavLink to="/" end><span>01</span> Index</NavLink>
+        <NavLink to="/projects"><span>02</span> Projects</NavLink>
+        <Link to="/#experience"><span>03</span> Experience</Link>
+        <Link to="/#about"><span>04</span> About</Link>
+        <NavLink to="/contact"><span>05</span> Contact</NavLink>
+        <OutsideLink href={IDENTITY.resume} className="mobile-resume">Résumé</OutsideLink>
+      </nav>
+      <div className="rail-person">
+        <img src={portrait} width="76" height="88" alt="Bhavya Kumar at an aviation museum" />
+        <p>Applied Mathematics<br />University of Waterloo</p>
+        <span>Waterloo, Ontario</span>
+      </div>
+      <div className="rail-links">
+        <OutsideLink href={IDENTITY.resume}>Résumé <span className="file-type">PDF</span></OutsideLink>
+        <OutsideLink href={IDENTITY.github}>GitHub</OutsideLink>
+        <OutsideLink href={IDENTITY.linkedin}>LinkedIn</OutsideLink>
+        <a href={`mailto:${IDENTITY.email}`}>Email <Arrow /></a>
+      </div>
+      <span className="rail-bottom">Software / mathematics</span>
+    </aside>
+  )
 }
 
 export function SiteLayout({ children }: { children: ReactNode }) {
-  const { pathname, hash, search } = useLocation()
-
+  const { pathname, hash, search, key } = useLocation()
   useEffect(() => {
-    const titles: Record<string, string> = {
-      '/': 'Bhavya Kumar | Software & Applied Mathematics',
-      '/projects': 'Projects | Bhavya Kumar',
-      '/contact': 'Contact | Bhavya Kumar',
-    }
-    document.title = titles[pathname] ?? 'Page not found | Bhavya Kumar'
-    const focus = pathname === '/projects' ? new URLSearchParams(search).get('focus') : null
-    const anchor = hash.slice(1) || (focus ? `project-${focus}` : '')
+    const project = pathname.startsWith('/projects/') ? PROJECTS.find(item => pathname === `/projects/${item.slug}`) : null
+    const title = pathname === '/' ? 'Bhavya Kumar — Software & Applied Mathematics' : project ? `${project.title} — Bhavya Kumar` : pathname === '/projects' ? 'Project index — Bhavya Kumar' : pathname === '/contact' ? 'Contact — Bhavya Kumar' : 'Page not found — Bhavya Kumar'
+    document.title = title
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (canonical) canonical.href = `https://bhavyakumar.ca${pathname}`
     const frame = requestAnimationFrame(() => {
+      const focus = pathname === '/projects' ? new URLSearchParams(search).get('focus') : null
+      const anchor = hash.slice(1) || (focus ? `project-${focus}` : '')
       const target = anchor ? document.getElementById(anchor) : null
       if (target) target.scrollIntoView({ behavior: 'instant', block: 'start' })
       else window.scrollTo({ top: 0, behavior: 'instant' })
+      const focusTarget = target ?? document.getElementById('main')
+      if (focusTarget) {
+        focusTarget.tabIndex = -1
+        focusTarget.focus({ preventScroll: true })
+      }
     })
     return () => cancelAnimationFrame(frame)
-  }, [pathname, hash, search])
-
+  }, [pathname, hash, search, key])
   return (
     <>
-      <a className="skip-link" href="#main">Skip to content</a>
-      <header className="site-header">
-        <div className="container header-inner">
-          <Link to="/" className="wordmark" aria-label="Bhavya Kumar, home">
-            <span className="monogram">bk<span>.</span></span>
-            <span className="wordmark-name">Bhavya Kumar</span>
-          </Link>
-          <nav className="site-nav" aria-label="Main navigation">
-            <NavLink to="/projects">Projects</NavLink>
-            <Link to="/#experience">Experience</Link>
-            <NavLink to="/contact">Contact</NavLink>
-            <ExternalLink href={IDENTITY.resume} className="nav-resume">Resume</ExternalLink>
-          </nav>
+      <a href="#main" className="skip-link">Skip to content</a>
+      <div className="site-shell">
+        <Rail />
+        <div className="content-column">
+          {children}
+          <footer className="site-footer"><span>© {new Date().getFullYear()} Bhavya Kumar</span><OutsideLink href="https://github.com/Bhavya2025/personal-website">Site source</OutsideLink><a href="#main">Top ↑</a></footer>
         </div>
-      </header>
-      {children}
-      <footer className="site-footer container">
-        <p>© {new Date().getFullYear()} Bhavya Kumar</p>
-        <span>Built with care. Always learning.</span>
-        <a href="#main">Back to top <span aria-hidden="true">↑</span></a>
-      </footer>
+      </div>
     </>
   )
 }
 
-function SectionTitle({ number, label, title, children }: { number: string; label: string; title: string; children?: ReactNode }) {
-  return (
-    <div className="section-heading">
-      <div><p className="eyebrow"><span>{number}</span> {label}</p><h2>{title}</h2></div>
-      {children}
-    </div>
-  )
+function SectionHeading({ number, children, aside }: { number: string; children: ReactNode; aside?: ReactNode }) {
+  return <div className="section-head"><h2><span>{number}</span>{children}</h2>{aside && <span className="section-aside">{aside}</span>}</div>
 }
 
-function GitPreview() {
-  return (
-    <div className="git-preview" aria-label="Diagram of Git commits and a feature branch" role="img">
-      <div className="preview-caption"><span>wyag / object model</span><span>Python</span></div>
-      <svg viewBox="0 0 360 165" aria-hidden="true">
-        <path d="M45 112H315 M125 112C150 112 145 52 182 52H245C280 52 277 112 315 112" fill="none" stroke="#97abc5" strokeWidth="2" />
-        {[45, 125, 220, 315].map(x => <g key={x}><circle cx={x} cy="112" r="9" fill="#f6f8fc" stroke="#2455a3" strokeWidth="2" /><circle cx={x} cy="112" r="3" fill="#2455a3" /></g>)}
-        {[182, 245].map(x => <circle key={x} cx={x} cy="52" r="8" fill="#2455a3" />)}
-        <text x="45" y="146">commit</text><text x="185" y="28">feature</text><text x="290" y="146">main</text>
-      </svg>
-      <div className="preview-bottom"><span>blob → tree → commit</span><span>15 core commands</span></div>
-    </div>
-  )
+function ProjectLinks({ project, details = false }: { project: PortfolioProject; details?: boolean }) {
+  return <div className="project-links">
+    {details && <Link to={`/projects/${project.slug}`}>Project notes <span aria-hidden="true">→</span></Link>}
+    {project.repo && <OutsideLink href={project.repo.href}>{project.id === 'BK-005' ? 'Project archive' : 'Source code'}</OutsideLink>}
+    {project.link && <OutsideLink href={project.link.href}>{project.demo === 'itch' ? 'Play on itch.io' : 'Live app'}</OutsideLink>}
+  </div>
 }
 
-function PipelinePreview() {
-  return (
-    <div className="pipeline-preview" role="img" aria-label="Software Factory pipeline: specify, build, verify, then deploy">
-      <div className="preview-caption"><span>software factory / workflow</span><span>LLM agents</span></div>
-      <div className="pipeline-flow">
-        <div><span>01</span><strong>Specify</strong></div><span aria-hidden="true">→</span>
-        <div><span>02</span><strong>Build</strong></div><span aria-hidden="true">→</span>
-        <div><span>03</span><strong>Verify</strong></div>
-      </div>
-      <div className="pipeline-output"><span aria-hidden="true">↳</span><span>validation gates</span><span>→ live preview</span></div>
-      <div className="preview-bottom"><span>request → working PoC</span><span>Render</span></div>
-    </div>
-  )
+function SafeImage({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
+  const [failed, setFailed] = useState(false)
+  if (failed) return <div className="image-fallback" role="status"><span>Image unavailable</span><p>{alt}. You can inspect the project using its links.</p></div>
+  return <img src={src} alt={alt} width={width} height={height} loading="lazy" onError={() => setFailed(true)} />
 }
 
-function ProjectPreview({ project }: { project: Mission }) {
-  if (project.id === 'BK-103') return <GitPreview />
-  if (project.id === 'BK-005') return <PipelinePreview />
-  if (project.image) return <div className={`image-preview image-preview--${project.id}`}><img src={project.image.src} alt={project.image.alt} loading="lazy" width={project.id === 'BK-001' ? 1280 : 700} height={project.id === 'BK-001' ? 631 : 525} /></div>
-  if (project.demo === 'boids') return <div className="simulation-preview"><Suspense fallback={<p>Loading flocking simulation…</p>}><BoidsSim /></Suspense></div>
-  return <div className="game-preview"><span className="eyebrow">Brackeys Game Jam · 2021</span><strong>Multiplayer<br />Platformer<span aria-hidden="true">↗</span></strong><span>Unity / C# / WebGL</span></div>
+function CurveFigure() {
+  const points = Array.from({ length: 49 }, (_, index) => {
+    const x = 54 + index * 11.5
+    return { x, y: 57 + ((x - 330) ** 2) / 860 }
+  })
+  return <figure className="curve-figure"><figcaption><span>Graph Mechanics</span><span>Function → collision terrain</span></figcaption>
+    <svg viewBox="0 0 660 230" role="img" aria-label="Conceptual illustration of a curve sampled into points for collision terrain">
+      {[70, 120, 170].map(y => <path key={y} d={`M35 ${y}H625`} stroke="#dbe0e5" strokeWidth="1" />)}
+      {[100, 215, 330, 445, 560].map(x => <path key={x} d={`M${x} 27V193`} stroke="#dbe0e5" strokeWidth="1" />)}
+      <path d="M35 193H625M35 193V25" stroke="#89929a" strokeWidth="1" />
+      <polyline points={points.map(point => `${point.x},${point.y}`).join(' ')} fill="none" stroke="#2454bc" strokeWidth="2.5" />
+      {points.filter((_, index) => index % 3 === 0).map(point => <circle key={point.x} cx={point.x} cy={point.y} r="3" fill="#2454bc" />)}
+      <circle cx="468" cy="67" r="10" fill="#bd4c32" /><path d="M544 104v-25l20 7-20 7" stroke="#303a38" strokeWidth="2" fill="#d7e4c7" />
+      <text x="35" y="216">sampled points</text><text x="530" y="216">graph space</text>
+    </svg><p className="figure-note">Conceptual terrain illustration. The game source contains the physics implementation.</p>
+  </figure>
 }
 
-function projectName(project: Mission) {
-  const names: Record<string, string> = {
-    'BK-103': 'Wyag', 'BK-005': 'Software Factory', 'BK-001': 'Taskly',
-    'BK-004': 'Boids', 'BK-002': 'Obstacle-avoiding car', 'BK-003': 'Multiplayer platformer',
+class DemoBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(error: Error, info: ErrorInfo) { console.error('Simulation failed to load:', error.message, info.componentStack) }
+  render() {
+    if (this.state.failed) return <p className="demo-message" role="alert">The simulation couldn’t load. <button type="button" onClick={() => window.location.reload()}>Reload this page</button> to try again.</p>
+    return this.props.children
   }
-  return names[project.id] ?? project.name
 }
 
-function ProjectCard({ project, index }: { project: Mission; index: number }) {
-  return (
-    <article className="project-card" id={`project-${project.id}`}>
-      <ProjectPreview project={project} />
-      <div className="project-body">
-        <p className="project-meta"><span>{String(index + 1).padStart(2, '0')} / {project.id === 'BK-103' ? 'Developer tools' : project.id === 'BK-005' ? 'AI workflows' : project.id === 'BK-001' ? 'Full-stack application' : project.group.toLowerCase()}</span><span>{project.year}</span></p>
-        <h3>{projectName(project)}</h3>
-        <p className="project-summary">{project.summary ?? project.designation}</p>
-        <ul className="project-tags" aria-label="Technologies">{project.stack.slice(0, 3).map(tech => <li key={tech}>{tech}</li>)}</ul>
-        <div className="project-links">
-          {project.repo && <ExternalLink href={project.repo.href}>Source code</ExternalLink>}
-          {project.link && <ExternalLink href={project.link.href}>{project.demo === 'itch' ? 'Play game' : 'Live demo'}</ExternalLink>}
-          {!project.repo && !project.link && <span className="project-context">{project.id === 'BK-005' ? 'NYC hackathon · June 2026' : project.demo === 'boids' ? 'Interactive canvas demo' : 'Hardware prototype'}</span>}
-        </div>
-        <details className="project-details">
-          <summary>Engineering details <span className="detail-toggle" aria-hidden="true" /></summary>
-          <ul>{project.brief.filter(text => !text.startsWith('Live below')).map(text => <li key={text}>{text}</li>)}</ul>
-        </details>
-      </div>
-    </article>
-  )
+function FlockingDemo() {
+  const [running, setRunning] = useState(false)
+  return <figure className="flock-figure"><figcaption><span>Boids / flocking simulation</span><button type="button" onClick={() => setRunning(!running)} aria-pressed={running}>{running ? 'Stop simulation' : 'Run simulation'} <span aria-hidden="true">{running ? '□' : '▷'}</span></button></figcaption>
+    <div className="flock-stage">{running ? <DemoBoundary><Suspense fallback={<p className="demo-message" role="status">Loading the simulation…</p>}><BoidsSim /></Suspense></DemoBoundary> : <div className="demo-rest"><svg width="160" height="70" viewBox="0 0 160 70" aria-hidden="true"><path d="m20 40 10-20 8 10m20 20 10-20 8 10m20 2 10-20 8 10m14 28 10-20 8 10" fill="none" stroke="currentColor" strokeWidth="2" /></svg><p>The flock starts when you press Run.</p></div>}</div>
+    <p className="figure-note">Alignment, cohesion, separation. Move your pointer through the running flock.</p>
+  </figure>
 }
 
-function ContactBand() {
-  return (
-    <section className="contact-band" id="contact" aria-labelledby="contact-title">
-      <div><p className="eyebrow">Let’s connect</p><h2 id="contact-title">Have a role in mind?</h2><p>I’m open to software engineering co-op and internship opportunities.</p></div>
-      <div className="contact-band-actions"><a className="email-link" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}<Arrow diagonal /></a><div className="social-links"><ExternalLink href={IDENTITY.github}>GitHub</ExternalLink><ExternalLink href={IDENTITY.linkedin}>LinkedIn</ExternalLink></div></div>
-    </section>
-  )
+function ProjectVisual({ project }: { project: PortfolioProject }) {
+  if (project.id === 'BK-103') return <GitObjects />
+  if (project.id === 'BK-006') return <CurveFigure />
+  if (project.demo === 'boids') return <FlockingDemo />
+  if (project.image) return <figure className={`project-image project-image--${project.id}`}><SafeImage src={project.image.src} alt={project.image.alt} width={project.id === 'BK-001' ? 1280 : 700} height={project.id === 'BK-001' ? 631 : 525} /><figcaption>{project.id === 'BK-001' ? 'Taskly / project board interface' : 'Arduino prototype / ultrasonic sensing and motor control'}</figcaption></figure>
+  return null
+}
+
+function WorkEntry({ project, index, showVisual = true }: { project: PortfolioProject; index: number; showVisual?: boolean }) {
+  return <article className="work-entry" id={`project-${project.id}`}>
+    <div className="work-meta"><span>{String(index + 1).padStart(2, '0')} / {project.category}</span><span>{project.year}</span></div>
+    <div className="work-description"><div><h3><Link to={`/projects/${project.slug}`}>{project.title}<span aria-hidden="true">↗</span></Link></h3><p className="work-overview">{project.overview}</p></div><p className="work-detail">{project.detail}</p></div>
+    <div className="work-bottom"><span className="project-context">{project.context}</span><ProjectLinks project={project} details /></div>
+    {showVisual && <ProjectVisual project={project} />}
+  </article>
+}
+
+function ContactEnding() {
+  return <section className="contact-ending" aria-labelledby="contact-title"><p className="small-label">Contact</p><h2 id="contact-title">Open to software engineering roles.</h2><p>For co-op and internship opportunities, you can reach me at:</p><a className="contact-address" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}<Arrow /></a></section>
 }
 
 export function HomePage() {
-  return (
-    <main className="container" id="main" tabIndex={-1}>
-      <section className="hero-section" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <p className="eyebrow hero-eyebrow">Software engineering &amp; applied mathematics</p>
-          <h1 id="hero-title">Bhavya Kumar<span>.</span></h1>
-          <p className="hero-statement">Building software.<br /><em>Understanding systems.</em></p>
-          <p className="hero-description">Applied Mathematics student at the University of Waterloo and software engineering intern at ToadEx. I build backend systems, web applications, and AI agent workflows.</p>
-          <div className="hero-actions"><ExternalLink href={IDENTITY.resume} className="button button-primary">View resume</ExternalLink><a href="#projects" className="button button-secondary">Explore my work <span aria-hidden="true">↓</span></a></div>
-          <p className="availability"><span aria-hidden="true" />Open to co-op &amp; internship opportunities</p>
-        </div>
-        <figure className="hero-portrait"><div className="portrait-wrap"><img src={portrait} alt="Bhavya Kumar at an aviation museum" width="520" height="495" fetchPriority="high" /></div><figcaption><span>Waterloo, Ontario</span><span>Math → code</span></figcaption></figure>
-      </section>
-
-      <div className="at-a-glance" aria-label="Current experience and education">
-        <div><span className="eyebrow">Currently</span><p>Software Engineering Intern <span className="subtle">at ToadEx</span></p></div>
-        <div><span className="eyebrow">Studying</span><p>Honours Mathematics <span className="subtle">at Waterloo</span></p></div>
-        <ExternalLink href={IDENTITY.github}>Find me on GitHub</ExternalLink>
-      </div>
-
-      <section className="portfolio-section" id="projects">
-        <SectionTitle number="01" label="Selected work" title="A few things I’ve built."><Link to="/projects" className="text-link">All projects <Arrow /></Link></SectionTitle>
-        <div className="projects-grid">{featuredProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}</div>
-      </section>
-
-      <section className="portfolio-section experience-section" id="experience">
-        <SectionTitle number="02" label="Experience" title="Putting ideas into practice." />
-        <div className="experience-list">{EXPERIENCE.map((entry, index) => <article className="experience-entry" key={entry.org}>
-          <div className="experience-date"><span>{entry.period}</span><span className="experience-location">Remote{index === 0 && <span className="current-label">Current</span>}</span></div>
-          <div className="experience-content"><h3>{entry.role}</h3><p className="experience-org">{entry.org}</p><p>{entry.summary}</p>{entry.bullets && <ul>{entry.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>}</div>
-        </article>)}</div>
-      </section>
-
-      <section className="portfolio-section about-section" id="about">
-        <SectionTitle number="03" label="Background" title="A foundation in mathematics." />
-        <div className="background-grid">
-          <div className="education-block"><p className="eyebrow">Education</p><h3>{EDUCATION.school}</h3><p className="degree">{EDUCATION.degree}</p><p>{EDUCATION.major}</p><p className="education-period">{EDUCATION.period}</p><span className="scholarship">{EDUCATION.award}</span><p className="coursework"><span>Relevant coursework</span>Data Structures, Algorithm Design in C, Functional Programming, Probability</p><div className="recognition"><p className="eyebrow">Recognition</p>{ACHIEVEMENTS.filter(a => a.tag === 'BRONZE MEDAL' || a.tag === 'FINALIST').map(a => <p key={a.tag}><strong>{a.tag === 'BRONZE MEDAL' ? 'Bronze medalist' : 'Finalist'}</strong><span>{a.text}</span></p>)}</div></div>
-          <div className="skills-block"><p className="eyebrow">Technical toolkit</p>{SKILLS.map(group => <div className="skill-group" key={group.label}><h3>{group.label}</h3><ul>{group.items.map(item => <li key={item}>{item}</li>)}</ul></div>)}</div>
-        </div>
-      </section>
-      <ContactBand />
-    </main>
-  )
+  return <main id="main" tabIndex={-1}>
+    <header className="intro"><div className="page-datum"><span>Portfolio / 2026</span><span>Waterloo, Ontario</span></div>
+      <h1>Bhavya Kumar</h1>
+      <p className="intro-degree">Applied mathematics student.<br />Software engineering intern.</p>
+      <p className="intro-text">I study at the University of Waterloo and work on Python middleware at ToadEx. Here’s a selection of my software projects and experiments.</p>
+      <div className="intro-links"><OutsideLink href={IDENTITY.resume}>Read my résumé <span className="file-type">PDF</span></OutsideLink><a href={`mailto:${IDENTITY.email}`}>Get in touch <Arrow /></a></div>
+      <p className="availability"><span aria-hidden="true" />Open to co-op &amp; internship roles</p>
+    </header>
+    <section className="work-section" id="work"><SectionHeading number="01" aside="2026 / Selected projects">Selected work</SectionHeading>{SELECTED_PROJECTS.map((project, index) => <WorkEntry key={project.id} project={project} index={index} />)}<Link className="all-work-link" to="/projects">Browse the full project index <span aria-hidden="true">→</span></Link></section>
+    <section className="experience-section" id="experience"><SectionHeading number="02">Experience</SectionHeading>{EXPERIENCE.map(entry => <article className="experience-entry" key={entry.org}><div className="experience-meta"><span>{entry.period}</span>{entry.location && <span>{entry.location}</span>}</div><div><h3>{entry.org}</h3><p className="experience-role">{entry.role}</p><p>{entry.summary}</p>{entry.bullets && <details className="experience-details"><summary>Selected contributions <span aria-hidden="true">+</span></summary><ul>{entry.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul></details>}</div></article>)}</section>
+    <section className="about-section" id="about"><SectionHeading number="03">Background</SectionHeading><div className="about-columns"><div><p className="small-label">Education</p><h3>{EDUCATION.school}</h3><p>{EDUCATION.degree}</p><p className="muted">{EDUCATION.major}</p><p className="education-period">{EDUCATION.period}</p><p className="scholarship">{EDUCATION.award}</p><p className="small-label recognition-label">Also</p><p className="recognition">Bronze medalist, TIMO International Math Olympiad.<br />Finalist, Northeastern University London Essay Competition.</p></div><div className="toolkit"><p className="small-label">Working with</p>{SKILLS.map(group => <div key={group.label}><h3>{group.label}</h3><p>{group.items.join(' · ')}</p></div>)}</div></div></section>
+    <ContactEnding />
+  </main>
 }
 
 export function ProjectsPage() {
-  const [filter, setFilter] = useState('All work')
-  const filters = ['All work', 'Software', 'Hardware', 'Games']
-  const visible = allProjects.filter(project => filter === 'All work' || project.group === filter.toUpperCase())
-  return (
-    <main className="container" id="main" tabIndex={-1}>
-      <div className="page-intro"><Link to="/" className="back-link"><span aria-hidden="true">←</span> Back to home</Link><p className="eyebrow">Projects &amp; experiments</p><h1>Built to learn.<br /><em>Made to work.</em></h1><p>From Git internals to AI workflows, a selection of the systems, applications, and experiments I’ve worked on. Open a project’s engineering details for a closer look.</p></div>
-      <div className="project-toolbar"><div className="project-filters" role="group" aria-label="Filter projects">{filters.map(label => <button type="button" key={label} aria-pressed={filter === label} className={filter === label ? 'is-selected' : ''} onClick={() => setFilter(label)}>{label}</button>)}</div><span className="project-count" aria-live="polite">{visible.length} project{visible.length === 1 ? '' : 's'}</span></div>
-      <div className="projects-grid all-projects">{visible.map(project => <ProjectCard key={project.id} project={project} index={allProjects.indexOf(project)} />)}</div>
-      <ContactBand />
-    </main>
-  )
+  const [category, setCategory] = useState('All')
+  const [query, setQuery] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
+  const categories = ['All', 'Software', 'Math & simulation', 'Hardware', 'Games']
+  const visible = ORDERED_PROJECTS.filter(project => {
+    const categoryMatch = category === 'All' || category === 'Math & simulation' && project.category === category || category === 'Software' && project.group === 'SOFTWARE' || category === 'Hardware' && project.group === 'HARDWARE' || category === 'Games' && project.group === 'GAMES'
+    return categoryMatch && `${project.title} ${project.detail} ${project.stack.join(' ')}`.toLowerCase().includes(query.toLowerCase().trim())
+  })
+  return <main id="main" tabIndex={-1}><header className="page-intro"><div className="page-datum"><Link to="/">Index</Link><span>Projects / 2021–2026</span></div><h1>Project index<span className="count-mark">{PROJECTS.length.toString().padStart(2, '0')}</span></h1><p>Software, simulations, and earlier experiments. Each entry includes its scope and the evidence available to inspect.</p></header>
+    <div className="index-controls"><label className="search-label" htmlFor="project-search">Find a project<input ref={searchRef} id="project-search" type="search" placeholder="Search name or technology…" value={query} onChange={event => setQuery(event.target.value)} /></label><div className="category-filters" role="group" aria-label="Project categories">{categories.map(filter => <button type="button" key={filter} aria-pressed={category === filter} onClick={() => setCategory(filter)}>{filter}</button>)}</div></div>
+    <p className="results-label" aria-live="polite">{visible.length} of {PROJECTS.length} projects</p>
+    <div className="project-index">{visible.map(project => <WorkEntry key={project.id} project={project} index={ORDERED_PROJECTS.indexOf(project)} showVisual={false} />)}{visible.length === 0 && <div className="empty-state"><h2>No matching projects</h2><p>Try a project name or a technology such as Python.</p><button type="button" onClick={() => { setCategory('All'); setQuery(''); searchRef.current?.focus() }}>Clear search and filters <span aria-hidden="true">↺</span></button></div>}</div>
+    <ContactEnding />
+  </main>
+}
+
+export function ProjectPage() {
+  const { slug } = useParams()
+  const project = PROJECTS.find(item => item.slug === slug)
+  if (!project) return <NotFoundPage />
+  const next = ORDERED_PROJECTS[(ORDERED_PROJECTS.indexOf(project) + 1) % ORDERED_PROJECTS.length]!
+  return <main id="main" tabIndex={-1}><header className="project-intro"><div className="page-datum"><Link to="/projects">← Project index</Link><span>{project.year} / {project.category}</span></div><p className="small-label">{project.context}</p><h1>{project.title}</h1><p className="project-lead">{project.overview}</p><p className="project-description">{project.detail}</p><ProjectLinks project={project} /></header>
+    <dl className="project-spec"><div><dt>Technologies</dt><dd>{project.stack.join(', ')}</dd></div><div><dt>Focus</dt><dd>{project.focus}</dd></div></dl>
+    <ProjectVisual key={project.id} project={project} />
+    <div className="implementation-notes">{project.sections.map((section, index) => <section key={section.title}><span className="note-number">0{index + 1}</span><div><h2>{section.title}</h2><p>{section.text}</p></div></section>)}</div>
+    {project.credit && <p className="project-credit">{project.credit.text} <OutsideLink href={project.credit.href}>{project.credit.label}</OutsideLink>.</p>}
+    <nav className="project-pagination" aria-label="More projects"><Link to="/projects">← All projects</Link><Link to={`/projects/${next.slug}`}>{next.title} <span aria-hidden="true">→</span></Link></nav>
+    <ContactEnding />
+  </main>
 }
 
 export function ContactPage() {
-  return (
-    <main className="container contact-page" id="main" tabIndex={-1}>
-      <div className="page-intro"><Link to="/" className="back-link"><span aria-hidden="true">←</span> Back to home</Link><p className="eyebrow">Contact</p><h1>Let’s build<br /><em>something useful.</em></h1><p>I’m open to software engineering co-op and internship opportunities. For a role, a project, or a conversation about my work, email is the best way to reach me.</p></div>
-      <a className="contact-email" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}<Arrow diagonal /></a>
-      <div className="contact-options"><ExternalLink href={IDENTITY.linkedin}><span><strong>LinkedIn</strong><span>Professional background</span></span></ExternalLink><ExternalLink href={IDENTITY.github}><span><strong>GitHub</strong><span>Projects &amp; source code</span></span></ExternalLink><ExternalLink href={IDENTITY.resume}><span><strong>Resume</strong><span>Experience &amp; qualifications · PDF</span></span></ExternalLink></div>
-      <p className="contact-location">Based in Waterloo, Ontario, Canada.</p>
-    </main>
-  )
+  return <main id="main" tabIndex={-1}><header className="page-intro"><div className="page-datum"><Link to="/">Index</Link><span>Contact</span></div><h1>Get in touch<span className="name-mark" aria-hidden="true">↗</span></h1><p>For software engineering co-op roles, internships, or a conversation about one of my projects, email me.</p></header><a className="contact-page-address" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}<Arrow /></a>
+    <div className="contact-directory"><OutsideLink href={IDENTITY.resume}><span><strong>Résumé</strong><span>Experience and qualifications · PDF</span></span></OutsideLink><OutsideLink href={IDENTITY.github}><span><strong>GitHub</strong><span>Public repositories and source code</span></span></OutsideLink><OutsideLink href={IDENTITY.linkedin}><span><strong>LinkedIn</strong><span>Professional profile</span></span></OutsideLink></div><p className="location-note">Based in Waterloo, Ontario, Canada.</p>
+  </main>
 }
 
 export function NotFoundPage() {
-  return <main className="container" id="main" tabIndex={-1}><div className="page-intro"><p className="eyebrow">404 / Page not found</p><h1>Let’s get you<br /><em>back on track.</em></h1><p>This page doesn’t exist. You can find my work and experience on the homepage.</p><Link to="/" className="button button-primary">Back to home <span aria-hidden="true">→</span></Link></div></main>
+  return <main id="main" tabIndex={-1}><div className="page-intro not-found"><div className="page-datum"><span>404</span><span>Page not found</span></div><h1>No page here.</h1><p>The address may have changed. You can return to the index or browse my projects.</p><div className="project-links"><Link to="/">Back to index →</Link><Link to="/projects">Project index →</Link></div></div></main>
 }

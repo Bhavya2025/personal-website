@@ -28,6 +28,22 @@ export interface Mission {
 
 export const MISSIONS: Mission[] = [
   {
+    id: 'BK-006',
+    year: '2026',
+    name: 'GRAPH MECHANICS',
+    designation: 'A curve-and-physics puzzle',
+    summary: 'Shape a curve with parameter sliders, then launch a ball toward a target. Sampled functions become collision terrain in a browser physics simulation.',
+    status: 'BUILT',
+    group: 'GAMES',
+    stack: ['TypeScript', 'React', 'Matter.js', 'mathjs'],
+    brief: [
+      'Built three levels around adjustable line and quadratic templates. A shared coordinate transform keeps graph-space points, the canvas, and the physics world aligned.',
+      'Compiled and cached function templates with mathjs, sampled finite points, and converted the segments into overlapping static Matter.js bodies.',
+      'Used local storage for progress and best times. The leaderboard is a local mock; there is no online leaderboard or multiplayer service.',
+    ],
+    repo: { label: 'SOURCE', href: 'https://github.com/Bhavya2025/graph-mechanics' },
+  },
+  {
     id: 'BK-001',
     year: '2026',
     name: 'TASKLY',
@@ -55,6 +71,7 @@ export const MISSIONS: Mission[] = [
     status: 'BUILT',
     group: 'SOFTWARE',
     stack: ['SuperPlane', 'LLM agents', 'Render'],
+    repo: { label: 'PROJECT ARCHIVE', href: 'https://github.com/Bhavya2025/sp-hacks' },
     brief: [
       'Built at a New York LLM-agent hackathon in June 2026. The workflow takes a natural-language feature request through specification, implementation, and verification.',
       'Added validation gates between stages to prevent failed model output from advancing through the pipeline.',
@@ -134,7 +151,7 @@ export const RUN_PROJECTS: Record<string, string> = {
   unity: 'BK-003',
 }
 
-export const FEATURED_PROJECT_IDS = ['BK-103', 'BK-005', 'BK-001'] as const
+export const FEATURED_PROJECT_IDS = ['BK-103', 'BK-006', 'BK-001'] as const
 
 export const IDENTITY = {
   name: 'BHAVYA KUMAR',
