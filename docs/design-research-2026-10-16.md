@@ -1,5 +1,7 @@
 # Research and design decisions: Bhavya Kumar's portfolio
 
+> Scope update: the user subsequently requested removal of the portrait and every project except Taskly. The current site follows that request. The original research and multi-project QA below describe the preserved earlier revision (`bcd5228`). Current verification is in `docs/qa/taskly-only-2026-10-16/evidence.json`.
+
 16 October 2026
 
 ## Goal

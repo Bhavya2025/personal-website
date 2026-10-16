@@ -10,7 +10,6 @@
 .rail-nav a:hover, .rail-nav a.active { color: var(--accent); }
 .rail-nav a.active > span { color: var(--accent); }
 .rail-person { margin-top: 45px; }
-.rail-person img { width: 76px; height: 88px; object-fit: cover; object-position: 50% 30%; filter: grayscale(1); margin-bottom: 15px; }
 .rail-person p { font-size: 12px; line-height: 1.7; margin: 0 0 7px; }
 .rail-person > span { color: var(--muted); font-size: 11px; }
 .rail-links { display: flex; align-items: flex-start; flex-direction: column; gap: 3px; padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--line); max-width: 145px; }

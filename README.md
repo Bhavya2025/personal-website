@@ -1,10 +1,10 @@
 # bhavyakumar.ca
 
-Bhavya Kumar's personal work index: software projects, mathematical experiments, engineering experience, and contact details.
+Bhavya Kumar's personal website: Taskly, engineering experience, education, and contact details.
 
 ## Development
 
-React 19, TypeScript, React Router, and Vite. IBM Plex Sans and Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. An optional canvas simulation loads only after the visitor starts it.
+React 19, TypeScript, React Router, and Vite. IBM Plex Sans and Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. The current site displays Taskly as its only project and does not load a personal photograph.
 
 ```bash
 npm ci
@@ -17,8 +17,7 @@ npm run preview -- --port 5182
 ## Content and routes
 
 - `src/portfolio/Portfolio.tsx`: shared identity rail, homepage, project index, individual project pages, contact, and not-found handling.
-- `src/portfolio/GitObjects.tsx`: keyboard-operable conceptual Git object diagram.
-- `src/portfolio/data.ts`: project slugs, scope, descriptions, implementation notes, and tutorial credit.
+- `src/portfolio/data.ts`: Taskly’s slug, scope, descriptions, and implementation notes.
 - `src/portfolio/portfolio.css`: responsive layout and visual system.
 - `src/lib/missions.ts`: project records, images, source/demo links, and featured selection.
 - `src/lib/resume.ts`: resume-backed experience, education, and skills.
@@ -32,7 +31,7 @@ Older interface source remains for reference and is not imported by the current 
 
 [Research synthesis](docs/design-research-2026-10-16.md) records the actual references and resulting design decisions. [Design contract](docs/design-contract.md) defines the viewports, interactions, and content states. Detailed source inspection and visual-reference notes are in `docs/research/`.
 
-Rendered QA evidence, contrast calculations, and the verification record are under `docs/qa/portfolio-overhaul-2026-10-16/`. Local testing covers desktop, tablet, mobile, keyboard operation, search/filters, routes, and loading/failure recovery. It does not establish field Core Web Vitals or complete WCAG conformance.
+Rendered QA evidence, contrast calculations, and the verification record are under `docs/qa/portfolio-overhaul-2026-10-16/`. Local testing covers desktop, tablet, mobile, keyboard operation, routes and image failure recovery. Earlier QA records describe the prior multi-project revision; current Taskly-only checks are recorded separately. It does not establish field Core Web Vitals or complete WCAG conformance.
 
 ## Preserved versions
 

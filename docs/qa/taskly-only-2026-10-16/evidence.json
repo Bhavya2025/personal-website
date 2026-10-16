@@ -1,0 +1,59 @@
+{
+  "contract": "Taskly-only scope update: no personal photograph; Taskly is the sole home/index/detail project. Preserve other biography and contact content. Earlier multi-project design notes are historical.",
+  "targetViewports": [
+    "390x844",
+    "768x1024",
+    "1440x1000"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Removed inaccessible/dead project controls and self-referencing pagination. Taskly retains descriptive source/live links and existing route focus management. Project search and category controls are removed because only one project remains; navigation and layout preserve the previously checked keyboard behavior."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered the revised homepage at phone, tablet, and desktop widths. Checked the mobile Taskly detail page: no horizontal overflow; the only DOM image is the Taskly interface screenshot."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "not-applicable",
+      "reason": "The async simulation is removed. Remaining static Taskly image reserves dimensions and retains its existing loading/fallback behavior."
+    },
+    "empty": {
+      "status": "not-applicable",
+      "reason": "There is one fixed project and no search/category UI to create an empty result."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "All six removed project slugs now show the not-found recovery page. Taskly continues to render its detail page."
+    },
+    "partial": {
+      "status": "not-applicable",
+      "reason": "The single project record has its screenshot and verified source/demo links. No incomplete extra project entries are displayed."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Homepage and Projects page each contain only Taskly. Personal photo is absent from DOM and production assets. No other project names appear in homepage text; Taskly detail has no next-project/self link. Build, lint, and diff checks pass."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "No account or external write/permission flow exists."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x1000",
+      "artifact": "desktop.jpg",
+      "observation": "No portrait in the desktop identity rail; Taskly is the sole featured project."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "mobile.jpg",
+      "observation": "Mobile homepage with Taskly-only content and compact navigation."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "tablet.jpg",
+      "observation": "Tablet layout with the same single-project scope."
+    }
+  ]
+}
