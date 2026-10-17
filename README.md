@@ -1,10 +1,10 @@
 # bhavyakumar.ca
 
-Bhavya Kumar's personal website: Taskly, Wyag, engineering experience, education, résumé, and contact details.
+Bhavya Kumar's personal website: Taskly, Wyag, Project Ghost, engineering experience, education, résumé, and contact details.
 
 ## Development
 
-React 19, TypeScript, React Router, and Vite. Inter and JetBrains Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. The current site features Taskly and Wyag, uses a 12-column editorial layout at desktop/tablet widths, and does not load a personal photograph. Project Ghost is excluded.
+React 19, TypeScript, React Router, and Vite. Inter and JetBrains Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. The current site features Taskly, Wyag and Project Ghost, uses a 12-column editorial layout at desktop/tablet widths, and does not load a personal photograph. Experience focuses on ToadEx.
 
 ```bash
 npm ci
@@ -29,7 +29,9 @@ Older interface source remains for reference and is not imported by the current 
 
 ## Research and QA
 
-The [current editorial-grid contract](docs/qa/editorial-grid-2026-10-17/contract.md) follows the user’s new pasted brief and subsequent instruction to exclude Project Ghost. It supersedes the earlier Taskly-only scope and résumé-removal decision. Current screenshots and checks are recorded in `docs/qa/editorial-grid-2026-10-17/evidence.json`. The stronger experience wording and 2027 availability were supplied by the user; this website change does not independently verify delivery claims or implement changes to the project repositories.
+The [latest targeted-polish contract](docs/qa/portfolio-polish-2026-10-17/contract.md) supersedes the earlier Ghost exclusion and Wyag UI attribution. It follows the user’s supplied Ghost copy, removes Clevered, adjusts the subtitle/availability indicator, and restores the two-card systems grid. Current rendered checks are in `docs/qa/portfolio-polish-2026-10-17/`.
+
+The [preceding editorial-grid contract](docs/qa/editorial-grid-2026-10-17/contract.md) follows the user’s new pasted brief and subsequent instruction to exclude Project Ghost. It supersedes the earlier Taskly-only scope and résumé-removal decision. Current screenshots and checks are recorded in `docs/qa/editorial-grid-2026-10-17/evidence.json`. The stronger experience wording and 2027 availability were supplied by the user; this website change does not independently verify delivery claims or implement changes to the project repositories.
 
 The [17 October review and competitive research](docs/reviews/2026-10-17/research.md) documents the preceding layout direction. Three independent AI reviewers inspected a frozen site without candidate background or other reviews; their original reports are saved alongside the synthesis. This is a simulated review, not a human hiring study. The [preceding design contract](docs/reviews/2026-10-17/design-contract.md) and `docs/qa/portfolio-review-2026-10-17/` record the current checks.
 

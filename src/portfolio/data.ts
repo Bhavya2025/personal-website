@@ -39,7 +39,8 @@ export const ORDERED_PROJECTS = [...SELECTED_PROJECTS, ...PROJECTS.filter(projec
 /** Homepage content supplied in the user's October 17 editorial brief. */
 export const HERO = {
   eyebrow: 'Software Engineering · Applied Mathematics',
-  lead: 'Software Engineering Intern at ToadEx · Applied Mathematics (Scientific Computing & ML) at the University of Waterloo.',
+  lead: 'Software Engineering Intern at ToadEx.',
+  academicLine: 'Applied Mathematics (Scientific Computing & ML) at the University of Waterloo.',
   body: 'I build fault-tolerant backend middleware, developer tooling, and AI-orchestrated web applications. Currently architecting hardware-facing Python/FastAPI payment and printing systems for multi-tenant restaurant kiosks.',
   availability: 'Available for 2027 SWE Co-op / Internships (Flexible Waterloo Sequence)',
 }
@@ -53,19 +54,24 @@ export interface SystemsProject {
   stack: string[]
   description: string
   repo: string
-  credit?: { label: string; href: string }
 }
 
 /** Add or edit secondary projects here; absent demo links are never fabricated. */
 export const SYSTEMS_PROJECTS: SystemsProject[] = [
   {
-    id: 'wyag', title: 'Wyag', subtitle: 'Custom Git Version Control Engine',
+    id: 'wyag', title: 'Wyag', subtitle: 'Git Version Control Engine',
     stack: ['Python', 'Systems', 'SHA-1', 'Merkle DAG'],
     description: 'Command-line Git client built from scratch implementing a content-addressable SHA-1 object store, Merkle DAG traversal, and a binary .git/index parser.',
     repo: 'https://github.com/Bhavya2025/wyag',
-    credit: { label: 'Learning implementation · Write Yourself a Git', href: 'https://wyag.thb.lt/' },
   },
-
+  {
+    id: 'project-ghost',
+    title: 'Project Ghost — Codebase Audio Intelligence',
+    subtitle: 'Automated Repository Briefing Pipeline',
+    stack: ['TypeScript', 'Gemini Flash API', 'ElevenLabs', 'Vultr'],
+    description: 'Developer tool that ingests GitHub repositories, maps module dependency graphs using Gemini 2.5 Flash, and synthesizes technical audio architecture walkthroughs via ElevenLabs.',
+    repo: 'https://github.com/Bhavya2025/project-ghost',
+  },
 ]
 
 export const TECHNICAL_STACK = [

@@ -1,5 +1,7 @@
 # Editorial grid revision — 17 October 2026
 
+> Historical snapshot: the later [targeted polish](../portfolio-polish-2026-10-17/contract.md) restores Ghost using new user-supplied copy, removes Clevered and removes the Wyag tutorial link from the UI.
+
 The user's newly pasted brief supersedes the previous Taskly-only / résumé-removal scope. Restore the saved résumé, add Wyag, and use the supplied 2027 availability, experience and hero copy. Keep no portrait or geographic labels outside education context.
 
 Purpose: clear engineering introduction, inspectable work and direct professional contact. Direction: minimalist editorial, with a warm off-white canvas (#FAF9F6), dark ink (#111111), secondary #555555 and #E5E5E0 rules. Inter for text; JetBrains Mono for metadata. No new animation or UI framework.

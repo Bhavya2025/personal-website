@@ -1,0 +1,84 @@
+{
+  "contract": "contract.md",
+  "targetViewports": [
+    "1440x1000",
+    "768x1024",
+    "390x844"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "The emerald indicator remains decorative (aria-hidden) beside the full availability text and has no animation. Visible focus is present on the current Wyag heading in the captures. Heading structure and Source links retain their existing semantic components. The changed copy fits narrow screens; contrast and skip/navigation keyboard behavior use the unchanged styles/components verified in ../editorial-grid-2026-10-17/evidence.json. This is a targeted visual/content check, not a new full accessibility audit."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered changed content at 1440x1000, 768x1024 and 390x844, with an extra 320x740 check. No horizontal page overflow. Desktop cards measure 405px each with a 24px gap and equal 439.93px heights. The academic line measures 924.88px at 1440 and fits within the page; at the 800px nowrap threshold it is a single 30px line and ends at x735.45 within a 785px client width. At 799px it returns to normal wrapping. Mobile grid is one column. Subtitle declares max-width:42ch; the academic span intentionally uses natural width on wider screens. Screenshot exports may be provider-scaled below CSS viewport dimensions."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Unchanged static rendering and lazy screenshot dimensions (1280x631) preserve existing image structure. Hero/experience/cards render immediately; no new loading behavior was added. Prior image-loading verification is recorded in the preceding editorial-grid evidence."
+    },
+    "empty": {
+      "status": "not-applicable",
+      "reason": "The fixed project list contains Taskly and two secondary cards; no search/filter, remote collection or new empty-result state exists."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Unknown-route and screenshot-error handling are unchanged by this content/CSS patch. Both were exercised in the immediately preceding editorial-grid verification; no new error path was introduced or independently re-tested in this targeted pass."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "The added Ghost card and Wyag each show only their Source link, with no fabricated live-demo button. Wyag tutorial attribution is removed from the UI as requested. Ghost wording is user-supplied and its divergence from the linked public Python/Streamlit source is recorded in the contract."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Rendered Experience contains only ToadEx. Both secondary cards show the requested copy/tags with correct source hrefs; the removed tutorial link is absent. The indicator computes to 8px, rgb(16,185,129), with the exact 3px rgba ring. New structure and source destinations are saved in browser-checks.json."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "No permission, account, upload, payment or external mutation flow was added."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x1000",
+      "artifact": "hero-1440.jpg",
+      "observation": "Academic phrase stays on a single desktop line and availability has the requested emerald dot/ring. Experience begins with ToadEx only."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "systems-1440.jpg",
+      "observation": "Two equal-height systems cards, a 24px gap, aligned Source links, no Wyag tutorial link and the requested Ghost content."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "systems-768.jpg",
+      "observation": "At the desktop/tablet grid threshold, both cards remain in equal columns and long Ghost labels/tags wrap."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "hero-390.jpg",
+      "observation": "Role and academic text wrap safely on the phone; the decorative indicator stays beside its availability wording."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "systems-390.jpg",
+      "observation": "Systems cards stack on mobile."
+    },
+    {
+      "viewport": "320x740",
+      "artifact": "systems-320.jpg",
+      "observation": "Extra-narrow project text and tags remain within the page width."
+    }
+  ],
+  "validation": [
+    "npm run build passed",
+    "npm run lint passed",
+    "Targeted browser geometry/content checks saved in browser-checks.json"
+  ],
+  "limits": [
+    "Ghost description and TypeScript tags are user supplied; the linked public repository previously inspected uses Python/Streamlit. No project implementation was modified or verified as a TypeScript dependency-graph pipeline.",
+    "The prior full route, PDF and image-error checks were not unnecessarily repeated for this content/CSS-only refinement.",
+    "No live deployment performed."
+  ]
+}

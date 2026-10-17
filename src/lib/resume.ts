@@ -48,13 +48,7 @@ export const EXPERIENCE: ExperienceEntry[] = [
     ],
     technologies: ['Python', 'FastAPI', 'Django', 'SQLite', 'Vue', 'REST APIs'],
   },
-  {
-    org: 'Clevered AI Fellowship',
-    role: 'Student Fellow',
-    period: 'Jan 2024 – Feb 2024',
-    summary:
-      'Built a voice-activated accessibility prototype in Python during a mentored AI fellowship.',
-  },
+
 ]
 
 export interface SkillGroup {

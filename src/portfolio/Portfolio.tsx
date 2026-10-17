@@ -114,10 +114,10 @@ function FeaturedProject({ project }: { project: PortfolioProject }) {
 }
 
 function SystemsGrid() {
-  return <div className={`systems-grid${SYSTEMS_PROJECTS.length === 1 ? ' systems-grid-single' : ''}`}>{SYSTEMS_PROJECTS.map(project => <article className="systems-project" key={project.id} id={`project-${project.id}`}>
+  return <div className="systems-grid">{SYSTEMS_PROJECTS.map(project => <article className="systems-project" key={project.id} id={`project-${project.id}`}>
     <p className="eyebrow">Systems &amp; Engineering</p><h3>{project.title}</h3><p className="systems-subtitle">{project.subtitle}</p>
     <p className="systems-description">{project.description}</p><TechnologyTags items={project.stack} />
-    <div className="systems-links"><OutsideLink href={project.repo}>Source</OutsideLink>{project.credit && <OutsideLink href={project.credit.href} className="project-credit">{project.credit.label}</OutsideLink>}</div>
+    <div className="systems-links"><OutsideLink href={project.repo}>Source</OutsideLink></div>
   </article>)}</div>
 }
 
@@ -139,7 +139,7 @@ export function HomePage() {
   return <main id="main" tabIndex={-1}>
     <header className="intro">
       <p className="eyebrow">{HERO.eyebrow}</p><h1>Bhavya Kumar</h1>
-      <p className="intro-role">{HERO.lead}</p><p className="intro-text">{HERO.body}</p>
+      <p className="intro-role"><span className="intro-position">{HERO.lead}</span><span className="intro-academic">{HERO.academicLine}</span></p><p className="intro-text">{HERO.body}</p>
       <p className="availability"><span aria-hidden="true" />{HERO.availability}</p>
       <div className="intro-links"><ResumeLink /><OutsideLink href={IDENTITY.github} className="pill">GitHub</OutsideLink><OutsideLink href={IDENTITY.linkedin} className="pill">LinkedIn</OutsideLink><a href={`mailto:${IDENTITY.email}`} className="pill">Email<Arrow /></a></div>
     </header>

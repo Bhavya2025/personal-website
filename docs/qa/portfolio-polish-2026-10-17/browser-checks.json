@@ -1,0 +1,48 @@
+[
+  {
+    "cards": [
+      {
+        "height": 439.9296875,
+        "source": "https://github.com/Bhavya2025/wyag",
+        "title": "Wyag"
+      },
+      {
+        "height": 439.9296875,
+        "source": "https://github.com/Bhavya2025/project-ghost",
+        "title": "Project Ghost — Codebase Audio Intelligence"
+      }
+    ],
+    "gap": "24px",
+    "gridColumns": "405px 405px",
+    "overflow": false,
+    "viewport": [
+      1440,
+      1000
+    ],
+    "wyagTutorialLink": false
+  },
+  {
+    "columns": "249.375px 249.375px",
+    "overflow": false,
+    "viewport": [
+      768,
+      1024
+    ]
+  },
+  {
+    "academicWhiteSpace": "normal",
+    "overflow": false,
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "columns": "273px",
+    "overflow": false,
+    "viewport": [
+      320,
+      740
+    ]
+  }
+]
