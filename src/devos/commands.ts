@@ -135,7 +135,7 @@ export const commands: Record<string, Command> = {
       api.print('EDUCATION', 'system')
       api.print(`  ${EDUCATION.school} · ${EDUCATION.degree}`)
       api.print(`  ${EDUCATION.major}`)
-      api.print(`  ${EDUCATION.period} · ${EDUCATION.location} · ${EDUCATION.award}`)
+      api.print(`  ${EDUCATION.period} · ${EDUCATION.award}`)
       api.print('')
       api.print('  Selected coursework:')
       for (const c of EDUCATION.coursework) {
@@ -161,16 +161,8 @@ export const commands: Record<string, Command> = {
   },
 
   resume_download: {
-    description: 'download my resume as a PDF',
-    run: (_args, api) => {
-      const a = document.createElement('a')
-      a.href = IDENTITY.resume
-      a.download = 'Bhavya-Kumar-Resume.pdf'
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
-      api.print('↓ downloading resume.pdf ...', 'system')
-    },
+    description: 'resume download is unavailable',
+    run: (_args, api) => api.print('The resume download has been removed. Use the contact page to get in touch.', 'system'),
   },
 
   run: {
@@ -471,7 +463,7 @@ function printResume(api: CommandAPI): void {
   head('EDUCATION')
   api.print(`  ${EDUCATION.school} · ${EDUCATION.degree}`)
   api.print(`  ${EDUCATION.major}`)
-  api.print(`  ${EDUCATION.period} · ${EDUCATION.location} · ${EDUCATION.award}`)
+  api.print(`  ${EDUCATION.period} · ${EDUCATION.award}`)
   api.print('')
 
   head('EXPERIENCE')

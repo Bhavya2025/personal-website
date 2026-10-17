@@ -35,9 +35,7 @@ function Hero() {
           </h1>
 
           <nav className="hero__links" aria-label="Primary" data-reveal>
-            <a className="btn btn--solid" href={IDENTITY.resume} target="_blank" rel="noreferrer">
-              RESUME <span aria-hidden="true">↗</span>
-            </a>
+
             <a className="btn" href={IDENTITY.github} target="_blank" rel="noreferrer">
               <BrandIcon name="github" /> GITHUB <span aria-hidden="true">↗</span>
             </a>

@@ -1,4 +1,4 @@
-/** Resume facts — everything here comes from public/resume.pdf. */
+/** Education from the supplied resume; experience wording updated by the user on October 17. */
 
 export const EDUCATION = {
   school: 'University of Waterloo',
@@ -7,8 +7,7 @@ export const EDUCATION = {
   major: 'Applied Mathematics with Scientific Computing and Scientific Machine Learning',
   majorUrl:
     'https://uwaterloo.ca/future-students/programs/applied-mathematics-scientific-computing',
-  period: 'SEPT 2025 – PRESENT',
-  location: 'Waterloo, ON',
+  period: 'Sept 2025 – Apr 2030 (expected)',
   award: "President's Scholarship",
   // Each links to its UWFlow course page. The first three codes are
   // user-confirmed; the last three are best-effort (verify on UWFlow).
@@ -31,16 +30,25 @@ export interface ExperienceEntry {
   role: string
   period: string
   summary: string
+  location?: string
+  bullets?: string[]
+  technologies?: string[]
 }
 
 export const EXPERIENCE: ExperienceEntry[] = [
   {
-    org: 'Clevered AI Fellowship',
-    role: 'Student Fellow',
-    period: 'JAN 2024 – FEB 2024',
-    summary:
-      'Selected for a mentored AI program led by Oxford-affiliated researcher Ken Kahn. Built a voice-activated accessibility prototype in Python using NLP-style intent matching.',
+    org: 'ToadEx Inc.',
+    role: 'Software Engineering Intern',
+    period: 'Sept 2026 – Present',
+    summary: 'Architecting Python/FastAPI middleware for a multi-tenant restaurant kiosk platform across 9 merchant configurations, decoupling hardware payment and thermal printing integrations from a legacy Django monolith.',
+    bullets: [
+      'Engineered fault-tolerant checkout flows between Vue clients and Django backends, implementing idempotency keys and SQLite-backed state recovery for interrupted payment transactions.',
+      'Designed standardized REST API contracts and hardware device adapters for physical payment terminals and receipt printers after evaluating three microservice integration patterns.',
+      'Hardened multi-environment deployment pipelines by eliminating static credential risks and automating schema validation across four merchant configuration profiles.',
+    ],
+    technologies: ['Python', 'FastAPI', 'Django', 'SQLite', 'Vue', 'REST APIs'],
   },
+
 ]
 
 export interface SkillGroup {
@@ -50,20 +58,16 @@ export interface SkillGroup {
 
 export const SKILLS: SkillGroup[] = [
   {
-    label: 'LANGUAGES',
-    items: ['Python', 'C', 'C++', 'JavaScript', 'TypeScript', 'Racket', 'SQL'],
+    label: 'Languages',
+    items: ['Python', 'C', 'C++', 'JavaScript', 'TypeScript', 'SQL', 'Racket'],
   },
   {
-    label: 'FRAMEWORKS & LIBRARIES',
-    items: ['React', 'Node.js', 'Supabase'],
+    label: 'Frameworks & databases',
+    items: ['FastAPI', 'Django', 'Vue.js', 'React', 'Node.js', 'Express', 'SQLite', 'Supabase'],
   },
   {
-    label: 'TOOLS',
-    items: ['Git', 'GitHub', 'Vercel', 'VS Code', 'Arduino'],
-  },
-  {
-    label: 'AI TOOLING',
-    items: ['Claude Code'],
+    label: 'Tools & technologies',
+    items: ['Git', 'GitHub', 'REST APIs', 'LLM APIs', 'Agent workflows', 'Render', 'Vercel'],
   },
 ]
 

@@ -51,18 +51,6 @@ function Contact() {
               Email is the best way to reach me, and I write back quickly.
             </p>
 
-            <div className="ctc__head-cta">
-              <a
-                className="ctc__resume"
-                href={IDENTITY.resume}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="ctc__resume-tag" aria-hidden="true">PDF</span>
-                VIEW RESUME
-                <span className="ctc__resume-go" aria-hidden="true">&#8599;</span>
-              </a>
-            </div>
           </header>
 
           {/* ---------- PRIMARY: email ---------- */}

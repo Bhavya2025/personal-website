@@ -1,0 +1,107 @@
+{
+  "contract": "../../reviews/2026-10-17/design-contract.md",
+  "targetViewports": [
+    "390x844",
+    "768x1024",
+    "1440x1000"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Inspected semantic headings, main/nav landmarks and named links. Keyboard Tab/Shift+Tab showed a 2px blue outline; Enter activated the skip link, home recovery and back-to-top, focusing main. Experience anchor focused its section and only that navigation item had aria-current. Mobile nav targets measured 36.5px high with separated spacing. Key text contrast ratios are recorded in contrast.json, all above 4.5:1. Reduced-motion CSS disables smooth scrolling; OS preference switching and a full screen-reader audit were not performed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered home at CSS viewports 390x844, 768x1024 and 1440x1000; checked Contact at 320x740 as well. DOM scrollWidth never exceeded innerWidth in these checks. Mobile roles, dates and long email fit; command steps stack on mobile; desktop footer is grouped within the 860px content column. Some browser screenshot exports are provider-scaled below CSS viewport dimensions; labels refer to the measured browser viewport, not image pixel dimensions."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Static profile text renders without a content-fetch loader. The lazy Taskly image declares 1280x631 dimensions; observed the loaded 1280px source rendering at 858x423 on desktop with the aspect ratio reserved."
+    },
+    "empty": {
+      "status": "not-applicable",
+      "reason": "The one-project static site has no search, filter, remote collection or user-created content that can return empty results. Unknown routes are handled as errors."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Direct /resume.pdf shows This file is no longer available with home/contact recovery; HTTP returns HTML, never PDF bytes. /projects/wyag shows No page here and Enter on Back to home recovers. A separate local server returned 404 for the screenshot and rendered the specific fallback."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "In the image-error fixture the project description, case-study, source and live-app links stayed available; the unusable full-size screenshot link was removed. Source-only implementation observations and unmeasured project reliability are qualified in the case study."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "/projects?focus=BK-001 redirected to /projects/taskly; direct Taskly and Contact navigation worked, titles updated, and only the matching navigation item was current. Full-size screenshot opened an image document reporting 1280x631. Mailto text matched its destination. The external live-app destination loaded Taskly, but its AI/cloud flows were not exercised."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "The portfolio has no accounts, authenticated operations, uploads, payments or permission prompts. Email is a mailto link; no message was sent."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "home-390.jpg",
+      "observation": "Mobile home: readable roles and availability, three navigation links and stacked experience heading; no geographic label or PDF link."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "home-768.jpg",
+      "observation": "Tablet home: header and reading column align; internship details are visible without disclosure."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "home-1440.jpg",
+      "observation": "Desktop final home: compact header, explicit role, availability and visible experience."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "footer-1440.jpg",
+      "observation": "Footer stays in the same reading column with copyright and grouped source/top links; no detached rail tagline."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "taskly-flow-390.jpg",
+      "observation": "Illustrative command explanation and three sequential steps stack vertically and fit the phone width."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "contact-390.jpg",
+      "observation": "Contact has visible email, GitHub and LinkedIn; no location or résumé."
+    },
+    {
+      "viewport": "320x740",
+      "artifact": "contact-320.jpg",
+      "observation": "Extra-narrow header, availability and long email remain within the page width."
+    },
+    {
+      "viewport": "1280x720",
+      "artifact": "image-error-1280.jpg",
+      "observation": "Fault server deliberately returns 404 for JPEG. Specific screenshot-unavailable status keeps text and project links usable; full-size link is hidden."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "removed-file-390.jpg",
+      "observation": "Old résumé URL renders an unavailable-file recovery page rather than serving a PDF."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "keyboard-skip-390.jpg",
+      "observation": "Skip-to-content link is exposed with keyboard focus."
+    }
+  ],
+  "validation": [
+    "npm run build passed",
+    "npm run lint passed",
+    "git diff --check passed",
+    "No console warning/error entries on the ordinary Taskly navigation path",
+    "Asset-removal check saved separately"
+  ],
+  "limitations": [
+    "AI reviewers simulate perspectives; this is not a real-human recruiting study or evidence of hiring conversion.",
+    "No production deployment performed; changes are on the draft PR branch.",
+    "No Taskly AI request, authentication, data mutation, cloud sync or benchmark was tested.",
+    "No full WCAG certification, real screen-reader session, OS reduced-motion toggle or field performance measurements."
+  ]
+}

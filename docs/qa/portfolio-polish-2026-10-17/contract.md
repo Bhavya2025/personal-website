@@ -1,0 +1,9 @@
+# Targeted portfolio polish — 17 October 2026
+
+The latest user request supersedes the previous Ghost exclusion and requests its exact title, subtitle, description, TypeScript/API tags and source link. Restore that supplied content without representing this website change as independent verification of the project implementation. The public source previously inspected uses Python/Streamlit; the user-supplied new copy describes a TypeScript dependency-graph pipeline. This remains a content-provenance limitation. No project code is being changed.
+
+Remove Clevered from the Experience section and remove the Wyag tutorial link from the UI, as explicitly requested. Keep only source links on the two secondary cards. The desktop systems grid uses two equal columns and a 1.5rem gap; mobile stacks cards. Target viewports: 1440x1000, 768x1024, 390x844; check the 800px nowrap boundary and 320px narrow edge.
+
+Hero: max-width 42ch on the subtitle paragraph, split the role and academic phrase into distinct lines. The academic line uses its natural unbroken width at >=800px, an intentional exception to the paragraph's visual measure so the user's requested phrase stays on one line without shrinking the text. Below that it wraps to fit. Do not add the stray closing parenthesis from the user's fragment. The availability dot is exactly 8px, #10B981, with a 3px rgba(16,185,129,.18) ring; no pulse animation.
+
+Keep existing font, palette, routes, PDF, keyboard focus and screenshot fallback behavior. Verify the changed layout and source destinations in the browser, with no horizontal overflow. Build, lint and diff checks are appropriate; no new implementation-mirroring tests are needed for this content/CSS change. Earlier full navigation, PDF, image-error and keyboard evidence remains in ../editorial-grid-2026-10-17/.

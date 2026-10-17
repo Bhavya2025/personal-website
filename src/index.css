@@ -1,84 +1,32 @@
-/* Base resets & chrome. All themeable values come from src/theme/space.css. */
-
 :root {
-  color-scheme: dark;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  /* deep near-black: any overscroll past the page end stays dark, matching
-     the footer — never a floating coloured rectangle.
-     NOTE: do NOT set height:100% on html/body/#root — it caps Lenis's
-     scroll calculation and causes the wheel to randomly stall. Let the
-     content define the scroll height. */
-  background: #08070a;
-  overscroll-behavior-y: none;
-}
-
-body {
-  font-family: var(--mono);
-  font-size: 15px;
-  line-height: 1.6;
-  background: var(--ink);
-  color: var(--bone);
-  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  color: #111111;
+  background: #FAF9F6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+  --paper: #FAF9F6;
+  --ink: #111111;
+  --muted: #555555;
+  --line: #E5E5E0;
+  --accent: #111111;
+  --rust: #b44b32;
+  --mono: 'JetBrains Mono', monospace;
 }
-
-::selection {
-  background: var(--amber);
-  color: var(--ink);
-}
-
-a {
-  color: inherit;
-}
-
-button {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-/* Film grain over everything — SVG turbulence, one fixed node */
-.grain {
-  position: fixed;
-  inset: -100%;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain-shift 0.6s steps(4) infinite;
-}
-
-@keyframes grain-shift {
-  0% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(-2%, 1%);
-  }
-  50% {
-    transform: translate(1%, -2%);
-  }
-  75% {
-    transform: translate(-1%, 2%);
-  }
-  100% {
-    transform: translate(2%, -1%);
-  }
-}
-
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 0; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img, svg { display: block; max-width: 100%; }
+a, button, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+::selection { background: #dce5fb; color: #163577; }
+html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+main:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) {
-  .grain {
-    animation: none;
-  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

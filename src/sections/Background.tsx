@@ -23,7 +23,6 @@ function Background() {
             </div>
             <div className="edu__when">
               <span>{EDUCATION.period}</span>
-              <span>{EDUCATION.location}</span>
             </div>
           </header>
           <p className="edu__award">★ {EDUCATION.award}</p>

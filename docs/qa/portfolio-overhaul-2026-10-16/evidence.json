@@ -1,0 +1,116 @@
+{
+  "contract": "../../design-contract.md; production build served on 127.0.0.1:5182; fault tests served the same dist files on port 5183.",
+  "targetViewports": [
+    "390x844",
+    "768x1024",
+    "1440x1000"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Keyboard Space/Enter selected Git objects and expanded experience details. Selected object had a visible 2px blue focus outline. SPA navigation moved focus to main; hash/deep links focused their section/article. Search reset returned focus to the search input. Text contrast pairs range from 4.89:1 to 13.36:1. Reduced-motion CSS and the existing simulation media-query branch were source-reviewed; the base page has no automatic animation."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered 390x844, 768x1024 and 1440x1000, plus 320x800. A real 15px horizontal overflow at 320px was fixed by removing the body minimum width; final scrollWidth equals clientWidth (305px at a 320px viewport with a 15px scrollbar). Identity rail collapses into top navigation, figures and project titles fit, and contact email remains readable."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "An 8-second simulated delay on the lazy Boids chunk displayed Loading the simulation\u2026 in a fixed 250px frame; the canvas then appeared at 335x250 on mobile."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "An unmatched search showed No matching projects and a reset button. Reset restored all 7 projects and focused project-search."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "A deliberately missing Taskly image rendered a descriptive fallback with source/live links retained. A simulated 503 for the Boids chunk reached the error boundary and reload control; after removing the fault, reload and Run recovered the canvas. Unknown project slug displayed the not-found page."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Software Factory is labeled Hackathon team prototype and links to a Project archive. Source-only projects have no fabricated live-demo link. Conceptual Git/curve illustrations are labeled rather than presented as live Python/game execution."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Git object selection updated aria-pressed and its live explanation. Filter counts: All7, Software4, Math&simulation2, Hardware1, Games2. Python search returned Wyag. Resume/email links use verified destinations. Repeated Experience hash navigation and legacy project focus query both scrolled and focused the correct target. Clean production review tab had no warning or error logs."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "The portfolio has no account, authentication, payments, clipboard action, permission prompt, or external write flow. Contact is a mailto link and resume is an ordinary public PDF link."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "390x844",
+      "artifact": "home-390.jpg",
+      "observation": "Mobile header, identity, resume/contact links and beginning of the flat work index; no horizontal overflow."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "home-768.jpg",
+      "observation": "Tablet top navigation, readable introduction, two-column project summary and four Git-object controls."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "home-1440.jpg",
+      "observation": "Persistent identity rail, compact factual intro and first project with its conceptual object diagram."
+    },
+    {
+      "viewport": "320x800",
+      "artifact": "home-320.jpg",
+      "observation": "Narrow screen after removing min-width overflow; navigation and name remain within the content bounds."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "empty-search-390.jpg",
+      "observation": "Explicit empty result and reset control."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "missing-image-390.jpg",
+      "observation": "Image failure retains project description and links."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "simulation-loading-390.jpg",
+      "observation": "Visible delayed-chunk loading state."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "simulation-running-390.jpg",
+      "observation": "Loaded optional simulation in a fixed mobile frame."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "simulation-error-390.jpg",
+      "observation": "Failed import reaches a reload recovery control without removing the project page."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "experience-1440.jpg",
+      "observation": "Keyboard-opened contributions and focused Experience section."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "not-found-1440.jpg",
+      "observation": "Unknown project slug with usable index/project recovery links."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "graph-mechanics-390.jpg",
+      "observation": "Long project title, technologies, technical focus and labeled curve illustration fit the mobile column."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "contact-390.jpg",
+      "observation": "Email and resume/GitHub/LinkedIn directory on mobile."
+    }
+  ],
+  "limitations": [
+    "No full screen-reader-device audit or WCAG conformance certification.",
+    "OS/browser reduced-motion preference was not emulated; the static page and media-query branches were inspected.",
+    "No field Core Web Vitals or Lighthouse score is claimed.",
+    "Graph Mechanics and archive code were inspected, not executed.",
+    "Intentional fault-test errors occurred on the isolated QA server. The clean production preview tab logged no warnings/errors."
+  ]
+}

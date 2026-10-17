@@ -22,7 +22,6 @@
  * Delete with the rest of the bg-preview system once a background is chosen.
  */
 
-import type { BgPage } from '../bgVariants'
 import type { BgVariant } from '../bgStore'
 
 export interface GlSceneInput {
@@ -363,7 +362,6 @@ function makeProgram(gl: WebGL2RenderingContext, body: string): WebGLProgram | n
 export function makeGlScene(
   gl: WebGL2RenderingContext,
   variant: BgVariant,
-  _page: BgPage,
 ): GlScene {
   const isSynth = variant === 'synthwave'
   const body = isSynth ? SYNTH_BODY : COMPLEX_BODY

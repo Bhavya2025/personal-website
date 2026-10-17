@@ -1036,7 +1036,7 @@ export function makeHeapsort(ctx: CanvasRenderingContext2D, page: BgPage): BgPai
 /* L — ATTRACTOR (a Lorenz strange attractor; cursor steers the view) */
 /* ------------------------------------------------------------------ */
 
-export function makeAttractor(ctx: CanvasRenderingContext2D, _page: BgPage): BgPainter {
+export function makeAttractor(ctx: CanvasRenderingContext2D): BgPainter {
   const N = 2600
   const xs = new Float32Array(N)
   const ys = new Float32Array(N)
@@ -1166,7 +1166,7 @@ export function makePainter(
     case 'heapsort':
       return makeHeapsort(ctx, page)
     case 'attractor':
-      return makeAttractor(ctx, page)
+      return makeAttractor(ctx)
     // merged from the lab copies (factories take only ctx)
     case 'tessellate':
       return makeTessellate(ctx)
