@@ -16,18 +16,20 @@ npm run preview -- --port 5182
 
 ## Content and routes
 
-- `src/portfolio/Portfolio.tsx`: shared identity rail, homepage, project index, individual project pages, contact, and not-found handling.
+- `src/portfolio/Portfolio.tsx`: compact shared header/footer, homepage, Taskly case study, contact, and not-found handling.
 - `src/portfolio/data.ts`: Taskly’s slug, scope, descriptions, and implementation notes.
 - `src/portfolio/portfolio.css`: responsive layout and visual system.
 - `src/lib/missions.ts`: project records, images, source/demo links, and featured selection.
 - `src/lib/resume.ts`: resume-backed experience, education, and skills.
-- `public/resume.pdf`: public resume supplied October 1, 2026.
+The public résumé PDF has been removed. Do not reintroduce résumé downloads, location labels, or a portrait.
 
-Routes: `/`, `/projects`, `/projects/:slug`, `/contact`. Existing `/projects?focus=BK-...` links still scroll to the corresponding project. Unknown paths and slugs show a recovery page. `public/_redirects` supplies the existing Cloudflare SPA fallback.
+Routes: `/`, `/projects`, `/projects/:slug`, `/contact`. `/projects` and its legacy query links redirect to the Taskly case study. Unknown paths and slugs show a recovery page. `public/_redirects` supplies the existing Cloudflare SPA fallback.
 
 Older interface source remains for reference and is not imported by the current app. Do not reintroduce its background previews, transition effects, or terminal into the current portfolio by accident.
 
 ## Research and QA
+
+The [17 October review and competitive research](docs/reviews/2026-10-17/research.md) supersedes the earlier layout direction. Three independent AI reviewers inspected a frozen site without candidate background or other reviews; their original reports are saved alongside the synthesis. This is a simulated review, not a human hiring study. The [current design contract](docs/reviews/2026-10-17/design-contract.md) and `docs/qa/portfolio-review-2026-10-17/` record the current checks.
 
 [Research synthesis](docs/design-research-2026-10-16.md) records the actual references and resulting design decisions. [Design contract](docs/design-contract.md) defines the viewports, interactions, and content states. Detailed source inspection and visual-reference notes are in `docs/research/`.
 
@@ -37,6 +39,7 @@ Rendered QA evidence, contrast calculations, and the verification record are und
 
 | Version | Git branch | Annotated tag |
 | --- | --- | --- |
+| Taskly-only layout before review (`843a683`) | `backup/pre-review-2026-10-17` | — |
 | Original space-themed site (`394254c`) | `backup/pre-redesign-2026-10-01` | `v2-pre-redesign-2026-10-01` |
 | October 1 redesign (`d2bb449`) | `backup/pre-overhaul-2026-10-16` | `v3-pre-overhaul-2026-10-16` |
 

@@ -8,7 +8,6 @@ export const EDUCATION = {
   majorUrl:
     'https://uwaterloo.ca/future-students/programs/applied-mathematics-scientific-computing',
   period: 'Sept 2025 – Apr 2030 (expected)',
-  location: 'Waterloo, ON',
   award: "President's Scholarship",
   // Each links to its UWFlow course page. The first three codes are
   // user-confirmed; the last three are best-effort (verify on UWFlow).
@@ -40,7 +39,6 @@ export const EXPERIENCE: ExperienceEntry[] = [
     org: 'ToadEx Inc.',
     role: 'Software Engineering Intern',
     period: 'Sept 2026 – Present',
-    location: 'Remote',
     summary: 'Designing Python/FastAPI middleware for a restaurant kiosk platform with nine merchant configurations, separating payment and printing integrations from Django.',
     bullets: [
       'Traced Vue-to-Django checkout risks and specified idempotency keys and SQLite-backed recovery for interrupted transactions.',
@@ -52,9 +50,8 @@ export const EXPERIENCE: ExperienceEntry[] = [
     org: 'Clevered AI Fellowship',
     role: 'Student Fellow',
     period: 'Jan 2024 – Feb 2024',
-    location: 'Remote',
     summary:
-      'Selected for a mentored AI program led by Oxford-affiliated researcher Ken Kahn. Built a voice-activated accessibility prototype in Python using NLP-style intent matching.',
+      'Built a voice-activated accessibility prototype in Python during a mentored AI fellowship.',
   },
 ]
 

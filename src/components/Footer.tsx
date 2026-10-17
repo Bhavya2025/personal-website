@@ -64,9 +64,7 @@ function Footer() {
             <a href={IDENTITY.medium} target="_blank" rel="noreferrer">
               MEDIUM <span aria-hidden="true">↗</span>
             </a>
-            <a href={IDENTITY.resume} target="_blank" rel="noreferrer">
-              RESUME <span aria-hidden="true">↗</span>
-            </a>
+
           </nav>
         </div>
       </div>

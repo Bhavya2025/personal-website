@@ -1,5 +1,7 @@
 # Portfolio overhaul: design contract
 
+> Superseded on 17 October 2026 by [the review-led contract](reviews/2026-10-17/design-contract.md). This file preserves the earlier design rationale; its résumé, layout and interactive-state requirements no longer define the current site.
+
 > Scope update: the user subsequently requested removal of the portrait and every project except Taskly. The current site follows that request. The original research and multi-project QA below describe the preserved earlier revision (`bcd5228`). Current verification is in `docs/qa/taskly-only-2026-10-16/evidence.json`.
 
 Date: 16 October 2026. Audience: engineering hiring teams and other developers. Job: understand Bhavya's current role, inspect a project, and reach his resume or contact details.
