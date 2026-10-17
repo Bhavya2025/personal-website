@@ -1,0 +1,107 @@
+{
+  "contract": "contract.md",
+  "targetViewports": [
+    "390x844",
+    "768x1024",
+    "1440x1000"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Spot-checked semantic heading order, main/nav landmarks and named links. Keyboard Tab showed a 2px dark outline; Shift+Tab exposed Skip to content and Enter focused main. Enter on Architecture focused architecture-title with only Architecture current. Unknown-route home recovery focused main. Mobile navigation measured 34.5px high, with separated targets; pill links are at least 38px high. Key text contrast is recorded in contrast.json. Reduced-motion CSS was inspected; OS preference switching and real screen-reader testing were not performed."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered home at CSS viewports 390x844, 768x1024 and 1440x1000. Checked home/contact at 320x740 and the 767px breakpoint edge. No horizontal page overflow was observed. All three major sections have twelve computed columns and 3/9 spans at desktop/tablet width; at 767px they switch to block flow with static labels. At desktop, a scrolled project label remained 32px from the top within its own section. Inter and JetBrains Mono and the exact #FAF9F6 background were confirmed through computed styles. Some screenshot exports are provider-scaled below the measured CSS viewport dimensions."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Static copy renders directly, with locally hosted font-face swap. The lazy Taskly screenshot retains intrinsic 1280x631 dimensions and renders in the browser frame; no artificial loading overlay is added."
+    },
+    "empty": {
+      "status": "not-applicable",
+      "reason": "The static portfolio has no search/filter or remote collection. It contains one feature and one secondary project; no empty placeholder card is rendered after the user excluded Ghost."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "/not-a-page displayed No page here and a keyboard-operable home recovery. A separate local fixture deliberately returned 404 for the JPEG and displayed Screenshot unavailable inside the frame."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "During screenshot failure the engineering case study, live app, source and text remained available, while the unusable full-size image link was hidden. Wyag has source and tutorial attribution without a fabricated live-demo button."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Projects and Architecture reached their correct destinations; active navigation was singular. /projects redirects to /#projects, legacy BK-001 opens Taskly, BK-103 and /projects/wyag reach Wyag. Header Resume opened a PDF tab; HTTP verification returned application/pdf, 80966 bytes, matching the original supplied file by SHA-256. Contact shows the expected email and destinations. The 2027 availability is present and Ghost/old availability/geographic labels are absent from the production bundle."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "No portfolio account, upload, payment, form submission or permission flow exists. Resume is a static PDF link and email uses mailto; no message was sent."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x1000",
+      "artifact": "home-1440.jpg",
+      "observation": "Final desktop hero, requested chips, green-dot 2027 availability, navigation and the start of the split Experience section."
+    },
+    {
+      "viewport": "768x1024",
+      "artifact": "home-768.jpg",
+      "observation": "At the exact tablet breakpoint the header fits and Experience retains twelve columns with a 3/9 split."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "home-390.jpg",
+      "observation": "Mobile brand/name and Resume share the first row; four navigation links sit below; hero and 2x2 action chips wrap cleanly."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "projects-1440.jpg",
+      "observation": "Taskly feature has a white border container, challenge callout, three prominent actions and framed actual screenshot."
+    },
+    {
+      "viewport": "1440x1000",
+      "artifact": "systems-education-1440.jpg",
+      "observation": "Wyag is the single secondary card with attribution. Education and technical stack align side by side; the Projects label remains bounded and sticky."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "projects-390.jpg",
+      "observation": "Taskly card text, tags, challenge and primary action fit within the phone content width."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "architecture-390.jpg",
+      "observation": "Keyboard navigation reaches the labelled Architecture section, and the command flow stacks on mobile."
+    },
+    {
+      "viewport": "320x740",
+      "artifact": "contact-320.jpg",
+      "observation": "Extra-narrow header navigation, Resume pill and long email fit without horizontal overflow."
+    },
+    {
+      "viewport": "1280x720",
+      "artifact": "image-error.jpg",
+      "observation": "The intentional image 404 preserves framed fallback text and all project actions, with no broken enlargement link."
+    },
+    {
+      "viewport": "767x1024",
+      "artifact": "keyboard-skip.jpg",
+      "observation": "Keyboard skip link is exposed; activating it focuses main rather than skipping the hero actions."
+    }
+  ],
+  "validation": [
+    "npm run build passed",
+    "npm run lint passed",
+    "git diff --check passed",
+    "No console error/warning entries on the reviewed ordinary routes",
+    "PDF and production-content checks saved in content-checks.json"
+  ],
+  "limits": [
+    "No full accessibility certification, screen-reader session, OS reduced-motion toggle or field-performance measurement.",
+    "The user supplied the stronger experience copy and stack; delivery claims are not independently verified by this website change.",
+    "Taskly and Wyag repositories were not changed or executed.",
+    "No production deployment: review branch and draft PR only."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "resume": {
+    "status": 200,
+    "contentType": "application/pdf",
+    "bytes": 80966,
+    "isPdf": true,
+    "matchesSuppliedFile": true
+  },
+  "projectGhostInBundle": false,
+  "oldAvailabilityInBundle": false,
+  "geographicLabelsInBundle": false
+}

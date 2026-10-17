@@ -1,5 +1,7 @@
 # Review-led portfolio revision — 17 October 2026
 
+> Historical scope: superseded by the user’s subsequent [editorial brief](../../qa/editorial-grid-2026-10-17/contract.md), which restores the résumé and Wyag.
+
 Purpose: let a hiring reader identify the candidate's role, inspect concrete work, and make contact. Primary action: read Taskly's engineering case study or email Bhavya.
 
 Direction: a compact technical profile. One centered reading column, a normal top navigation, readable paragraphs, and thin section rules. Keep IBM Plex and the existing pale paper/graphite/blue palette. The memorable detail is the documented command → board-change flow, tied to actual Taskly source, rather than decoration.

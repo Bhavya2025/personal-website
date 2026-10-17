@@ -1,5 +1,7 @@
 # Portfolio overhaul: design contract
 
+> Current work follows the [October 17 editorial-grid contract](qa/editorial-grid-2026-10-17/contract.md), including the user’s later résumé restoration, Wyag addition and Project Ghost exclusion.
+
 > Superseded on 17 October 2026 by [the review-led contract](reviews/2026-10-17/design-contract.md). This file preserves the earlier design rationale; its résumé, layout and interactive-state requirements no longer define the current site.
 
 > Scope update: the user subsequently requested removal of the portrait and every project except Taskly. The current site follows that request. The original research and multi-project QA below describe the preserved earlier revision (`bcd5228`). Current verification is in `docs/qa/taskly-only-2026-10-16/evidence.json`.

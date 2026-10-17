@@ -1,19 +1,19 @@
 :root {
-  font-family: 'IBM Plex Sans', sans-serif;
-  color: #262b2b;
-  background: #f6f7f5;
+  font-family: 'Inter', sans-serif;
+  color: #111111;
+  background: #FAF9F6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: light;
-  --paper: #f6f7f5;
-  --ink: #262b2b;
-  --muted: #646c6d;
-  --line: #d7dcd9;
-  --accent: #2454bc;
+  --paper: #FAF9F6;
+  --ink: #111111;
+  --muted: #555555;
+  --line: #E5E5E0;
+  --accent: #111111;
   --rust: #b44b32;
-  --mono: 'IBM Plex Mono', monospace;
+  --mono: 'JetBrains Mono', monospace;
 }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 0; }

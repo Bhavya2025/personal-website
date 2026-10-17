@@ -1,4 +1,4 @@
-/** Facts from the current resume and the earlier resume-backed portfolio. */
+/** Education from the supplied resume; experience wording updated by the user on October 17. */
 
 export const EDUCATION = {
   school: 'University of Waterloo',
@@ -32,6 +32,7 @@ export interface ExperienceEntry {
   summary: string
   location?: string
   bullets?: string[]
+  technologies?: string[]
 }
 
 export const EXPERIENCE: ExperienceEntry[] = [
@@ -39,12 +40,13 @@ export const EXPERIENCE: ExperienceEntry[] = [
     org: 'ToadEx Inc.',
     role: 'Software Engineering Intern',
     period: 'Sept 2026 – Present',
-    summary: 'Designing Python/FastAPI middleware for a restaurant kiosk platform with nine merchant configurations, separating payment and printing integrations from Django.',
+    summary: 'Architecting Python/FastAPI middleware for a multi-tenant restaurant kiosk platform across 9 merchant configurations, decoupling hardware payment and thermal printing integrations from a legacy Django monolith.',
     bullets: [
-      'Traced Vue-to-Django checkout risks and specified idempotency keys and SQLite-backed recovery for interrupted transactions.',
-      'Removed a hardcoded SMTP credential, validated four configuration scenarios, and documented environment-based deployment.',
-      'Compared three architectural approaches and proposed REST API contracts and device adapters for payment terminals and printers.',
+      'Engineered fault-tolerant checkout flows between Vue clients and Django backends, implementing idempotency keys and SQLite-backed state recovery for interrupted payment transactions.',
+      'Designed standardized REST API contracts and hardware device adapters for physical payment terminals and receipt printers after evaluating three microservice integration patterns.',
+      'Hardened multi-environment deployment pipelines by eliminating static credential risks and automating schema validation across four merchant configuration profiles.',
     ],
+    technologies: ['Python', 'FastAPI', 'Django', 'SQLite', 'Vue', 'REST APIs'],
   },
   {
     org: 'Clevered AI Fellowship',

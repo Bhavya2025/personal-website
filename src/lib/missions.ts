@@ -60,4 +60,5 @@ export const IDENTITY = {
   linkedin: 'https://www.linkedin.com/in/bhavya-bk/',
   medium: 'https://medium.com/@bhavyakumar.bkb',
   email: 'b2kumar@uwaterloo.ca',
+  resume: '/resume.pdf',
 } as const

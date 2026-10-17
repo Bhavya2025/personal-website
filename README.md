@@ -1,10 +1,10 @@
 # bhavyakumar.ca
 
-Bhavya Kumar's personal website: Taskly, engineering experience, education, and contact details.
+Bhavya Kumar's personal website: Taskly, Wyag, engineering experience, education, résumé, and contact details.
 
 ## Development
 
-React 19, TypeScript, React Router, and Vite. IBM Plex Sans and Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. The current site displays Taskly as its only project and does not load a personal photograph.
+React 19, TypeScript, React Router, and Vite. Inter and JetBrains Mono are self-hosted. Layout and scrolling use native CSS/browser behavior. The current site features Taskly and Wyag, uses a 12-column editorial layout at desktop/tablet widths, and does not load a personal photograph. Project Ghost is excluded.
 
 ```bash
 npm ci
@@ -17,19 +17,21 @@ npm run preview -- --port 5182
 ## Content and routes
 
 - `src/portfolio/Portfolio.tsx`: compact shared header/footer, homepage, Taskly case study, contact, and not-found handling.
-- `src/portfolio/data.ts`: Taskly’s slug, scope, descriptions, and implementation notes.
+- `src/portfolio/data.ts`: Taskly notes, hero copy, editable secondary-project array, and technical stack.
 - `src/portfolio/portfolio.css`: responsive layout and visual system.
 - `src/lib/missions.ts`: project records, images, source/demo links, and featured selection.
 - `src/lib/resume.ts`: resume-backed experience, education, and skills.
-The public résumé PDF has been removed. Do not reintroduce résumé downloads, location labels, or a portrait.
+The updated editorial brief explicitly restores `public/resume.pdf` and résumé links. The saved PDF is copied from the original supplied document. Geographic labels and the portrait remain absent from the page.
 
-Routes: `/`, `/projects`, `/projects/:slug`, `/contact`. `/projects` and its legacy query links redirect to the Taskly case study. Unknown paths and slugs show a recovery page. `public/_redirects` supplies the existing Cloudflare SPA fallback.
+Routes: `/`, `/projects`, `/projects/:slug`, `/contact`. `/projects` redirects to the homepage Projects section. Legacy Taskly focus links open its case study; Wyag focus and old detail links reach the Wyag card. Unknown paths and slugs show a recovery page. `public/_redirects` supplies the existing Cloudflare SPA fallback.
 
 Older interface source remains for reference and is not imported by the current app. Do not reintroduce its background previews, transition effects, or terminal into the current portfolio by accident.
 
 ## Research and QA
 
-The [17 October review and competitive research](docs/reviews/2026-10-17/research.md) supersedes the earlier layout direction. Three independent AI reviewers inspected a frozen site without candidate background or other reviews; their original reports are saved alongside the synthesis. This is a simulated review, not a human hiring study. The [current design contract](docs/reviews/2026-10-17/design-contract.md) and `docs/qa/portfolio-review-2026-10-17/` record the current checks.
+The [current editorial-grid contract](docs/qa/editorial-grid-2026-10-17/contract.md) follows the user’s new pasted brief and subsequent instruction to exclude Project Ghost. It supersedes the earlier Taskly-only scope and résumé-removal decision. Current screenshots and checks are recorded in `docs/qa/editorial-grid-2026-10-17/evidence.json`. The stronger experience wording and 2027 availability were supplied by the user; this website change does not independently verify delivery claims or implement changes to the project repositories.
+
+The [17 October review and competitive research](docs/reviews/2026-10-17/research.md) documents the preceding layout direction. Three independent AI reviewers inspected a frozen site without candidate background or other reviews; their original reports are saved alongside the synthesis. This is a simulated review, not a human hiring study. The [preceding design contract](docs/reviews/2026-10-17/design-contract.md) and `docs/qa/portfolio-review-2026-10-17/` record the current checks.
 
 [Research synthesis](docs/design-research-2026-10-16.md) records the actual references and resulting design decisions. [Design contract](docs/design-contract.md) defines the viewports, interactions, and content states. Detailed source inspection and visual-reference notes are in `docs/research/`.
 
@@ -39,6 +41,7 @@ Rendered QA evidence, contrast calculations, and the verification record are und
 
 | Version | Git branch | Annotated tag |
 | --- | --- | --- |
+| Review-led single-column layout (`d7c5d8b`) | `backup/pre-editorial-grid-2026-10-17` | — |
 | Taskly-only layout before review (`843a683`) | `backup/pre-review-2026-10-17` | — |
 | Original space-themed site (`394254c`) | `backup/pre-redesign-2026-10-01` | `v2-pre-redesign-2026-10-01` |
 | October 1 redesign (`d2bb449`) | `backup/pre-overhaul-2026-10-16` | `v3-pre-overhaul-2026-10-16` |
